@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react'
 import banner from '../../../assets/img/shilajit.png'
 import video from "../../../assets/img/video.mp4";
@@ -105,7 +106,6 @@ const ImagesVideo = () => {
         }
     }
 
-
     const handleSubmit = async (e) => {
         e.preventDefault()
         setsubmitLoading(true)
@@ -166,14 +166,16 @@ const ImagesVideo = () => {
     return (
         <>
             <div className="content-wrapper">
-                <div className="container-xxl flex-grow-1 container-p-y">
-
+                <div className="flex-grow-1 container-p-y">
+                    <h4 class="py-3 mb-2">
+                        <span class="fw-light">Aksvedas /</span>Banner Settings
+                    </h4>
                     <div className="card mb-4">
                         <div className="card-widget-separator-wrapper">
                             <div className="card-body card-widget-separator">
                                 <div className="row gy-4 gy-sm-1">
                                     <div className="box d-flex justify-content-between">
-                                        <h5><i class="fa-solid fa-desktop"></i> Web Banner </h5>
+                                        <h5><i class="fa-solid fa-desktop"></i> Website Slider Banner </h5>
                                         <button onClick={() => setValue({ ...value, 'type': 'web' })} data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" className="btn btn-primary"><i className='fa fa-plus'></i></button>
                                     </div>
 
@@ -206,7 +208,7 @@ const ImagesVideo = () => {
                                             ))
                                             :
                                             <>
-                                                <h6>There are no spotlight</h6>
+                                                <h6>There are no Banner for Home Page</h6>
                                             </>
                                     }
 
@@ -219,7 +221,7 @@ const ImagesVideo = () => {
                         <div className="card-widget-separator-wrapper">
                             <div className="card-body card-widget-separator">
                                 <div className="row gy-4 gy-sm-1">
-                                    <h5><i class="fa-solid fa-mobile-screen"></i> Mobile Banner</h5>
+                                    <h5><i class="fa-solid fa-mobile-screen"></i> Mobile App Banner</h5>
                                     {
                                         mobileBanner.length > 0 ?
                                             mobileBanner.map((item, i) => (
@@ -235,8 +237,8 @@ const ImagesVideo = () => {
                                                                 <span class="visually-hidden">Loading...</span>
                                                             </div>
                                                         </div>
-                                                        <button className='icon_btn __warning mx-2' data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" onClick={() => {setUpdData(item); setValue({ ...value, 'type': 'mobile' })}}><i className='fa fa-edit'></i></button>
-                                                        
+                                                        <button className='icon_btn __warning mx-2' data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" onClick={() => { setUpdData(item); setValue({ ...value, 'type': 'mobile' }) }}><i className='fa fa-edit'></i></button>
+
                                                         <button className='icon_btn __danger' onClick={() => handleDelete(item.id)}><i className='fa fa-trash'></i></button>
 
                                                     </div>
@@ -245,7 +247,7 @@ const ImagesVideo = () => {
                                             ))
                                             :
                                             <>
-                                                <h6>There are no spotlight</h6>
+                                                <h6>There are no Mobile Banner For Home Page</h6>
                                             </>
                                     }
                                 </div>
@@ -264,11 +266,13 @@ const ImagesVideo = () => {
                                         spotLightList.length > 0 ?
                                             spotLightList.map((item, i) => (
                                                 <div className="col-12 col-md-3" key={i}>
-                                                    <video controls style={{ height: '450px', width: '100%' }}>
-                                                        <source src={imgBaseURL() + item.img} type="video/mp4" />
-                                                    </video>
-                                                    <div className="button-video">
-                                                        <button className='btn __danger w-100'><i className='fa fa-trash'></i></button>
+                                                    <div className='' style={{ position: 'relative' }}>
+                                                        <video controls style={{ height: '450px', width: '100%' }}>
+                                                            <source src={imgBaseURL() + item.img} type="video/mp4" />
+                                                        </video>
+                                                        <div className="button-video " style={{ position: 'absolute', top: '10px', right: '10px' }}>
+                                                            <button className='btn __danger' style={{ width: '40px', height: '40px', borderRadius: '100%' }}><i className='fa fa-trash'></i></button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             ))
@@ -331,7 +335,7 @@ const ImagesVideo = () => {
 
                         {/* Image */}
                         <div className="mb-3">
-                            <label className="form-label">Attachment</label>
+                            <label className="form-label">Attachment (Recommended Banner Size -1920-678 px)</label>
                             <input className="form-control" type="file" onChange={handleChange} name='file' />
                             <span className='errMsg'>{errors.img}</span>
                             {

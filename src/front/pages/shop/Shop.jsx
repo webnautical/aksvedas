@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import siderbg from "../../../assets/img/shopimg.png";
+import siderbg from "../../../assets/img/shopimg.jpg";
 import { Link, useParams } from "react-router-dom";
-import { Breadcrumbs, Typography } from "@mui/material";
+import { Breadcrumbs } from "@mui/material";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import AllProducts from "../../../components/front/AllProdutcs";
 import Filters from "../../../components/front/Filters";
@@ -18,8 +18,33 @@ const Shop = () => {
     setIsFilterVisible(false);
   };
 
+  const [filterVal, setFilterVal] = useState({
+    sort : '',
+    searchText: ''
+  })
+  const handleFilter = (e) =>{
+    if(e.target.name === 'sort'){
+      setFilterVal({...filterVal, 'sort' : e.target.value})
+    }
+    if(e.target.name === 'searchText'){
+      setFilterVal({...filterVal, 'searchText' : e.target.value})
+    }
+  }
+
+  const capitalizeWords = (str) => {
+    return str
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+  const transformCategories = (categories) => {
+    return categories.map(category => capitalizeWords(category)).join(', ');
+  };
+  const categoriesArray = category.split('+');
+  const transformedCategories = transformCategories(categoriesArray);
+
   return (
-    <div className="collection-page">
+    <div className="collection-page pb-5">
       <div className="banner-img">
         <img src={siderbg} alt="" />
       </div>
@@ -30,13 +55,9 @@ const Shop = () => {
           className="breacrumb-custom py-md-3 py-2"
           separator={<NavigateNextIcon fontSize="small" />}
         >
-          <Link underline="hover" href="/">
-            Home
-          </Link>
-          <Link href="/collections" underline="hover" color="inherit">
-            Collections
-          </Link>
-          {/* <Typography>{category}</Typography> */}
+          <Link underline="hover" to="/"> Home</Link>
+          <Link to="/shop/all" underline="hover" color="inherit"> Shop</Link>
+          <Link to="#" underline="hover" color="inherit"> {transformedCategories}</Link>
         </Breadcrumbs>
 
         <div className="all-shopitems mt-3">
@@ -78,9 +99,12 @@ const Shop = () => {
                       className="form-control"
                       id="searchProductList"
                       autocomplete="off"
+                      onChange={handleFilter}
+                      value={filterVal.searchText}
+                      name="searchText"
                       placeholder="Search Products..."
                     />
-                    <i className="fas fa-magnifying-glass"></i>
+                    <i className="fa fa-magnifying-glass"></i>
                   </div>
                   <div className="flex-shrink-0 select-most">
                     <div className="d-flex gap-2">
@@ -90,8 +114,8 @@ const Shop = () => {
                         </label>
                       </div>
                       <div className="flex-shrink-0">
-                        <select className="form-select w-md" id="sort-elem">
-                          <option value="">Most Popular</option>
+                        <select className="form-select w-md" name="sort" value={filterVal.sort} onChange={handleFilter} id="sort-elem">
+                          <option value="">Sort</option>
                           <option value="low_to_high">Low to High</option>
                           <option value="high_to_low">High to Low</option>
                         </select>
@@ -99,7 +123,7 @@ const Shop = () => {
                     </div>
                   </div>
                 </div>
-                <AllProducts />
+                <AllProducts filterVal={filterVal}/>
               </div>
             </div>
           </div>

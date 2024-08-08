@@ -1,34 +1,26 @@
 import React, { useEffect, useState } from "react";
+import emptycart from "../../assets/img/empty-cart.png";
 import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
-import productimg from "../../assets/img/product.png";
-import productimgsec from "../../assets/img/productsec.png";
-import cartproduct from "../../assets/img/cartproduct.png";
 import { useFrontDataContext } from "../../context/FrontContextProvider";
-import { imgBaseURL, toastifyError, toastifySuccess } from "../../utility/Utility";
-import { deleteDataAPI } from "../../utility/api/api";
-import { useNavigate } from "react-router-dom";
+import {
+  getPercentageOff,
+  imgBaseURL,
+} from "../../utility/Utility";
+import { Link, useNavigate } from "react-router-dom";
+import { cartQntChange } from "../../utility/api/RepeaterAPI";
+import { Rating } from "@mui/material";
 
 const CartPopUp = () => {
-  const navigate = useNavigate()
-  const { cartData, getCartFun } = useFrontDataContext()
-
-  const [quantity, setQuantity] = useState(1);
-  const decreaseQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
-  };
-
-  const increaseQuantity = () => {
-    setQuantity(quantity + 1);
-  };
+  const navigate = useNavigate();
+  const { cartData, allData, removeCartItemFun , offcanvas, setOffcanvas} = useFrontDataContext();
+  const [cartList, setCartList] = useState([])
 
   const goesgretwith = {
-    loop: true,
-    autoplay: true,
-    autoplaySpeed: 100,
+    // loop: true,
+    // autoplay: true,
+    // autoplaySpeed: 100,
     margin: 10,
     dots: false,
     nav: false,
@@ -38,15 +30,15 @@ const CartPopUp = () => {
 
     responsive: {
       0: {
-        items: 1,
+        items: 2,
         nav: false,
       },
       600: {
-        items: 2.5,
+        items: 2.1,
         nav: false,
       },
       1000: {
-        items: 3,
+        items: 2.1,
 
         loop: true,
       },
@@ -60,32 +52,48 @@ const CartPopUp = () => {
   };
 
   const getSubTotalFunc = () => {
-    const subtotal = cartData.reduce((total, item) => total + parseFloat(item.product.sale_price) * parseInt(item.qnt), 0);
+    const subtotal = cartList.reduce(
+      (total, item) =>
+        total + parseFloat(item?.sale_price) * parseInt(item.qnt),
+      0
+    );
     return subtotal;
-  }
-
-  const removeFromCart = async (id) => {
-    try {
-      const res = await deleteDataAPI(`v1/remove-cart/${id}`)
-      if (res?.status) {
-        toastifySuccess(res.msg)
-        getCartFun()
-      } else {
-        toastifyError('Something Went Wrong')
-      }
-    } catch (error) {
-      console.log(error)
-      toastifyError('Something Went Wrong')
-    }
-  }
+  };
 
   const goToCheckOut = () => {
-    navigate('/checkout')
+    navigate("/checkout");
+    setOffcanvas(false)
+  };
+
+  useEffect(() => {
+    if (cartData.length > 0) {
+      setCartList(cartData)
+    }
+  }, [cartData])
+
+  const handleQntChange = (qntType, itemId) => {
+    const updatedCartItems = cartList.map(item => {
+      if (item.id === itemId) {
+        let newQuantity;
+        if (qntType === 'minus') {
+          newQuantity = Math.max(1, parseInt(item.qnt) - 1);
+        } else {
+          newQuantity = Math.min(5, parseInt(item.qnt) + 1);
+        }
+        if(newQuantity <= 5){
+          const param = { product_id: item.product_id, qnt: newQuantity };
+          cartQntChange(param);
+        }
+        return { ...item, qnt: newQuantity };
+      }
+      return item;
+    });
+    setCartList(updatedCartItems);
   }
 
   return (
     <div
-      className="cart_canvas offcanvas offcanvas-end"
+      className={`cart_canvas offcanvas offcanvas-end ${offcanvas && "show"}`}
       tabindex="-1"
       id="offcanvasRight"
       aria-labelledby="offcanvasRightLabel"
@@ -99,6 +107,7 @@ const CartPopUp = () => {
           className="btn-close"
           data-bs-dismiss="offcanvas"
           aria-label="Close"
+          onClick={()=>setOffcanvas(false)}
         >
           <i className="fa-solid fa-xmark text-black"></i>
         </button>
@@ -106,270 +115,125 @@ const CartPopUp = () => {
       <div className="offcanvas-body pt-0">
         <div className="scrollable_part">
           <div className="main_cart">
-
-            {
-              cartData?.length > 0 ?
-                cartData?.map((item, i) => (
-                  <div className="added_cart_product">
-                    <div className="row">
-                      <div className="col-4">
-                        <div className="added_product_img">
-                          <img src={imgBaseURL() + item?.product?.cover} alt="cart prodcut" />
-                        </div>
-                      </div>
-                      <div className="col-8">
-                        <div className="add_cart_product_details">
-                          <h2>{item?.product?.name}</h2>
-                          <p>SKU:{item?.product?.sku}</p>
-                          <p>₹{item?.product?.sale_price}</p>
-                          <div className="quantity_select">
-                            <button onClick={decreaseQuantity}>
-                              <i className="fa-solid fa-minus"></i>
-                            </button>
-                            <span>{item?.qnt}</span>
-                            <button onClick={increaseQuantity}>
-                              <i className="fa-solid fa-plus"></i>
-                            </button>
-                          </div>
-                          <div className="dlt_cart_producy">
-                            <button onClick={() => removeFromCart(item.id)}>
-                              <i className="fa-solid fa-xmark"></i>
-                            </button>
-                          </div>
-                        </div>
+            {cartData?.length > 0 ? (
+              cartList?.map((item, i) => (
+                <div className="added_cart_product">
+                  <div className="row ">
+                    <div className="col-4">
+                      <div className="added_product_img">
+                        <img
+                          src={imgBaseURL() + item?.cover}
+                          alt="cart prodcut"
+                        />
                       </div>
                     </div>
-                  </div>
-                ))
-                :
-                <>
-                  <h5>There are no product added on your cart.</h5>
-                </>
-            }
+                    <div className="col-8">
+                      <div className="add_cart_product_details">
+                        <h2>{item?.name}</h2>
+                        <p>SKU: <span style={{color: '#E0A11C'}}>{item?.sku}</span></p>
+                        <p>₹{item?.sale_price}</p>
+                      
+                        <div className="d-flex justify-content-between align-items-center">
+                        <div className="quantity_select">
+                          <button onClick={() => handleQntChange('minus', item.id)}>
+                            <i className="fa-solid fa-minus"></i>
+                          </button>
+                          <span>{item?.qnt}</span>
+                          <button onClick={() => handleQntChange('plus', item.id)}>
+                            <i className="fa-solid fa-plus"></i>
+                          </button>
+                        </div>
 
-            {/* <div className="added_cart_product">
-              <div className="row">
-                <div className="col-4">
-                  <div className="added_product_img">
-                    <img src={cartproduct} alt="cart prodcut" />
-                  </div>
-                </div>
-                <div className="col-8">
-                  <div className="add_cart_product_details">
-                    <h2>Shilajit Gold Resin - 20g</h2>
-                    <p>Color:black</p>
-                    <div className="quantity_select">
-                      <button onClick={decreaseQuantity}>
-                        <i className="fa-solid fa-minus"></i>
-                      </button>
-                      <span>{quantity}</span>
-                      <button onClick={increaseQuantity}>
-                        <i className="fa-solid fa-plus"></i>
-                      </button>
-                    </div>
-                    <div className="dlt_cart_producy">
-                      <button>
-                        <i className="fa-solid fa-xmark"></i>
-                      </button>
+                        <div>
+                          <button className="icon_btn __danger mx-1" onClick={() => removeCartItemFun(item.id)}><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                        
+                        </div>
+
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div> */}
-
-          </div>
-
-          <div className="order_note mt-3">
-            <button>Add Order Note</button>
+              ))
+            ) : (
+              <>
+                <div class="product-item-inner">
+                  <img src={emptycart} alt="" style={{ width: '100px' }} />
+                  <h5>There are no product added on your cart</h5>
+                  <p className=" w-75 mx-auto">
+                    <Link
+                      className="text-decoration"
+                      to="/shop/all"
+                      data-bs-dismiss="offcanvas" aria-label="Close"
+                      onClick={()=>navigate('/shop/all')}
+                    >
+                      Add Items{" "}
+                      <i style={{fontSize:'16px'}} className="fa-solid fa-arrow-right  ms-2"></i>
+                    </Link>
+                  </p>
+                </div>
+              </>
+            )}
           </div>
 
           <div className="goes_great_with mt-3">
             <p>Goes great with</p>
-            <div className="row mt-1">
+            <div className=" mt-1">
               <OwlCarousel className="owl-theme" {...goesgretwith}>
-                <div className="item">
-                  <div className="product_box_main">
-                    <div className="img_product">
-                      <img src={productimg} alt="product_img" />
-                    </div>
-                    <div className="rating_box mt-3">
-                      <ul>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="product_name">
-                      Pure Himalayan Shilajit (300 Gms)
-                    </div>
-                    <div className="price_product">
-                      ₹120.00 <span className="high_price">320.00</span>
-                    </div>
+                {allData?.products?.map((item, i) => (
+                  <div className="item">
+                    <div className="product_box_main">
+                      <div className="img_product">
+                        <img
+                          src={imgBaseURL() + item.cover}
+                          alt="product_img"
+                        />
+                      </div>
+                      <div className="rating_box mt-2">
+                        <ul>
+                          
+                        <Rating name="read-only" value={item?.review_average} readOnly />
 
-                    <div className="off_price_badge">30% off</div>
-                  </div>
-                </div>
-                <div className="item">
-                  <div className="product_box_main">
-                    <div className="img_product">
-                      <img src={productimg} alt="product_img" />
-                    </div>
-                    <div className="rating_box mt-3">
-                      <ul>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="product_name">
-                      Pure Himalayan Shilajit (300 Gms)
-                    </div>
-                    <div className="price_product">
-                      ₹120.00 <span className="high_price">320.00</span>
-                    </div>
+                        </ul>
+                      </div>
+                      <div className="product_name">
+                        <Link to={`/product-detail/${item?.slug}`}>
+                          {item.name}
+                        </Link>
+                      </div>
+                      <div className="price_product">
+                        ₹{item.sale_price}{" "}
+                        <span className="high_price">{item.price}</span>
+                      </div>
 
-                    <div className="off_price_badge">30% off</div>
+                      <div className="off_price_badge">
+                        {parseInt(
+                          getPercentageOff(item.price, item.sale_price)
+                        ) || 0}
+                        % off
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="item">
-                  <div className="product_box_main">
-                    <div className="img_product">
-                      <img src={productimgsec} alt="product_img" />
-                    </div>
-                    <div className="rating_box mt-3">
-                      <ul>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="product_name">
-                      Pure Himalayan Shilajit (300 Gms)
-                    </div>
-                    <div className="price_product">
-                      ₹120.00 <span className="high_price">320.00</span>
-                    </div>
-
-                    <div className="off_price_badge">30% off</div>
-                  </div>
-                </div>
-                <div className="item">
-                  <div className="product_box_main">
-                    <div className="img_product">
-                      <img src={productimg} alt="product_img" />
-                    </div>
-                    <div className="rating_box mt-3">
-                      <ul>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="product_name">
-                      Pure Himalayan Shilajit (300 Gms)
-                    </div>
-                    <div className="price_product">
-                      ₹120.00 <span className="high_price">320.00</span>
-                    </div>
-
-                    <div className="off_price_badge">30% off</div>
-                  </div>
-                </div>
-                <div className="item">
-                  <div className="product_box_main">
-                    <div className="img_product">
-                      <img src={productimg} alt="product_img" />
-                    </div>
-                    <div className="rating_box mt-3">
-                      <ul>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                        <li>
-                          <i className="fa-solid fa-star"></i>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="product_name">
-                      Pure Himalayan Shilajit (300 Gms)
-                    </div>
-                    <div className="price_product">
-                      ₹120.00 <span className="high_price">320.00</span>
-                    </div>
-
-                    <div className="off_price_badge">30% off</div>
-                  </div>
-                </div>
+                ))}
               </OwlCarousel>
             </div>
           </div>
         </div>
 
         <div className="subtotal_checkout">
-          <div className="sub_dec">
-            <p>Subtaotal</p>
-            <p>₹{getSubTotalFunc()}</p>
-          </div>
-          <div className="checkout">
-            <button className="btn-2 w-100" onClick={() => goToCheckOut()}>Checkout</button>
-          </div>
+          {cartData?.length > 0 && (
+            <>
+              <div className="sub_dec">
+                <p>Subtotal</p>
+                <p>₹{getSubTotalFunc()}</p>
+              </div>
+              <div className="checkout">
+                <button className="btn-2 w-100" onClick={() => goToCheckOut()} data-bs-dismiss="offcanvas" aria-label="Close">
+                  Checkout
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

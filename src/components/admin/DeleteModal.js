@@ -10,7 +10,7 @@ const DeleteModal = (props) => {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" />
                         <div className="text-center mb-4">
                             <h3 className="mb-2">Alert</h3>
-                            <p className="text-muted">Are you sure? you want to delete it.</p>
+                            <p>Are you sure? you want to delete it.</p>
                         </div>
 
                         <div className="col-12 text-center">

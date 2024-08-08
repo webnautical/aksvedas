@@ -4,8 +4,8 @@ import PageHeaderCom from '../../../components/admin/PageHeaderCom';
 import { getDataAPI, postDataAPI } from '../../../utility/api/api';
 import Spinner from '../../../components/admin/Spinner';
 import ItemImg from '../../../components/admin/ItemImg';
-import { Link, useLocation } from 'react-router-dom';
-import { defaultIMG, defaultUserIMG, imgBaseURL, toastifyError, toastifySuccess } from '../../../utility/Utility';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { defaultIMG, defaultUserIMG, getProductType, imgBaseURL, toastifyError, toastifySuccess } from '../../../utility/Utility';
 import { LoadingBTN } from '../../../components/admin/LoadingBTN';
 import { useDataContext } from '../../../context/ContextProvider';
 import { validateRequired } from '../../../utility/Validate';
@@ -13,8 +13,9 @@ import DeleteModal, { closeModal } from '../../../components/admin/DeleteModal';
 import CKEditorCom from '../../../components/CKEditorCom';
 import ProductContents from './product-contents/ProductContents';
 const ProductDetails = () => {
+    const navigate = useNavigate()
     const info = useLocation()
-    const { productDetails } = info.state
+    const productDetails = info?.state?.productDetails
     const { attr, attrVal } = useDataContext();
 
     const [attrValueList, setAttrValueList] = useState([])
@@ -95,7 +96,7 @@ const ProductDetails = () => {
             </>,
         },
     ];
-    
+
     const [value, setValue] = useState({
         'product_id': productDetails?.id,
         'attr_id': '',
@@ -110,6 +111,7 @@ const ProductDetails = () => {
         'cover': null,
         'images': [],
     })
+
 
     useEffect(() => {
         getListFun()
@@ -454,19 +456,69 @@ const ProductDetails = () => {
         }
     }, [productBenefitsDetails])
 
+    const handleEdit = () => {
+        navigate(`/admin/add-products`, { state: { productDetails: productDetails } });
+    }
+
+    useEffect(() => {
+        getAttachements()
+    }, [])
+    const [attachments, setAttachments] = useState('')
+    const handleAttachmentsChange = (e) => {
+        setAttachments(e.target.files[0])
+        // setValue({ ...value, 'img': e.target.files[0] })
+        // const imageUrl = URL.createObjectURL(e.target.files[0]);
+    }
+    const [attLoad, setAttLoad] = useState(false)
+    const uploadattachments = async () => {
+        try {
+            setAttLoad(true)
+            const formData = new FormData();
+            formData.append('product_id', productDetails?.id);
+            formData.append('type', 'attachment');
+            formData.append('img', attachments);
+            const res = await postDataAPI('uploadattachments', formData)
+            if (res.status) {
+                toastifySuccess(res.msg)
+                getAttachements()
+                setAttLoad(false)
+            } else {
+                toastifyError('Something Went Wrong')
+                setAttLoad(false)
+            }
+        } catch (error) {
+            setAttLoad(false)
+        }
+    }
+    const [attachmentData, setAttachmentData] = useState(null)
+    const getAttachements = async () => {
+        setLoading(true)
+        try {
+            const params = { product_id: productDetails?.id, type: 'attachment' }
+            const res = await postDataAPI('get-product-content', params)
+            if (res.status) {
+                setAttachmentData(res?.data[0])
+            } else {
+                setAttachmentData(null)
+            }
+        } catch (error) {
+            setAttachmentData(null)
+        }
+    }
+
     return (
         <>
             <div className="content-wrapper">
-                <div className="container-xxl flex-grow-1 container-p-y">
-                    <PageHeaderCom pageTitle={productDetails?.name} link='/admin/add-products' linkBtnName={'add product'} />
+                <div className="flex-grow-1 container-p-y">
 
+                    <h4 class="py-3 mb-2"><span class=" fw-light">Aksvedas /</span> Edit Product</h4>
                     <div className="row">
                         <div className="col-md-12 admin-product-details">
-                            <ul className="nav nav-pills flex-column flex-md-row mb-4">
+                            <ul className="nav nav-pills slide_cat mb-4">
                                 <li className="nav-item"><button onClick={() => setTabsPage(null)} className={`nav-link ${subPage == null ? 'active' : ''}`}> Product Details</button></li>
 
                                 {
-                                    productDetails.product_type === 2 &&
+                                    productDetails?.product_type === 2 &&
                                     <li className="nav-item"><button onClick={() => setTabsPage('product-variants')} className={`nav-link ${subPage == 'product-variants' ? 'active' : ''}`}> Variants</button></li>
                                 }
 
@@ -481,6 +533,7 @@ const ProductDetails = () => {
                                 <li className="nav-item"><button onClick={() => { setTabsPage('recommended with') }} className={`nav-link ${subPage == 'recommended with' ? 'active' : ''}`}> Recommended With</button></li>
 
                                 <li className="nav-item"><button onClick={() => { setTabsPage('faq') }} className={`nav-link ${subPage == 'faq' ? 'active' : ''}`}> FAQ</button></li>
+                                <li className="nav-item"><button onClick={() => { setTabsPage('attachments') }} className={`nav-link ${subPage == 'attachments' ? 'active' : ''}`}> Attachments</button></li>
                             </ul>
                         </div>
 
@@ -492,7 +545,7 @@ const ProductDetails = () => {
                                             <div className="card-body">
                                                 <div className="customer-avatar-section">
                                                     <div className="d-flex align-items-center flex-column">
-                                                        <img className="img-fluid rounded my-3" src={imgBaseURL() + productDetails.cover} height={110} width={110} alt="User avatar" />
+                                                        <img className="img-fluid rounded my-3" src={imgBaseURL() + productDetails?.cover} height={110} width={110} alt="User avatar" />
                                                         <div className="customer-info text-center">
                                                             <h4 className="mb-1">{productDetails?.name}</h4>
                                                             <small>Product ID #{productDetails?.id}</small>
@@ -501,7 +554,7 @@ const ProductDetails = () => {
                                                 </div>
 
                                                 <div className="info-container">
-                                                    <small className="d-block pt-2 border-top fw-normal text-uppercase text-muted my-2">DETAILS</small>
+                                                    <small className="d-block pt-2 border-top fw-normal text-uppercase  my-2">DETAILS</small>
                                                     <ul className="list-unstyled">
                                                         <li className="mb-3">
                                                             <span className="fw-medium me-2">Brand Name:</span>
@@ -513,11 +566,11 @@ const ProductDetails = () => {
                                                         </li>
                                                         <li className="mb-3">
                                                             <span className="fw-medium me-2">Status:</span>
-                                                            {productDetails.status === 1 ? <><span className="badge bg-label-success">Active</span></> : <><span className="badge bg-label-danger">Deactive</span></>}
+                                                            {productDetails?.status === 1 ? <><span className="p-1 bg-label-success">Active</span></> : <><span className="badge bg-label-danger">Deactive</span></>}
                                                         </li>
                                                         <li className="mb-3">
                                                             <span className="fw-medium me-2">Product Type:</span>
-                                                            {productDetails.product_type === 1 ? <><span className="badge bg-label-success">Simple</span></> : <><span className="badge bg-label-warning">Variant</span></>}
+                                                            {getProductType(productDetails?.product_type)}
                                                         </li>
                                                     </ul>
 
@@ -528,7 +581,7 @@ const ProductDetails = () => {
 
                                     <div className="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
                                         <div className="row text-nowrap">
-                                            <div className="col-md-12 mb-4">
+                                            <div className="col-md-12 mb-2">
                                                 <div className="card h-100">
                                                     <div className="card-body">
                                                         <div className="card-info d-flex justify-content-between">
@@ -544,10 +597,10 @@ const ProductDetails = () => {
                                                         <div className="d-flex justify-content-between  mt-4 mb-1 gap-1 text-center text-capitalize">
                                                             <div className="mb-1 gap-1">
                                                                 <div>
-                                                                    <img src={productDetails?.brand?.cover ? imgBaseURL() + productDetails?.brand?.cover : defaultIMG} alt="" style={{ height: '30px', width: '30px', objectFit: 'contain', background: '#ddd', borderRadius: '5px' }} />
+                                                                    {/* <img src={productDetails?.brand?.cover ? imgBaseURL() + productDetails?.brand?.cover : defaultIMG} alt="" style={{ height: '30px', width: '30px', objectFit: 'contain', background: '#ddd', borderRadius: '5px' }} /> */}
                                                                     <h4 className="text-warning mb-0">{productDetails?.brand?.name}</h4>
                                                                 </div>
-                                                                <p className="mb-0"> Brand</p>
+                                                                <p className="mb-0 text-start"> Brand</p>
                                                             </div>
 
                                                             <div className="mb-1 gap-1">
@@ -567,7 +620,7 @@ const ProductDetails = () => {
                                             </div>
 
                                             {
-                                                productDetails.product_type === 1 &&
+                                                productDetails?.product_type === 1 &&
                                                 <div className="col-md-12 mb-4">
                                                     <div className="card">
                                                         <div className="card-body">
@@ -580,7 +633,7 @@ const ProductDetails = () => {
                                                                 <div className="d-flex align-items-baseline mb-1 gap-3">
                                                                     {
                                                                         productDetails?.product_images?.map((item) => (
-                                                                            <img className="img-fluid rounded" src={item.src ? imgBaseURL() + item.src : defaultIMG} height={160} width={160} alt="User avatar" />
+                                                                            <img className="img-fluid rounded" style={{ width: '83px' }} src={item.src ? imgBaseURL() + item.src : defaultIMG} height={160} width={160} alt="User avatar" />
                                                                         ))
                                                                     }
                                                                 </div>
@@ -591,7 +644,26 @@ const ProductDetails = () => {
                                             }
                                         </div>
 
+
+                                        <div className='col-md-12 mt-3'>
+                                            <div className="card-body card mb-3">
+                                                <div className="d-flex flex-column justify-content-center gap-2 gap-sm-0">
+                                                    <h5 className="mt-4 mb-0 d-flex flex-wrap gap-2 align-items-center justify-content-between pb-3">{productDetails?.name}
+                                                        {productDetails.quantity > 0 ? <span className="p-1 bg-label-success" style={{ fontSize: '14px' }}>In Stock</span> : <span className="badge bg-label-danger">Out of Stock</span>}
+                                                    </h5>
+                                                    <p className="">{productDetails?.name}</p>
+
+                                                </div>
+                                                <div className="d-flex align-content-center justify-content-end flex-wrap gap-3">
+
+                                                    <button type="button" onClick={() => handleEdit()} className="global_tra_btn">{"Edit "}</button>
+                                                    <Link to={'/admin/products'} className="btn btn-primary text-capitalize">{'Product List'}</Link>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
+
                                 </>
                                 :
                                 subPage == 'product-variants' ?
@@ -631,26 +703,28 @@ const ProductDetails = () => {
                                             <div className="col-12">
                                                 <div className="card">
                                                     <div className='p-3'>
-                                                        <div className='row justify-content-between' >
+                                                        <div className='row justify-content-between align-items-center top_min_header' >
                                                             <div className='col-md-6'>
-                                                                <h6>{productDetails?.name}'s Benefits</h6>
+                                                                <h6 className='m-0'>{productDetails?.name}'s Benefits</h6>
                                                             </div>
                                                             <div className='col-md-6 text-end' >
-                                                                <button className='btn btn-label-primary' type="button" data-bs-toggle="offcanvas" data-bs-target="#productBenefits" aria-controls="offcanvasExample">Add Product Benefits <i className='fa fa-plus' /></button>
+                                                                <button className='global_tra_btn' type="button" data-bs-toggle="offcanvas" data-bs-target="#productBenefits" aria-controls="offcanvasExample">Add Product Benefits <i className='fa fa-plus' /></button>
                                                             </div>
                                                         </div>
-                                                        <div className="row my-3" style={{ borderTop: '1px solid red' }}>
+                                                        <div className="row my-3" style={{ borderTop: '1px solid #ececec' }}>
                                                             {
                                                                 productBenefitsList.length > 0 ?
                                                                     productBenefitsList.map((item, i) => (
                                                                         <div className="col-12">
-                                                                            <div className="title_box mt-3">
-                                                                                <h4>{i + 1}. {item?.title}
-                                                                                    <button onClick={() => setProductBenefitsDetails(item)} className='icon_btn __warning mx-2' type="button" data-bs-toggle="offcanvas" data-bs-target="#productBenefits" aria-controls="productBenefits"><i className='fa fa-pencil' /></button>
+                                                                            <div className="title_box benifits p-2 mt-2">
+                                                                                <h4 style={{ fontSize: '18px' }} className='m-0 d-flex justify-content-between'>{i + 1}. {item?.title}
+                                                                                    <div>
+                                                                                        <button onClick={() => setProductBenefitsDetails(item)} className='icon_btn __warning mx-2' type="button" data-bs-toggle="offcanvas" data-bs-target="#productBenefits" aria-controls="productBenefits"><i className='fa fa-pencil' /></button>
 
-                                                                                    <button className='icon_btn __danger' type="button" onClick={() => deleteProductBenefits(item)}><i className='fa fa-trash' /></button>
+                                                                                        <button className='icon_btn __danger' type="button" onClick={() => deleteProductBenefits(item)}><i className='fa fa-trash' /></button>
+                                                                                    </div>
                                                                                 </h4>
-                                                                                <div dangerouslySetInnerHTML={{ __html: item?.desc }} />
+                                                                                <div className='inner_benf-its' dangerouslySetInnerHTML={{ __html: item?.desc }} />
                                                                             </div>
                                                                         </div>
                                                                     ))
@@ -665,14 +739,50 @@ const ProductDetails = () => {
                                                 </div>
                                             </div>
                                         </>
+
                                         :
-                                        <>
-                                            <ProductContents page={subPage} productTitle={productDetails?.name} productID={productDetails?.id}/>
-                                        </>
+                                        subPage == 'attachments' ?
+                                            <>
+                                                <div className="col-12">
+                                                    <div className="card">
+                                                        <div className='p-3'>
+                                                            <div className='row justify-content-between align-items-center top_min_header' >
+                                                                <div className='col-md-6'>
+                                                                    <h6 className='m-0'>{productDetails?.name}'s attachments</h6>
+                                                                </div>
+                                                            </div>
+                                                            <div className="row my-3" style={{ borderTop: '1px solid #ececec' }}>
+                                                                <div className="col-12">
+                                                                    <label className="form-label">Attachment</label>
+                                                                </div>
+                                                                <div className="col-12 col-md-3">
+                                                                    <input className="form-control" type="file" onChange={handleAttachmentsChange} name='img' />
+                                                                </div>
+                                                                <div className="col-md-2">
+                                                                    <button className='btn btn-primary' type='button' onClick={() => uploadattachments()}>Upload Attachments</button>
+                                                                </div>
+                                                            </div>
+                                                            {
+                                                                attachmentData?.img &&
+                                                                <div>
+                                                                    <Link to={imgBaseURL() + attachmentData?.img} target='_blank'>View Attachement</Link>
+                                                                </div>
+                                                            }
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </>
+                                            :
+                                            <>
+                                                <ProductContents page={subPage} productTitle={productDetails?.name} productID={productDetails?.id} />
+                                            </>
                         }
 
 
                     </div>
+
+
                 </div>
                 <div className="content-backdrop fade" />
             </div>

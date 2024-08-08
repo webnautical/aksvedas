@@ -14,7 +14,7 @@ const Thumslider = (props) => {
       <Swiper
         loop={true}
         spaceBetween={10}
-        navigation={true}
+        // navigation={true}
         modules={[Navigation, Thumbs]}
         grabCursor={true}
         thumbs={{ swiper: activeThumb }}

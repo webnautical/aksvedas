@@ -4,33 +4,34 @@ import PageHeaderCom from '../../../components/admin/PageHeaderCom';
 import { getDataAPI, postDataAPI } from '../../../utility/api/api';
 import Spinner from '../../../components/admin/Spinner';
 import { timeAgo } from './../../../utility/Date';
-import ItemImg from '../../../components/admin/ItemImg';
 import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
 import { toastifyError, toastifySuccess } from '../../../utility/Utility';
 
 const Customer = () => {
     const navigate = useNavigate()
     const columns = [
         {
-            name: 'Cover',
-            selector: row => <> <ItemImg img={row.cover} /></>,
-            sortable: true
+            name: <span className='text-capitalize'>#ID</span>,
+            selector: row => <span className='text-capitalize fw-bold'><>#{row.id || '---'}</> </span>,
         },
         {
-            name: <span className='text-uppercase'>Customer</span>,
-            selector: row => <span className='text-uppercase'><>{row.name || '---'}</> </span>,
+            name: <span className='text-capitalize'>Customer Name</span>,
+            selector: row => <span className='text-capitalize'><>{row.name || '---'}</> </span>,
         },
         {
-            name: <span className='text-uppercase'>email</span>,
+            name: <span className='text-capitalize'>email</span>,
             selector: row => <>{row.email || '---'}</>,
         },
         {
-            name: <span className='text-uppercase'>phone</span>,
+            name: <span className='text-capitalize'>phone</span>,
             selector: row => <>{row.phone || '---'}</>,
         },
         {
-            name: <span className='text-uppercase'>status</span>,
+            name: <span className='text-capitalize'>Loyality</span>,
+            selector: row => <>{row.loyalty}</>,
+        },
+        {
+            name: <span className='text-capitalize'>status</span>,
             selector: row => <> <label className="switch switch-primary switch-sm me-4 pe-2">
                 <input type="checkbox" className="switch-input" defaultChecked={parseInt(row.status)} onClick={() => changeStatus(row)} />
                 <span className="switch-toggle-slider">
@@ -41,30 +42,22 @@ const Customer = () => {
             </label></>,
         },
         {
-            name: <span className='text-uppercase'>is verified</span>,
-            selector: row => <> <div className="text-uppercase">
+            name: <span className='text-capitalize'>is verified</span>,
+            selector: row => <> <div className="text-capitalize">
                 <div className="form-check">
                     <input className="form-check-input" type="checkbox" id="flexCheckChecked" checked={row.is_verified} readOnly />
                 </div>
             </div></>,
         },
         {
-            name: <span className='text-uppercase'>Created At</span>,
+            name: <span className='text-capitalize'>Created At</span>,
             selector: row => timeAgo(row.created_at),
         },
         {
-            name: <span className='text-uppercase'>Actions</span>,
+            name: <span className='text-capitalize'>Actions</span>,
             cell: row => (
-                <div className="dropdown">
-                    <button className="dropdown-toggle icon_btn __danger" type="button" id={`dropdownMenuButton${row.id}`} data-bs-toggle="dropdown" aria-expanded="true">
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </button>
-                    <ul className="dropdown-menu" aria-labelledby={`dropdownMenuButton${row.id}`}>
-                        <li><button className="dropdown-item" type='button' onClick={() => redirectPage('view_details', row)}>View Details</button></li>
-                        <li><a className="dropdown-item" href="#">Edit</a></li>
-                        <li><a className="dropdown-item" href="#">Delete</a></li>
-                    </ul>
-                </div>
+                <button type='button' onClick={() => redirectPage('view_details', row)} class="text-body border-0 p-0" data-bs-toggle="tooltip" aria-label="Preview" data-bs-original-title="Preview"><i class="ti ti-eye mx-2 ti-sm"></i></button>
+
             ),
             ignoreRowClick: true,
             allowOverflow: true,
@@ -83,7 +76,6 @@ const Customer = () => {
         setLoading(true)
         const res = await getDataAPI('/get-user')
         if (res?.status) {
-            console.log("res?.data", res?.data)
             setFilterData(res?.data)
             setListData(res?.data)
             setLoading(false)
@@ -121,9 +113,9 @@ const Customer = () => {
     return (
         <>
             <div className="content-wrapper">
-                <div className="container-xxl flex-grow-1 container-p-y">
-                    <PageHeaderCom pageTitle="Customers" link='/admin/add-products' linkBtnName={'add Customer'} />
-                    <div className="card mb-4">
+                <div className="flex-grow-1 container-p-y">
+                    {/* <PageHeaderCom pageTitle="Customers" /> */}
+                    {/* <div className="card mb-4">
                         <div className="card-widget-separator-wrapper">
                             <div className="card-body card-widget-separator">
                                 <div className="row gy-4 gy-sm-1">
@@ -132,7 +124,7 @@ const Customer = () => {
                                             <div>
                                                 <h6 className="mb-2">In-store Sales</h6>
                                                 <h4 className="mb-2">$5,345.43</h4>
-                                                <p className="mb-0"><span className="text-muted me-2">5k orders</span><span className="badge bg-label-success">+5.7%</span></p>
+                                                <p className="mb-0"><span className=" me-2">5k orders</span><span className="badge bg-label-success">+5.7%</span></p>
                                             </div>
                                             <span className="avatar me-sm-4">
                                                 <span className="avatar-initial bg-label-secondary rounded"><i className="ti-md ti ti-smart-home text-body" /></span>
@@ -145,7 +137,7 @@ const Customer = () => {
                                             <div>
                                                 <h6 className="mb-2">Website Sales</h6>
                                                 <h4 className="mb-2">$674,347.12</h4>
-                                                <p className="mb-0"><span className="text-muted me-2">21k orders</span><span className="badge bg-label-success">+12.4%</span></p>
+                                                <p className="mb-0"><span className=" me-2">21k orders</span><span className="badge bg-label-success">+12.4%</span></p>
                                             </div>
                                             <span className="avatar p-2 me-lg-4">
                                                 <span className="avatar-initial bg-label-secondary rounded"><i className="ti-md ti ti-device-laptop text-body" /></span>
@@ -158,7 +150,7 @@ const Customer = () => {
                                             <div>
                                                 <h6 className="mb-2">Discount</h6>
                                                 <h4 className="mb-2">$14,235.12</h4>
-                                                <p className="mb-0 text-muted">6k orders</p>
+                                                <p className="mb-0 ">6k orders</p>
                                             </div>
                                             <span className="avatar p-2 me-sm-4">
                                                 <span className="avatar-initial bg-label-secondary rounded"><i className="ti-md ti ti-gift text-body" /></span>
@@ -170,7 +162,7 @@ const Customer = () => {
                                             <div>
                                                 <h6 className="mb-2">Affiliate</h6>
                                                 <h4 className="mb-2">$8,345.23</h4>
-                                                <p className="mb-0"><span className="text-muted me-2">150 orders</span><span className="badge bg-label-danger">-3.5%</span></p>
+                                                <p className="mb-0"><span className=" me-2">150 orders</span><span className="badge bg-label-danger">-3.5%</span></p>
                                             </div>
                                             <span className="avatar p-2">
                                                 <span className="avatar-initial bg-label-secondary rounded"><i className="ti-md ti ti-wallet text-body" /></span>
@@ -180,18 +172,21 @@ const Customer = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {/* Product List Table */}
+                    </div> */}
+
+
+                    <h4 class="py-3 mb-2">
+                        <span class=" fw-light">Aksvedas /</span> All User
+                    </h4>
                     <div className="card">
+
                         <div className="card-datatable table-responsive">
-                            <DataTable
+                            <DataTable className='cs_table_inerr'
                                 columns={columns}
                                 data={filterData}
                                 // dense
                                 highlightOnHover
-                                selectableRowsHighlight
                                 pagination
-                                selectableRows
                             />
 
                         </div>

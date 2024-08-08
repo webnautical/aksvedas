@@ -6,14 +6,14 @@ import { validateRequired } from '../../../../utility/Validate'
 import { imgBaseURL, toastifyError, toastifySuccess } from '../../../../utility/Utility'
 import Spinner from '../../../../components/admin/Spinner'
 import MultiPageData from './MultiPageData'
-
+ 
 const ProductContents = (props) => {
     const { page, productID, productTitle } = props
     const [submitLoading, setSubmitLoading] = useState(false)
     const [loading, setLoading] = useState(false)
     const [contentData, setContentData] = useState([])
     const [updData, setUpdData] = useState(null)
-
+ 
     const [value, setValue] = useState({
         'id': '',
         'product_id': productID,
@@ -34,7 +34,7 @@ const ProductContents = (props) => {
                 'img': updData?.img
             })
             setImgPreview({ ...imgPreview, 'img': imgBaseURL() +updData?.img })
-
+ 
         }
         else if (page) {
             setValue({
@@ -62,13 +62,13 @@ const ProductContents = (props) => {
         'img': null,
     })
     const [errors, setErrors] = useState({})
-
+ 
     const handleEditorChange = (value) => {
         setValue((prevValues) => {
             return { ...prevValues, ['desc']: value };
         });
     }
-    
+   
     const handleChange = (e) => {
         if (e.target.name === 'img') {
             setValue({ ...value, 'img': e.target.files[0] })
@@ -78,14 +78,16 @@ const ProductContents = (props) => {
             setValue({ ...value, [e.target.name]: e.target.value })
         }
     }
-
+ 
     const handleRemoveImage = (type, index) => {
         if (type === 'cover') {
             setValue({ ...value, 'cover': '' })
             setImgPreview({ ...imgPreview, 'cover': null })
         } else if (type === 'images') {
-            const updatedImages = imgPreview.images.filter((imageUrl, i) => i !== index);
-            setImgPreview({ ...imgPreview, images: updatedImages });
+            // const updatedImages = imgPreview.img.filter((imageUrl, i) => i !== index);
+            setImgPreview({ ...imgPreview, img: null });
+            setValue({ ...value, 'img': '' })
+
         }
     };
     const handleSubmit = async (e) => {
@@ -111,16 +113,16 @@ const ProductContents = (props) => {
                     toastifyError('Something Went Wrong')
                     setSubmitLoading(false)
                 }
-
+ 
             } else {
                 setSubmitLoading(false)
             }
-
+ 
         } catch (error) {
             setSubmitLoading(false)
         }
     }
-
+ 
     const handleUpdate = async (e) => {
         e.preventDefault()
         try {
@@ -143,29 +145,29 @@ const ProductContents = (props) => {
                     toastifyError('Something Went Wrong')
                     setSubmitLoading(false)
                 }
-
+ 
             } else {
                 setSubmitLoading(false)
             }
-
+ 
         } catch (error) {
             setSubmitLoading(false)
         }
     }
-
+ 
     const handleCancel = () => {
         setErrors({})
         setValue({ ...value, 'product_id': '', 'id': '', 'title': '', 'desc': '', 'img': '' })
         setImgPreview({ ...imgPreview, 'img': null })
         setUpdData(null)
     }
-
+ 
     useEffect(() => {
         if (page) {
             getProductContents()
         }
     }, [page])
-
+ 
     const getProductContents = async () => {
         setLoading(true)
         try {
@@ -183,13 +185,13 @@ const ProductContents = (props) => {
             setLoading(false)
         }
     }
-
+ 
     useEffect(() => {
         if(updData?.action == "delete"){
             handleDelete()
         }
     },[updData])
-
+ 
     const handleDelete = async () => {
         setLoading(true)
         try {
@@ -209,18 +211,18 @@ const ProductContents = (props) => {
             toastifyError("Server error")
         }
     }
-
+ 
     return (
         <>
             <div className="col-12">
                 <div className="card">
                     <div className='p-3'>
-                        <div className='row justify-content-between' >
+                        <div className='row justify-content-between top_min_header' >
                             <div className='col-md-6'>
                                 <h6>{productTitle}</h6>
                             </div>
                             <div className='col-md-6 text-end' >
-                                <button className='btn btn-label-primary' type="button" data-bs-toggle="offcanvas" data-bs-target="#productContents" aria-controls="offcanvasExample">Add</button>
+                                <button className='btn btn-primary' type="button" data-bs-toggle="offcanvas" data-bs-target="#productContents" aria-controls="offcanvasExample"><i class="fa fa-plus me-2"></i> Add</button>
                             </div>
                         </div>
                         {
@@ -234,8 +236,8 @@ const ProductContents = (props) => {
                     </div>
                 </div>
             </div>
-
-
+ 
+ 
             <div className="offcanvas offcanvas-end" tabIndex={-1} id="productContents" aria-labelledby="productBenefitsLabel">
                 <div className="offcanvas-header mb-0 pb-0">
                     <div>
@@ -251,19 +253,19 @@ const ProductContents = (props) => {
                         <input type="text" className='form-control' name='title' value={value.title} placeholder='Title' onChange={handleChange} />
                         <span className='errMsg'>{errors.title}</span>
                     </div>
-
+ 
                     <div className='col-12 my-3'>
                         <label className="form-label" htmlFor="ecommerce-product-barcode">Description</label>
                         <CKEditorCom ckValue={value?.desc} handleEditorChange={handleEditorChange} />
                         <span className='errMsg'>{errors.desc}</span>
                     </div>
-
+ 
                     {
                         page !== 'faq' &&
                         <div className="mb-3">
                             <label className="form-label">Attachment</label>
                             <input className="form-control" type="file" onChange={handleChange} name='img' />
-
+ 
                             <div class="preview_upload">
                                 {
                                     imgPreview?.img &&
@@ -278,7 +280,7 @@ const ProductContents = (props) => {
                             <span className='errMsg'>{errors.img}</span>
                         </div>
                     }
-
+ 
                     <div className="mb-3">
                         {
                             submitLoading ? <><LoadingBTN /></> :
@@ -291,11 +293,11 @@ const ProductContents = (props) => {
                     </div>
                 </div>
             </div>
-
+ 
             <Spinner sppiner={loading} />
-
+ 
         </>
     )
 }
-
+ 
 export default ProductContents

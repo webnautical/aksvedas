@@ -60,7 +60,7 @@ function Spotlight() {
               <source src={siderbg} type="video/mp4" />
             </video>
             <div className="button-video">
-              <Link to="#" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
+              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
             </div>
           </SwiperSlide>
           <SwiperSlide>
@@ -68,7 +68,7 @@ function Spotlight() {
               <source src={siderbg} type="video/mp4" />
             </video>
             <div className="button-video">
-              <Link to="#" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
+              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
             </div>
           </SwiperSlide>
           <SwiperSlide>
@@ -76,7 +76,7 @@ function Spotlight() {
               <source src={siderbg} type="video/mp4" />
             </video>
             <div className="button-video">
-              <Link to="#" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
+              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
             </div>
           </SwiperSlide>
           <SwiperSlide>
@@ -84,7 +84,7 @@ function Spotlight() {
               <source src={siderbg} type="video/mp4" />
             </video>
             <div className="button-video">
-              <Link to="#" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
+              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
             </div>
           </SwiperSlide>
           <SwiperSlide>
@@ -92,7 +92,7 @@ function Spotlight() {
               <source src={siderbg} type="video/mp4" />
             </video>
             <div className="button-video">
-              <Link to="#" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
+              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
             </div>
           </SwiperSlide>
           <SwiperSlide>
@@ -100,7 +100,7 @@ function Spotlight() {
               <source src={siderbg} type="video/mp4" />
             </video>
             <div className="button-video">
-              <Link to="#" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
+              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
             </div>
           </SwiperSlide>
           <SwiperSlide>
@@ -108,7 +108,7 @@ function Spotlight() {
               <source src={siderbg} type="video/mp4" />
             </video>
             <div className="button-video">
-              <Link to="#" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
+              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
             </div>
           </SwiperSlide>
           <SwiperSlide>
@@ -116,7 +116,7 @@ function Spotlight() {
               <source src={siderbg} type="video/mp4" />
             </video>
             <div className="button-video">
-              <Link to="#" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
+              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
             </div>
           </SwiperSlide>
           <SwiperSlide>
@@ -124,7 +124,7 @@ function Spotlight() {
               <source src={siderbg} type="video/mp4" />
             </video>
             <div className="button-video">
-              <Link to="#" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
+              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
             </div>
           </SwiperSlide>
           <SwiperSlide>
@@ -132,7 +132,7 @@ function Spotlight() {
               <source src={siderbg} type="video/mp4" />
             </video>
             <div className="button-video">
-              <Link to="#" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
+              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
             </div>
           </SwiperSlide>
           <SwiperSlide>
@@ -140,7 +140,7 @@ function Spotlight() {
               <source src={siderbg} type="video/mp4" />
             </video>
             <div className="button-video">
-              <Link to="#" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
+              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
             </div>
           </SwiperSlide>
           <SwiperSlide>
@@ -149,7 +149,7 @@ function Spotlight() {
 
             </video>
             <div className="button-video">
-              <Link to="#" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
+              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
             </div>
           </SwiperSlide>
           <div className="slider-controler">

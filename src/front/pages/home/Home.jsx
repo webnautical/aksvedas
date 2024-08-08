@@ -1,76 +1,64 @@
 import React, { useState, useEffect, useContext } from "react";
 import OwlCarousel from "react-owl-carousel";
+import emptycart from "../../../assets/img/empty-cart.png";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import "swiper/swiper-bundle.min.css";
 import siderbg from "../../../assets/img/sliderbg.png";
-import freecall from "../../../assets/img/bgcall.png";
-import siderproduct from "../../../assets/img/sliderpro.png";
 import newarrivals from "../../../assets/img/newarrivals.png";
-import productimg from "../../../assets/img/product.png";
-import productimgsec from "../../../assets/img/productsec.png";
-import experincesecimg from "../../../assets/img/green.png";
-import smallimg from "../../../assets/img/smallimg.png";
 import { Link, useNavigate } from "react-router-dom";
-import newarrive from "../../../assets/img/newarriveproduct.png";
-import cat from "../../../assets/img/cat.png";
-import cons from "../../../assets/img/counsult (1).png";
-import conss from "../../../assets/img/counsult (2).png";
-import subs from "../../../assets/img/subs.png";
-import knowledgebase from "../../../assets/img/shilajit.png";
-import blogsimg from "../../../assets/img/blogs (1).png";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Spotlight from "../../../components/front/Spotlight";
 import Review from "../../../components/front/Review";
 import { getPercentageOff, imgBaseURL } from "../../../utility/Utility";
 import { useFrontDataContext } from "../../../context/FrontContextProvider";
-import FrontLoding from "../../../components/FrontLoding";
-import { addToCartRepeater } from "../../../utility/api/RepeaterAPI";
+import ProductItemButton from "../../../components/front/ProductItemButton";
+import { Rating, Skeleton, imageListClasses } from "@mui/material";
+import { APICALL } from "../../../utility/api/api";
+import FrontLoader from "../../../components/front/FrontLoader";
+
+const imageUrl = [
+  "https://aksvedas.com/storage/tags_img/immu.png",
+  "https://aksvedas.com/storage/tags_img/dig.png",
+  "https://aksvedas.com/storage/tags_img/perf.png",
+  "https://aksvedas.com/storage/tags_img/slep.png",
+  "https://aksvedas.com/storage/tags_img/tired.png",
+  "https://aksvedas.com/storage/tags_img/tagimg6.png",
+  "https://aksvedas.com/storage/tags_img/bonee.png",
+  "https://aksvedas.com/storage/tags_img/fitness.png",
+];
 
 const Home = () => {
-
-  const { getHomeDataFun, getWishlistFun, allData,getCartFun,getCustomerDetails } = useFrontDataContext()
-  const navigate = useNavigate()
+  const {
+    getHomeDataFun,
+    getWishlistFun,
+    allData,
+    wishlistData,
+    getCartFun,
+    getCustomerDetails,
+    categories,
+    loading,
+    addProductInWishlistFun,
+  } = useFrontDataContext();
+  const navigate = useNavigate();
   useEffect(() => {
     AOS.init();
   }, []);
-  const blogs = {
-    loop: true,
-    autoplay: true,
-    autoplaySpeed: 100,
-    margin: 30,
-    dots: false,
-    nav: true,
-    responsiveClass: true,
-    infinite: true,
-    speed: 100,
 
-    responsive: {
-      0: {
-        items: 1.2,
-      },
-      600: {
-        items: 3,
-        nav: false,
-      },
-      1000: {
-        items: 4,
-
-        loop: true,
-      },
-    },
-  };
   const collections = {
-    loop: true,
+    loop: false,
     autoplay: true,
-    autoplaySpeed: 100,
-    margin: 30,
+    autoplaySpeed: 10000,
+    smartSpeed: 4000,
+    margin: 20,
     dots: false,
     nav: true,
     responsiveClass: true,
+    navText: [
+      '<i class="fa fa-chevron-left"></i>',
+      '<i class="fa fa-chevron-right"></i>',
+    ], // Custom arrow icons
     infinite: true,
-    speed: 100,
 
     responsive: {
       0: {
@@ -90,15 +78,14 @@ const Home = () => {
 
   const knowledgebaseowl = {
     loop: true,
+    autoplayTimeout: 4000, // Autoplay interval in milliseconds
+    autoplaySpeed: 1000,
     autoplay: true,
-    autoplaySpeed: 100,
-    margin: 30,
+    loop: true,
+    margin: 0,
     dots: false,
-    nav: true,
+    nav: false,
     responsiveClass: true,
-    infinite: true,
-    speed: 100,
-
     responsive: {
       0: {
         items: 1,
@@ -108,7 +95,6 @@ const Home = () => {
       },
       1000: {
         items: 1,
-
         loop: true,
       },
     },
@@ -117,108 +103,248 @@ const Home = () => {
   const productslider = {
     loop: true,
     autoplay: true,
-    autoplaySpeed: 100,
+    autoplayTimeout: 6000, // Autoplay interval in milliseconds
+    autoplaySpeed: 1000,
     margin: 30,
     dots: false,
     nav: true,
+    autoplayHoverPause: true, // Stops autoplay on hover
     responsiveClass: true,
-    infinite: true,
-    speed: 100,
+
     navText: [
       '<i class="fa fa-chevron-left"></i>',
       '<i class="fa fa-chevron-right"></i>',
     ], // Custom arrow icons
     responsive: {
       0: {
-        items: 1.2,
+        items: 2,
         nav: false,
+        margin: 10,
       },
       600: {
         items: 2.5,
         nav: false,
+        margin: 10,
       },
       1000: {
         items: 3,
         margin: 10,
-        loop: true,
       },
-
       1250: {
         items: 4,
-
-        loop: true,
       },
     },
   };
 
-  const [quantity, setQuantity] = useState(1);
+  // Usage in your component
+  <OwlCarousel className="owl-theme" {...productslider}>
+    {/* Your slides here */}
+  </OwlCarousel>
 
-  const decreaseQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
+  const heroslider = {
+    loop: true,
+    autoplayTimeout: 10000, // Autoplay interval in milliseconds
+    autoplay: true,
+    autoplaySpeed: 4000,
+    margin: 0,
+    dots: false,
+    nav: false,
+    responsiveClass: true,
+    infinite: true,
+    navText: [
+      '<i class="fa fa-chevron-left"></i>',
+      '<i class="fa fa-chevron-right"></i>',
+    ], // Custom arrow icons
+    responsive: {
+      0: {
+        items: 1,
+        nav: false,
+        autoplay: true,
+        autoplaySpeed: 4000,
+      },
+      600: {
+        items: 1,
+        nav: false,
+        autoplay: true,
+        autoplaySpeed: 4000,
+      },
+      1000: {
+        items: 1,
+        margin: 10,
+      },
+
+      1250: {
+        items: 1,
+      },
+    },
   };
 
-  const increaseQuantity = () => {
-    // You can add any logic for maximum quantity if needed
-    setQuantity(quantity + 1);
+  const isInWishlist = (productId) => {
+    return wishlistData.some((item) => item.product_id === productId);
   };
-  const [loading, setLoading] = useState(false)
 
-  useEffect( ()  => {
-    setLoading(true)
-    getHomeDataFun()
-    setLoading(false)
+  useEffect(() => {
+    getHomeDataFun();
+    getWishlistFun();
+    getCartFun();
+    getCustomerDetails();
+    selectedTagsFun();
+  }, []);
+  const [wishCount, setWishlistCount] = useState(0)
+  useEffect(() => {
     getWishlistFun()
-    getCartFun()
-    getCustomerDetails()
-  }, [])
+  }, [wishCount])
 
-
-  const addToCartFun = async (type, product_id) => {
-    const param = {product_id: product_id, qnt: 1 }
-    addToCartRepeater(param,getWishlistFun,getCartFun)
-    if(type == 'buy'){
-      navigate('/checkout')
+  const [tags, setTags] = useState([]);
+  const selectedTagsFun = async () => {
+    try {
+      const res = await APICALL("get-tags/tags");
+      if (res?.status) {
+        const tagsArray =
+          res?.data?.tags?.split?.(",")?.map((tag) => tag?.trim()) || [];
+        setTags(tagsArray);
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
 
   return (
     <>
-      <section
-        className="slider"
-        style={{
-          backgroundImage: `url(${siderbg})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="container">
-          <div className="row align-items-center">
-            <div className="col-md-6">
-              <div className="left_product_about" data-aos="fade-up">
-                <div className="off_price">30% off</div>
-                <p>
-                  {/* <span className="highlight_txt">free delivery</span> on all
-                  orders */}
-                  {allData?.banner[0]?.title}
-                </p>
-                <h2>
-                  {allData?.banner[0]?.desc}
-                </h2>
-                <button className="btn-2 ">Shop Now</button>
-              </div>
-            </div>
+      {loading && <FrontLoader />}
+      <div class="hero_section d-lg-block d-none">
+        <OwlCarousel className="owl-theme" {...heroslider}>
+          {allData ? (
+            allData?.banner?.map((item, i) => (
 
-            <div className="col-md-6">
-              <div className="slider_product text-end">
-                <img src={imgBaseURL() + allData?.banner[0]?.img} alt="slider product" />
+              <>
+                {
+                  item?.title == 'null' ?
+                    <div className="only_banner">
+                      <Link to={'/shop/all'}>
+                        <img
+                          src={imgBaseURL() + item?.img}
+                          alt="slider product"
+                        />
+                      </Link>
+                    </div>
+                    :
+                    <div className="item" key={i}>
+                      <div
+                        className="slider"
+                        style={{
+                          backgroundImage: `url(${siderbg})`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                          backgroundRepeat: "no-repeat",
+                        }}
+                      >
+                        <div className="container">
+                          <div className="row align-items-center">
+                            <div className="col-md-6">
+                              <div className="left_product_about" data-aos="fade-up">
+                                <div className="off_price">30% off</div>
+                                <p>{item?.title}</p>
+                                <h2>{item?.desc}</h2>
+                                <button
+                                  onClick={() => navigate("/shop/all")}
+                                  className="btn-2"
+                                >
+                                  Shop Now
+                                </button>
+                              </div>
+                            </div>
+
+                            <div className="col-md-6">
+                              <div className="slider_product text-end">
+                                <img
+                                  src={imgBaseURL() + item?.img}
+                                  alt="slider product"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                }
+              </>
+            ))
+          ) : (
+            // Render skeleton loader while data is loading
+            <div className="item">
+              <div className="slider">
+                <div className="container">
+                  <div className="row align-items-center">
+                    <div className="col-md-6">
+                      <div className="left_product_about" data-aos="fade-up">
+                        <Skeleton height={30} width={200} />
+                        <Skeleton height={20} width={300} />
+                        <Skeleton height={40} width={200} />
+                        <Skeleton height={50} width={150} />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="slider_product text-end">
+                        <Skeleton height={300} width={300} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
+          )}
+        </OwlCarousel>
+      </div>
+
+      <div class="hero_section d-lg-none d-block">
+        <OwlCarousel className="owl-theme" {...heroslider}>
+          {allData ? (
+            allData?.mobileBanner?.map((item, i) => (
+              <div className="item" key={i}>
+                <div
+                  className="slider p-0"
+                // style={{
+                //   backgroundImage: `url(${siderbg})`,
+                //   backgroundSize: "cover",
+                //   backgroundPosition: "center",
+                //   backgroundRepeat: "no-repeat",
+                // }}
+                >
+                  <img
+                    src={imgBaseURL() + item?.img}
+                    alt="slider product" className="img-fluid"
+                  />
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="item">
+              <div className="slider">
+                <div className="container">
+                  <div className="row align-items-center">
+                    <div className="col-md-6">
+                      <div className="left_product_about" data-aos="fade-up">
+                        <Skeleton height={30} width={200} />
+                        <Skeleton height={20} width={300} />
+                        <Skeleton height={40} width={200} />
+                        <Skeleton height={50} width={150} />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="slider_product text-end mt-0">
+                        <Skeleton height={300} width={300} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </OwlCarousel>
+      </div>
 
       <section className="bestseller">
         <div className="container">
@@ -228,88 +354,525 @@ const Home = () => {
             </div>
 
             <div className="view_all_btn">
-              <Link to={'/shop/all'}>View All</Link>
+              <Link to={"/shop/all"}>View All</Link>
             </div>
           </div>
 
-          {
-            allData?.products?.length > 0 ?
-              <>
-                <div className="row mt-5">
-                  <OwlCarousel className="owl-theme" {...productslider}>
+          {allData?.products?.length > 0 ? (
+            <div className="row mt-lg-5 mt-4 pt-lg-0 pt-2">
+              <OwlCarousel className="owl-theme" {...productslider}>
+                {allData?.products?.map((item, i) => (
+                  <div className="item" key={i}>
+                    <div className="product_box_main">
+                      <div className="quick-access-btns">
+                        <button
+                          className="btn1"
+                          onClick={() => { addProductInWishlistFun(item.id); setWishlistCount(wishCount + 1) }}
+                        >
+                          {isInWishlist(item.id) ? (
+                            <i
+                              class="fa-solid fa-heart"
+                              style={{ fontSize: "18px", color: "#ddad67" }}
+                              aria-hidden="true"
+                            ></i>
+                          ) : (
+                            <>
+                              <i
+                                class="fa-solid fa-heart text-white"
+                                aria-hidden="true"
+                              ></i>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                      <div className="img_product">
+                        <Link to={`/product-detail/${item?.slug}`}>
+                          <img
+                            className="withouthover"
+                            src={imgBaseURL() + item.cover}
+                            alt="product_img"
+                          />
+                          <img
+                            className="withhover"
+                            src={imgBaseURL() + item.hover_img}
+                            alt="product_img"
+                          />
+                        </Link>
+                      </div>
+                      <div className="rating_box mt-2">
+                        <ul>
+                          <Rating
+                            name="read-only"
+                            value={item?.review_average}
+                            readOnly
+                          />
+                        </ul>
+                      </div>
+                      <div className="product_name">
+                        <Link to={`/product-detail/${item?.slug}`}>
+                          {item.name}
+                        </Link>
+                      </div>
+                      <div className="price_product">
+                        ₹{item.sale_price}{" "}
+                        <span className="high_price">₹{item.price}</span>
+                      </div>
+                      <ProductItemButton row={item} />
 
-                    {
-                      allData?.products?.map((item, i) => (
-                        <div className="item">
-                          <div className="product_box_main">
-                            <div className="quick-access-btns">
-                            </div>
-                            <div className="img_product">
-                              <Link to={`/product-detail/${item?.slug}`} className="text-dark text-capitalize">
-                                <img src={imgBaseURL() + item.cover} alt="product_img" />
-                              </Link>
-                            </div>
-                            <div className="rating_box mt-3">
-                              <ul>
-                                <li><i className="fa-solid fa-star"></i></li>
-                                <li><i className="fa-solid fa-star"></i></li>
-                                <li><i className="fa-solid fa-star"></i> </li>
-                                <li><i className="fa-solid fa-star"></i></li>
-                                <li><i className="fa-solid fa-star"></i></li>
-                              </ul>
-                            </div>
-                            <div className="product_name">
-                              <Link to={`/product-detail/${item?.slug}`} className="text-dark text-capitalize">{item.name}</Link>
-                            </div>
-                            <div className="price_product">
-                              ₹{item.sale_price} <span className="high_price">{item.price}</span>
-                            </div><i class="fa fa-heart-o" aria-hidden="true"></i>
-
-                            <div className="doble_btn global_btn d-flex mt-3">
-                              <button className="btn-2 w-100" onClick={() => addToCartFun("buy", item.id)}>
-                                Buy Now <i className="fa-solid fa-arrow-right"></i>
-                              </button>
-                              <button className="btn-2 w-100" onClick={() => addToCartFun("cart", item.id)}>
-                                <i className="me-1 fa-solid fa-cart-plus"></i>Add To cart
-                              </button>
-                            </div>
-
-                            <div className="off_price_badge">{parseInt(getPercentageOff(item.price, item.sale_price)) || 0}% off</div>
-                          </div>
-                        </div>
-                      ))
-
-                    }
-
-                  </OwlCarousel>
-                </div>
-
-              </>
-              :
-              <>
-                <div className='col-12 text-center  mt-4'>
-                  <h6 className='text-danger'>There are no product to display.</h6>
-                </div>
-              </>
-
-          }
-
-
+                      <div className="off_price_badge">
+                        {parseInt(
+                          getPercentageOff(item.price, item.sale_price)
+                        ) || 0}
+                        % off
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </OwlCarousel>
+            </div>
+          ) : (
+            <div className="product-item-inner">
+              <img src={emptycart} alt="" />
+              <h4>No items found Products.</h4>
+            </div>
+          )}
         </div>
       </section>
 
+      <section className="bestseller">
+        <div className="container">
+          <div className="top_bar">
+            <div className="global_heading">
+              <h2>Combo Products</h2>
+            </div>
 
-      {/* The Ultimate Ayurved Experience */}
+            <div className="view_all_btn">
+              <Link to={"/shop/combo"}>View All</Link>
+            </div>
+          </div>
+
+          {allData?.comboProductList?.length > 0 ? (
+            <div className="row mt-lg-5 mt-4 pt-lg-0 pt-2">
+              <OwlCarousel className="owl-theme" {...productslider}>
+                {allData?.comboProductList?.map((item, i) => (
+                  <div className="item" key={i}>
+                    <div className="product_box_main">
+                      <div className="quick-access-btns">
+                        <button
+                          className="btn1"
+                          onClick={() => { addProductInWishlistFun(item.id); setWishlistCount(wishCount + 1) }}
+                        >
+                          {isInWishlist(item.id) ? (
+                            <i
+                              class="fa-solid fa-heart"
+                              style={{ fontSize: "18px", color: "#ddad67" }}
+                              aria-hidden="true"
+                            ></i>
+                          ) : (
+                            <>
+                              <i
+                                class="fa-solid fa-heart text-white"
+                                aria-hidden="true"
+                              ></i>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                      <div className="img_product">
+                        <Link to={`/product-detail/${item?.slug}`}>
+                          <img
+                            className="withouthover"
+                            src={imgBaseURL() + item.cover}
+                            alt="product_img"
+                          />
+                          <img
+                            className="withhover"
+                            src={imgBaseURL() + item.hover_img}
+                            alt="product_img"
+                          />
+                        </Link>
+                      </div>
+                      <div className="rating_box mt-2">
+                        <ul>
+                          <Rating
+                            name="read-only"
+                            value={item?.review_average}
+                            readOnly
+                          />
+                        </ul>
+                      </div>
+                      <div className="product_name">
+                        <Link to={`/product-detail/${item?.slug}`}>
+                          {item.name}
+                        </Link>
+                      </div>
+                      <div className="price_product">
+                        ₹{item.sale_price}{" "}
+                        <span className="high_price">₹{item.price}</span>
+                      </div>
+                      <ProductItemButton row={item} />
+
+                      <div className="off_price_badge">
+                        {parseInt(
+                          getPercentageOff(item.price, item.sale_price)
+                        ) || 0}
+                        % off
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </OwlCarousel>
+            </div>
+          ) : (
+            <div className="product-item-inner">
+              <img src={emptycart} alt="" />
+              <h4>No items found Products.</h4>
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section className="shop_by_consern mt-0">
+        <div className="container">
+          <div className="row justify-content-between align-items-center">
+            <div className="col-xxl-4 col-lg-5 mb-lg-0 mb-4">
+              <div className="global_heading text-start">
+                <h2>Shop By Concern</h2>
+                <p className="mt-4">
+                  Discover products tailored to your specific health needs.
+                </p>
+                <Link to={"/shop/all"} className="viewproducts">
+                  View All Products <i className="fa fa-chevron-right"></i>
+                </Link>
+              </div>
+            </div>
+            <div className="d-lg-none d-block">
+              <OwlCarousel className="owl-theme" {...collections}>
+                {tags?.map((item, i) => (
+                  <Link to={`/shop/t-${item}`}>
+                    <div class="item" key={i} >
+                      <div className="cat_box-outer">
+                        <div
+                          className="cat_box"
+                        // style={{
+                        //   backgroundImage: `url('${imageUrl[i]}')`,
+                        //   backgroundSize: "cover",
+                        //   backgroundRepeat: "no-repeat",
+                        //   backgroundPosition: "center",
+                        // }}
+                        >
+                          <img src={`${imageUrl[i]}`} alt={item} />
+                          <div className="categri-title">
+                            <h2>{item}</h2>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </OwlCarousel>
+            </div>
+
+            <div className="col-xl-6 col-lg-7 d-lg-block d-none">
+              <div className="row align-items-center">
+                {tags[0] && (
+                  <div className="col-md-3 col-sm-6">
+                    <div
+                      className="cat_box-outer"
+                      style={{ marginLeft: "-10px" }}
+                    >
+                      <Link to={`/shop/t-${tags[0]}`}>
+                        <div className="cat_box">
+                          <img
+                            src="https://aksvedas.com/storage/tags_img/immu.png"
+                            alt="tag img"
+                          ></img>
+                          <div className="categri-title">
+                            <h2>{tags[0]}</h2>
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                )}
+
+                <div className="col-md-3 col-sm-6">
+                  <div className="row">
+                    {tags[1] && (
+                      <div className="col-md-12 mb-4">
+                        <div className="cat_box-outer">
+                          <Link to={`/shop/t-${tags[1]}`}>
+                            <div className="cat_box">
+                              <img
+                                src="https://aksvedas.com/storage/tags_img/dig.png"
+                                alt="tag img"
+                              ></img>
+
+                              <div className="categri-title">
+                                <h2>{tags[1]}</h2>
+                              </div>
+                            </div>
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+                    {tags[2] && (
+                      <div className="col-md-12 mb-3 ">
+                        <div className="cat_box-outer">
+                          <Link to={`/shop/t-${tags[2]}`}>
+                            <div className="cat_box">
+                              <img
+                                src="https://aksvedas.com/storage/tags_img/perf.png"
+                                alt="tag img"
+                              ></img>
+
+                              <div className="categri-title">
+                                <h2>{tags[2]}</h2>
+                              </div>
+                            </div>
+                          </Link>
+
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="col-md-3 col-sm-6">
+                  <div className="row">
+                    {tags[3] && (
+                      <div className="col-md-12 mb-4">
+                        <div className="cat_box-outer">
+                          <Link to={`/shop/t-${tags[3]}`}>
+                            <div
+                              className="cat_box"
+                            // style={{
+                            //   backgroundImage: `url('${imgBaseURL() + categories[0]?.cover}')`,
+                            //   backgroundSize: "cover",
+                            //   backgroundRepeat: "no-repeat",
+                            //   backgroundPosition: "center",
+                            // }}
+                            >
+                              <img
+                                src="https://aksvedas.com/storage/tags_img/slep.png"
+                                alt="tag img"
+                              ></img>
+
+                              <div className="categri-title">
+                                <h2>{tags[3]}</h2>
+                              </div>
+                            </div>
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+
+                    {tags[4] && (
+                      <div className="col-md-12 mb-4 ">
+                        <div className="cat_box-outer">
+                          <Link to={`/shop/t-${tags[4]}`}>
+                            <div
+                              className="cat_box"
+                            // style={{
+                            //   backgroundImage: `url('${imgBaseURL() + categories[2]?.cover}')`,
+                            //   backgroundSize: "cover",
+                            //   backgroundRepeat: "no-repeat",
+                            //   backgroundPosition: "center",
+                            // }}
+                            >
+                              <img
+                                src="https://aksvedas.com/storage/tags_img/tired.png"
+                                alt="tag img"
+                              ></img>
+
+                              <div className="categri-title">
+                                <h2>{tags[4]}</h2>
+                              </div>
+                            </div>
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+
+                    {tags[5] && (
+                      <div className="col-md-12 mb-4 ">
+                        <div className="cat_box-outer">
+                          <Link to={`/shop/t-${tags[5]}`}>
+                            <div
+                              className="cat_box"
+                            // style={{
+                            //   backgroundImage: `url('${imgBaseURL() + categories[0]?.cover}')`,
+                            //   backgroundSize: "cover",
+                            //   backgroundRepeat: "no-repeat",
+                            //   backgroundPosition: "center",
+                            // }}
+                            >
+                              <img
+                                src="https://aksvedas.com/storage/tags_img/tagimg6.png"
+                                alt="tag img"
+                              ></img>
+
+                              <div className="categri-title">
+                                <h2>{tags[5]}</h2>
+                              </div>
+                            </div>
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="col-md-3 col-sm-6">
+                  <div className="row">
+                    {tags[6] && (
+                      <div className="col-md-12 mb-4 ">
+                        <div className="cat_box-outer">
+                          <Link to={`/shop/t-${tags[6]}`}>
+                            <div
+                              className="cat_box"
+                            // style={{
+                            //   backgroundImage: `url('${imgBaseURL() + categories[2]?.cover}')`,
+                            //   backgroundSize: "cover",
+                            //   backgroundRepeat: "no-repeat",
+                            //   backgroundPosition: "center",
+                            // }}
+                            >
+                              <img
+                                src="https://aksvedas.com/storage/tags_img/bonee.png"
+                                alt="tag img"
+                              ></img>
+
+                              <div className="categri-title">
+                                <h2>{tags[6]}</h2>
+                              </div>
+                            </div>
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+
+                    {tags[7] && (
+                      <div className="col-md-12 mb-4 ">
+                        <div className="cat_box-outer">
+                          <Link to={`/shop/t-${tags[7]}`}>
+                            <div
+                              className="cat_box"
+                            // style={{
+                            //   backgroundImage: `url('${imgBaseURL() + categories[1]?.cover}')`,
+                            //   backgroundSize: "cover",
+                            //   backgroundRepeat: "no-repeat",
+                            //   backgroundPosition: "center",
+                            // }}
+                            >
+                              <img
+                                src="https://aksvedas.com/storage/tags_img/fitness.png"
+                                alt="tag img"
+                              ></img>
+
+                              <div className="categri-title">
+                                <h2>{tags[7]}</h2>
+                              </div>
+                            </div>
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="new_arrivals">
+        <div className="container">
+          <div className="global_heading text-center">
+            <h2>New Arrivals</h2>
+          </div>
+          <div className="row mt-lg-5 mt-4 pt-lg-0 pt-2">
+            {allData?.newArrivals?.length > 0 ? (
+              <>
+                {allData?.newArrivals?.map((item, i) => (
+                  <div className="col-lg-6 mb-lg-0 mb-4">
+                    <div
+
+                      className="new_arrivals_box"
+                      style={{
+                        backgroundImage: `url(${newarrivals})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat",
+                      }}
+                    >
+                      <div className="product_cnt">
+                        <div className="product_type">Immunity Booster</div>
+                        <div className="new_arrival_product_name">
+                          {item?.name}
+                        </div>
+                        <div className="new_arrival_details">
+                          <div className="d-block text-wrap mt-2">
+                            {" "}
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: item?.description,
+                              }}
+                            />
+                          </div>
+                        </div>
+                        <button
+                          className="shop_now btn-2 mt-3"
+                          onClick={() =>
+                            navigate(`/product-detail/${item.slug}`)
+                          }
+                        >
+                          Shop Now <i className="fa-solid fa-arrow-right"></i>
+                        </button>
+                      </div>
+                      <div className="product_box_new" onClick={() =>
+                        navigate(`/product-detail/${item.slug}`)
+                      }
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <div className="new_arrival_product">
+                          <img
+                            src={imgBaseURL() + item.cover}
+                            alt="product_img"
+                          />
+                          <div className="product_tags">
+                            <div className="new_tag">New</div>
+                            <div className="price_new">₹{item.sale_price}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <></>
+            )}
+          </div>
+        </div>
+      </section>
+
       <section className="about_experince">
         <div className="container">
           <div className="row align-items-center">
             <div className="col-md-6 mb-md-0 mb-4" data-aos="fade-left">
               <div className="images_box">
                 <div className="big_one_img">
-                  <img src={imgBaseURL() + allData?.getAyurvedExperience?.img1} alt="img" />
+                  <img
+                    src={imgBaseURL() + allData?.getAyurvedExperience?.img1}
+                    alt="img"
+                  />
                 </div>
                 <div className="small_second_image">
-                  <img src={imgBaseURL() + allData?.getAyurvedExperience?.img2} alt="img" />
+                  <img
+                    src={imgBaseURL() + allData?.getAyurvedExperience?.img2}
+                    alt="img"
+                  />
                 </div>
               </div>
             </div>
@@ -317,457 +880,159 @@ const Home = () => {
             <div className="col-md-6" data-aos="fade-right">
               <div className="expert_cnt">
                 <h2>{allData?.getAyurvedExperience?.title}</h2>
-                <div className='d-block text-wrap mt-2'> <div dangerouslySetInnerHTML={{ __html:  allData?.getAyurvedExperience?.desc }} /></div>
+                <div className="d-block text-wrap mt-2">
+                  {" "}
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: allData?.getAyurvedExperience?.desc,
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-
-      {/* New Arrivals */}
-      <section className="new_arrivals">
+      <section className="concern_new">
         <div className="container">
-          <div className="global_heading text-center">
-            <h2>New Arrivals</h2>
-          </div>
-          <div className="row mt-5">
-            {
-              allData?.newArrivals?.length > 0 ?
-
-                <>
-                  {
-                    allData?.newArrivals?.map((item, i) => (
-                      <div className="col-lg-6">
-                        <div
-                          className="new_arrivals_box"
-                          style={{
-                            backgroundImage: `url(${newarrivals})`,
-                            backgroundSize: "cover",
-                            backgroundPosition: "center",
-                            backgroundRepeat: "no-repeat",
-                          }}
-                        >
-                          <div className="product_cnt">
-                            <div className="product_type">IMMUNITY BOOSTER</div>
-                            <div className="new_arrival_product_name">
-                              {item?.name}
-                            </div>
-                            <div className="new_arrival_details">
-                            <div className='d-block text-wrap mt-2'> <div dangerouslySetInnerHTML={{ __html: item?.description }} /></div>
-                            </div>
-                            <button className="shop_now btn-2 mt-3">
-                              Shop Now <i className="fa-solid fa-arrow-right"></i>
-                            </button>
-                          </div>
-                          <div className="product_box_new">
-                            <div className="new_arrival_product">
-                              <img src={imgBaseURL() + item.cover} alt="product_img" />
-                              <div className="product_tags">
-                                <div className="new_tag">New</div>
-                                <div className="price_new">₹{item.sale_price}</div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  }
-                </>
-                :
-                <></>
-            }
-
-
-            {/* <div className="col-lg-6">
-              <div
-                className="new_arrivals_box"
-                style={{
-                  backgroundImage: `url(${newarrivals})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  backgroundRepeat: "no-repeat",
-                }}
-              >
-                <div className="product_cnt">
-                  <div className="product_type">IMMUNITY BOOSTER</div>
-                  <div className="new_arrival_product_name">
-                    Pure Himalayan Shilajit
-                  </div>
-                  <div className="new_arrival_details">
-                    Lorem ipsum dolor sit amet consectetur. Morbi cursus diam
-                    morbi elit consequat pretium sollicitudin. Facilisi sit eget
-                    in massa nibh in turpis. Enim quisque leo eleifend
-                    vel.laoreet diam.
-                  </div>
-                  <button className="shop_now btn-2 mt-3">
-                    Shop Now <i className="fa-solid fa-arrow-right"></i>
-                  </button>
-                </div>
-                <div className="product_box_new">
-                  <div className="new_arrival_product">
-                    <img src={newarrive} alt="product_img" />
-                    <div className="product_tags">
-                      <div className="new_tag">New</div>
-                      <div className="price_new">₹120</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> */}
-
-          </div>
-        </div>
-      </section>
-      <Spotlight></Spotlight>
-      <section className="shop_by_consern">
-        <div className="container">
-          <div className="row justify-content-between align-items-center">
-            <div className="col-xxl-3 col-lg-4 mb-lg-0 mb-4">
+          <div className="row align-items-center justify-content-between">
+            <div className="col-lg-3 mb-3">
               <div className="global_heading text-start">
                 <h2>Shop By Concern</h2>
                 <p className="mt-4">
-                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                  Aenean commodo ligula eget dolor. Aenean massa.
+                  Discover products tailored to your specific health needs.
                 </p>
-                <a href="" className="viewproducts">
+                <Link to={"/shop/all"} className="viewproducts">
                   View All Products <i className="fa fa-chevron-right"></i>
-                </a>
+                </Link>
               </div>
             </div>
-            <div className="d-lg-none d-block">
-              <OwlCarousel className="owl-theme" {...collections}>
-                <div class="item">
-                  <div className="cat_box-outer">
-                    <div
-                      className="cat_box"
-                      style={{
-                        backgroundImage: `url('${cat}')`,
-                        backgroundSize: "cover",
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "center",
-                      }}
-                    >
-                      <div className="categri-title">
-                        <h2>Hair Care</h2>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </OwlCarousel>
-            </div>
-            <div className="col-xl-6 col-lg-7 d-lg-block d-none">
-              <div className="row align-items-center">
-                <div className="col-md-3 col-sm-6 p-0">
-                  <div className="cat_box-outer">
-                    <div
-                      className="cat_box"
-                      style={{
-                        backgroundImage: `url('${cat}')`,
-                        backgroundSize: "cover",
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "center",
-                      }}
-                    >
-                      <div className="categri-title">
-                        <h2>Hair Care</h2>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
-                <div className="col-md-3 col-sm-6">
-                  <div className="row">
-                    <div className="col-md-12 mb-4 p-0">
-                      <div className="cat_box-outer">
-                        <div
-                          className="cat_box"
-                          style={{
-                            backgroundImage: `url('${cat}')`,
-                            backgroundSize: "cover",
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "center",
-                          }}
-                        >
-                          <div className="categri-title">
-                            <h2>Hair Care</h2>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-12 mb-3 p-0 ">
-                      <div className="cat_box-outer">
-                        <div
-                          className="cat_box"
-                          style={{
-                            backgroundImage: `url('${cat}')`,
-                            backgroundSize: "cover",
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "center",
-                          }}
-                        >
-                          <div className="categri-title">
-                            <h2>Hair Care</h2>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-3 col-sm-6">
-                  <div className="row">
-                    <div className="col-md-12 mb-4 p-0">
-                      <div className="cat_box-outer">
-                        <div
-                          className="cat_box"
-                          style={{
-                            backgroundImage: `url('${cat}')`,
-                            backgroundSize: "cover",
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "center",
-                          }}
-                        >
-                          <div className="categri-title">
-                            <h2>Hair Care</h2>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-12 mb-4 p-0 ">
-                      <div className="cat_box-outer">
-                        <div
-                          className="cat_box"
-                          style={{
-                            backgroundImage: `url('${cat}')`,
-                            backgroundSize: "cover",
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "center",
-                          }}
-                        >
-                          <div className="categri-title">
-                            <h2>Hair Care</h2>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-12 mb-3 p-0 ">
-                      <div className="cat_box-outer">
-                        <div
-                          className="cat_box"
-                          style={{
-                            backgroundImage: `url('${cat}')`,
-                            backgroundSize: "cover",
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "center",
-                          }}
-                        >
-                          <div className="categri-title">
-                            <h2>Hair Care</h2>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-3 col-sm-6">
-                  <div className="row">
-                    <div className="col-md-12 mb-4 p-0">
-                      <div className="cat_box-outer">
-                        <div
-                          className="cat_box"
-                          style={{
-                            backgroundImage: `url('${cat}')`,
-                            backgroundSize: "cover",
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "center",
-                          }}
-                        >
-                          <div className="categri-title">
-                            <h2>Hair Care</h2>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-12 mb-3 p-0 ">
-                      <div className="cat_box-outer">
-                        <div
-                          className="cat_box"
-                          style={{
-                            backgroundImage: `url('${cat}')`,
-                            backgroundSize: "cover",
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "center",
-                          }}
-                        >
-                          <div className="categri-title">
-                            <h2>Hair Care</h2>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <div className="col-lg-8 mb-3">
+              <div className="all_tags_classes">
+                <ul className="p-0">
+                  {tags?.map((item, i) => (
+                    <li key={i}>
+                      <Link
+                        to={`/shop/t-${item}`}
+                        className="global_tra_btn my-1"
+                      >
+                        {item}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section
-        className="freecalll"
-        style={{
-          backgroundImage: `url(${freecall})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <div className="container">
-          <div className="row">
-            <div className="col-md-6">
-              <div className="main_counsult_cust_box">
-                <div className="img_box">
-                  <img src={cons} alt="img" />
-                </div>
-                <div className="main_counsult_cust_box_cnt">
-                  <h2>Free Doctor Consultant</h2>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur. Morbi cursus diam
-                    morbi elit consequat pretium sollicitudin. Facilisi sit eget
-                    in massa nibh in turpis. Enim quisqu.
-                  </p>
-                  <button className="shop_now btn-2 mt-1">
-                    Contact Us <i className="fa-solid fa-arrow-right"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="col-md-6">
-              <div className="main_counsult_cust_box">
-                <div className="img_box">
-                  <img src={conss} alt="img" />
-                </div>
-                <div className="main_counsult_cust_box_cnt">
-                  <h2>Free Doctor Consultant</h2>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur. Morbi cursus diam
-                    morbi elit consequat pretium sollicitudin. Facilisi sit eget
-                    in massa nibh in turpis. Enim quisqu.
-                  </p>
-                  <button className="shop_now btn-2 mt-1">
-                    Customise Now <i className="fa-solid fa-arrow-right"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {allData ? (
+        <Review />
+      ) : (
+        <Skeleton variant="rectangular" width={360} height={240} />
+      )}
 
-      <section className="subs_product" data-aos="fade-up">
-        <div className="container">
-          <div className="row align-items-center">
-            <div className="col-md-6">
-              <div className="subs_prodect_img">
-                <img src={subs} alt="product_img" />
-              </div>
-            </div>
-            <div className="col-md-6">
-              <div className="subs_cnt">
-                <h2>Subscriptions Products</h2>
-                <p>
-                  With a <span className="highlight_txt">Aksvedas</span>{" "}
-                  subscription, watch your favorite products show up at your
-                  door automatically and save up to 25%.
-                </p>
-
-                <button className="shop_now btn-2 mt-1">
-                  Subscribe Now <i className="fa-solid fa-arrow-right"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <Review></Review>
-
-      <section className="product_knowlenge_base">
-        <div className="container-fluid">
+      <section className="product_knowlenge_base d-lg-block d-none">
+        <div className="container-fluid px-lg-0 px-3">
           <div className="global_heading text-center mb-3">
             <h2>Product Knowledge Base</h2>
           </div>
           <OwlCarousel className="mt-5 owl-theme" {...knowledgebaseowl}>
-            <div className="item">
-              <div className="row justify-content-between align-items-center ">
-                <div className="col-xl-5 col-lg-5 col-md-6 mb-md-0 mb-4">
-                  <div className="product_img">
-                    <img src={knowledgebase} alt="product_img" />
+            {allData?.ProductKnowledgeBase?.map((item, i) => (
+              <div className="item">
+                <div className="row justify-content-between align-items-center ">
+                  <div className="col-xl-12 col-lg-12 col-md-12 mb-md-0 ">
+                    <div className="product_img">
+                      {allData ? (
+                        <img
+                          src={imgBaseURL() + item?.img1}
+                          alt="product_img"
+                        />
+                      ) : (
+                        <Skeleton
+                          variant="rectangular"
+                          width={360}
+                          height={240}
+                        />
+                      )}
+                    </div>
                   </div>
-                </div>
-
-                <div className="col-xl-7 col-lg-7 col-md-6 ">
-                  <div className="product_cnt ps-md-5">
-                    <h2>Pure Himalayan Shilajit</h2>
-                    <p>
-                      Lorem ipsum dolor sit amet consectetur. Morbi cursus diam
-                      morbi elit consequat pretium sollicitudin. Facilisi sit
-                      eget in massa nibh in turpis. Enim quisque leo eleifend
-                      vel. Scelerisque purus praesent aenean laoreet diam.
-                    </p>
-                    <ul className="p-0">
-                      <li>Lorem ipsum dolor sit amet consectetur. Morbi </li>
-                      <li>Lorem ipsum dolor sit amet consectetur. Morbi </li>
-                      <li>Lorem ipsum dolor sit amet consectetur. Morbi </li>
-                      <li>Lorem ipsum dolor sit amet consectetur. Morbi </li>
-                    </ul>
-
-                    <button className="shop_now btn-2 mt-1">
-                      Shop Now <i className="fa-solid fa-arrow-right"></i>
-                    </button>
-                  </div>
+                  {/* <div className="col-xl-7 col-lg-7 col-md-6 ">
+                    <div className="product_cnt ps-md-5">
+                      <h2>{item?.title}</h2>
+                      <HTMLContent data={item?.desc} />
+                      {allData ? (
+                        <button
+                          className="shop_now btn-2 mt-1"
+                          onClick={() => navigate("/shop/all")}
+                        >
+                          Shop Now
+                          <i className="fa-solid fa-arrow-right"></i>
+                        </button>
+                      ) : (
+                        <Skeleton variant="text" width={100} />
+                      )}
+                    </div>
+                  </div> */}
                 </div>
               </div>
-            </div>
+            ))}
           </OwlCarousel>
         </div>
       </section>
 
-      <section className="our_blogs">
+      <section className="product_knowlenge_base d-lg-none d-block">
         <div className="container">
           <div className="global_heading text-center mb-3">
-            <h2>Our Blogs</h2>
+            <h2>Product Knowledge Base</h2>
           </div>
-
-          <OwlCarousel className="owl-theme mt-5" {...blogs}>
+        </div>
+        <OwlCarousel className="mt-5 owl-theme" {...knowledgebaseowl}>
+          {allData?.ProductKnowledgeBaseMobile?.map((item, i) => (
             <div className="item">
-              <div className="Blogs_box">
-                <div className="blogs_img">
-                  <img src={blogsimg} alt="blog_img" />
+              <div className="row justify-content-between align-items-center ">
+                <div className="col-xl-12 col-lg-12 col-md-12 mb-md-0 ">
+                  <div className="product_img">
+                    {allData ? (
+                      <img
+                        src={imgBaseURL() + item?.img1}
+                        alt="product_img"
+                        style={{ width: "100%", height: "auto" }}
+                      />
+                    ) : (
+                      <Skeleton
+                        variant="rectangular"
+                        width={360}
+                        height={240}
+                      />
+                    )}
+                  </div>
                 </div>
-                <div className="poster_details">
-                  <p>
-                    Women's Health <span className="mx-1"> | </span> Post by{" "}
-                    <span className="highlight_txt">Admin</span>
-                  </p>
-                </div>
-                <h2>Chyawanprash: Unveiling Ancient Ayurvedic</h2>
-
-                <button className="global_no_bg_btn">
-                  Read More <i className="fa-solid fa-chevron-right"></i>
-                </button>
-
-                <div className="date_tag">
-                  <div className="date">29</div>
-                  <div>Jan</div>
-                </div>
+                {/* <div className="col-xl-7 col-lg-7 col-md-6 ">
+                    <div className="product_cnt ps-md-5">
+                      <h2>{item?.title}</h2>
+                      <HTMLContent data={item?.desc} />
+                      {allData ? (
+                        <button
+                          className="shop_now btn-2 mt-1"
+                          onClick={() => navigate("/shop/all")}
+                        >
+                          Shop Now
+                          <i className="fa-solid fa-arrow-right"></i>
+                        </button>
+                      ) : (
+                        <Skeleton variant="text" width={100} />
+                      )}
+                    </div>
+                  </div> */}
               </div>
             </div>
-          </OwlCarousel>
-        </div>
+          ))}
+        </OwlCarousel>
       </section>
-
-      <FrontLoding loading={loading}/>
     </>
   );
 };

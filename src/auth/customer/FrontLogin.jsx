@@ -1,13 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Footer from "../../front/include/Footer";
 import Header from "../../front/include/Header";
-import { postDataAPI } from "../../utility/api/api";
 import { axiosInstance } from "../../utility/api/interceptor";
 import SpinnerBTN from "../../components/SpinnerBTN";
 import { encryptLocalStorageData } from "../../utility/Utility";
+import { addToCartRepeater } from "../../utility/api/RepeaterAPI";
+import { useFrontDataContext } from "../../context/FrontContextProvider";
 
 const FrontLogin = () => {
+
+  const useLocationData = useLocation()?.state
+  const pageToRedirect = useLocationData ? useLocationData?.data : null 
+  console.log("pageToRedirect",pageToRedirect)
+
+  const { getWishlistFun } = useFrontDataContext();
+
   const [mobileNumber, setMobileNumber] = useState("");
   const [loading, setLoading] = useState(false)
   const [otpSent, setOtpSent] = useState(false);
@@ -15,11 +23,9 @@ const FrontLogin = () => {
 
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [error, setError] = useState("");
-  const [setEditingMobileNumber] = useState(false);
-  const [resendTimeout, setResendTimeout] = useState(null);
   const otpInputs = [useRef(), useRef(), useRef(), useRef()];
   const navigate = useNavigate()
-
+  const [countdown, setCountdown] = useState(60);
 
   const [customerVal, setCustomerVal] = useState({
     'id': '',
@@ -27,16 +33,20 @@ const FrontLogin = () => {
     'email': ''
   })
 
+  const [count, setCount] = useState(0)
   useEffect(() => {
     if (otpSent) {
-      const timeout = setTimeout(() => {
-        setOtpSent(false);
-        clearTimeout(timeout);
-      }, 35000);
-      setResendTimeout(timeout);
+      const timer = setInterval(() => {
+        setCountdown((prevCount) => {
+          if (prevCount === 1) {
+            clearInterval(timer);
+          }
+          return prevCount - 1;
+        });
+      }, 1000);
+      return () => clearInterval(timer);
     }
-  }, [otpSent]);
-
+  }, [otpSent, count]);
 
   const handleInputVal = (e) => {
     setCustomerVal({ ...customerVal, [e.target.name]: e.target.value })
@@ -48,6 +58,7 @@ const FrontLogin = () => {
     try {
       if (mobileNumber.length !== 10 || isNaN(mobileNumber)) {
         setError("Kindly enter a valid mobile number.");
+        setLoading(false)
       } else {
         const params = {
           phone: mobileNumber,
@@ -77,12 +88,10 @@ const FrontLogin = () => {
     newOtp[index] = value;
     setOtp(newOtp);
 
-    // Automatically focus on the next input field after entering a number
     if (value !== "" && index < otpInputs.length - 1) {
       otpInputs[index + 1].current.focus();
     }
 
-    // If value is deleted, move focus to the previous input field
     if (value === "" && index > 0) {
       otpInputs[index - 1].current.focus();
     }
@@ -108,12 +117,27 @@ const FrontLogin = () => {
         }
         setLoading(false)
         encryptLocalStorageData('customer-secret', dataParam, 'DoNotTryToAccess')
-        if (!dataParam.name) {
-          setIsType('register')
-          setCustomerVal({ ...customerVal, 'id': dataParam.id })
-        }else{
-          navigate(-1)
+        const cart = sessionStorage.getItem('cart')
+        if(cart){
+          await addToCartRepeater(JSON.parse(cart), getWishlistFun);
         }
+        sessionStorage.removeItem('cart')
+        
+        if(pageToRedirect == "buy"){
+          console.log("CheckOutCall", pageToRedirect)
+          navigate('/checkout')
+        }else{
+          console.log("Home", pageToRedirect)
+          navigate('/')
+        }
+
+        // if (!dataParam.name) {
+        //   setIsType('register')
+        //   setCustomerVal({ ...customerVal, 'id': dataParam.id })
+        //   navigate('/')
+        // } else {
+        //   navigate('/')
+        // }
       } else {
         setError(res?.data?.message);
         setLoading(false)
@@ -124,10 +148,9 @@ const FrontLogin = () => {
     }
   };
 
+
   const handleEditMobileNumber = () => {
-    setEditingMobileNumber(true);
     setOtpSent(false);
-    clearTimeout(resendTimeout);
   };
 
   const handleUpdateProdile = async (e) => {
@@ -138,14 +161,20 @@ const FrontLogin = () => {
       if (res?.data?.status) {
         navigate(-1)
         setLoading(false)
-      }else{
+      } else {
         setLoading(false)
       }
     } catch (error) {
       setLoading(false)
-
     }
   }
+
+  const handleResendOtp = () => {
+    setCountdown(60);
+    setCount(count + 1)
+    setOtpSent(true);
+    handleMobileNumberSubmit(new Event('submit'));
+  };
 
   return (
     <>
@@ -235,8 +264,8 @@ const FrontLogin = () => {
                           </button>
                           <p className="tersm-condition mt-4">
                             By continuing, I agree to the{" "}
-                            <Link to="">Terms of Use</Link> &{" "}
-                            <Link to=""> Privacy Policy </Link>
+                            <Link to="/term-and-condition">Terms of Use</Link> &{" "}
+                            <Link to="/privacy-policy"> Privacy Policy </Link>
                           </p>
                         </form>
                       ) : (
@@ -245,17 +274,17 @@ const FrontLogin = () => {
                           <p>We have sent verification code to +91 {mobileNumber}   <button
                             type="button"
                             className="editnum"
-                            onClick={handleEditMobileNumber}
+                            onClick={() => handleEditMobileNumber()}
                           >
                             Edit
                           </button></p>
 
                           <div className="custom-otp mt-3">
-                            {otp.map((digit, index) => (
+                            {otp?.map((digit, index) => (
                               <input
                                 key={index}
                                 ref={otpInputs[index]}
-                                type="text"
+                                type="tel"
                                 maxLength="1"
                                 value={digit}
                                 onChange={(e) =>
@@ -271,7 +300,13 @@ const FrontLogin = () => {
                             <p className="text-start errorlogin mt-3">
                               <i className="fas fa-exclamation-triangle"></i> {error}</p>
                           )}
-                          <p className="mt-3 mb-0"><i className="fa-regular fa-clock"></i> Resend Otp in 35 sec</p>
+                          {countdown > 0 && (
+                            <p className="mt-3 mb-0"><i className="fa-regular fa-clock"></i> Resend Otp in {countdown} sec</p>
+
+                          )}
+                          {otpSent && countdown === 0 && (
+                            <button onClick={handleResendOtp} className="btn btn-sm btn-warning mt-2">Resend OTP</button>
+                          )}
 
                           <button type="submit" className="shop_now btn-2 mt-4 w-100">
                             {
@@ -286,9 +321,6 @@ const FrontLogin = () => {
                       )}
                     </>
                 }
-
-
-
 
               </div>
             </div>

@@ -265,7 +265,7 @@ const Address = () => {
                           <tr>
                             <td>
                               Discount{" "}
-                              <span className="text-muted">(Toner15)</span>:
+                              <span>(Toner15)</span>:
                             </td>
                             <td className="text-end cart-discount">$18.00</td>
                           </tr>

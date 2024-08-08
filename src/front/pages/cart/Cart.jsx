@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import productimg from "../../../assets/img/product.png";
 import { useFrontDataContext } from "../../../context/FrontContextProvider";
-import { imgBaseURL } from "../../../utility/Utility";
+import { authCustomer, imgBaseURL } from "../../../utility/Utility";
+import { Link } from "react-router-dom";
+import emptycart from "../../../assets/img/empty-cart.png";
 
 const Cart = () => {
-  const { cartData } = useFrontDataContext()
+  const { cartData, removeCartItemFun, addProductInWishlistFun } = useFrontDataContext()
 
   const [quantity, setQuantity] = useState(1);
 
@@ -18,31 +19,30 @@ const Cart = () => {
     }
   };
 
-  const formatQuantity = (quantity) => {
-    return quantity < 10 ? `0${quantity}` : quantity;
-  };
   return (
     <>
       <div className="row">
         <div className="col-lg-12">
-          <div className="alert alert-danger text-center text-capitalize mb-4 fs-14">
+          <div className="alert alert-danger text-center text-capitalize mb-3 fs-14">
             save up to <b>30%</b> to <b>40%</b> off omg! just look at the{" "}
             <b>great deals</b>!
           </div>
         </div>
       </div>
 
-      <div class="col-lg-8">
         <div class="d-flex align-items-center mb-4">
           <h5 class="mb-0 flex-grow-1 fw-medium">
             There are <span class="fw-bold product-count">{cartData.length}</span>{" "}
             products in your cart
           </h5>
-          <div class="flex-shrink-0">
-            <a href="#!" class="text-decoration-underline">
-              Clear Cart
-            </a>
-          </div>
+          {
+            cartData?.length > 1 &&
+            <div class="flex-shrink-0">
+              <button type="button" className="btn-normals w-xs" onClick={() => removeCartItemFun(`C_${authCustomer()?.id}`)}>
+                Clear Cart
+              </button>
+            </div>
+          }
         </div>
         {
           cartData?.length > 0 ?
@@ -61,14 +61,8 @@ const Cart = () => {
                       <a href="#!">
                         <h5 class="fs-16 lh-base mb-1">{item?.product?.name}</h5>
                       </a>
-                      <ul class="list-inline text-muted fs-13 mb-3">
-                        <span> SKU : {item?.product?.sku}</span>
-                        {/* <li class="list-inline-item">
-                          Color : <span class="fw-medium">Red</span>
-                        </li>
-                        <li class="list-inline-item">
-                          Size : <span class="fw-medium">M</span>
-                        </li> */}
+                      <ul class="list-inline fs-13 mb-3">
+                        <span> SKU : <span style={{color: '#E0A11C'}}>{item?.product?.sku}</span></span>
                       </ul>
                       <div className="product-button mb-0 mt-2">
                         <div className="input-step">
@@ -80,7 +74,7 @@ const Cart = () => {
                     </div>
                     <div class="col-sm-auto">
                       <div class="text-lg-end">
-                        <p class="text-muted mb-1 fs-12">Item Price:</p>
+                        <p class=" mb-1 fs-12">Item Price:</p>
                         <h5 class="fs-16">
                           ₹<span class="product-price">{item?.product?.sale_price}</span>
                         </h5>
@@ -93,29 +87,26 @@ const Cart = () => {
                     <div class="col-sm">
                       <div class="d-flex flex-wrap my-n1">
                         <div>
-                          <a
-                            href="#!"
-                            class="d-block p-1 px-2"
-                            data-bs-toggle="modal"
-                            data-bs-target="#removeItemModal"
-                          >
+                          <Link className="d-block" to={'#'} onClick={() => removeCartItemFun(item?.id)}>
                             <i class="fa fa-trash  me-1"></i>{" "}
                             Remove
-                          </a>
+                          </Link>
                         </div>
                         <div>
-                          <a href="#!" class="d-block p-1 px-2">
+
+                          <Link className="d-block" to={'#'} onClick={() => addProductInWishlistFun(item?.product?.id)}>
                             <i class="fa fa-heart  me-1"></i>{" "}
                             Add Wishlist
-                          </a>
+                          </Link>
+
                         </div>
                       </div>
                     </div>
                     <div class="col-sm-auto">
-                      <div class="d-flex align-items-center gap-2 text-muted">
+                      <div class="d-flex align-items-center gap-2">
                         <div>Total :</div>
                         <h5 class="fs-14 mb-0">
-                        ₹<span class="product-line-price">{item?.product?.sale_price * parseInt(item.qnt)}</span>
+                          ₹<span class="product-line-price">{item?.product?.sale_price * parseInt(item.qnt)}</span>
                         </h5>
                       </div>
                     </div>
@@ -125,10 +116,12 @@ const Cart = () => {
             ))
             :
             <>
-              <h5>There are no product added on your cart.</h5>
+              <div class="product-item-inner">
+                <img src={emptycart} alt="" />
+                <h4>There are no product added on your cart.</h4>
+              </div>
             </>
         }
-      </div>
     </>
   );
 };

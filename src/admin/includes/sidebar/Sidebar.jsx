@@ -1,36 +1,40 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { logo } from '../../../utility/Utility'
 
 const Sidebar = () => {
+    const toggleMenu = () => {
+        setIsMenuOpen(prevState => !prevState);
+    };
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    useEffect(() => {
+        const handleToggleMenu = () => {
+            setIsMenuOpen(prevState => !prevState);
+        };
+        window.addEventListener('toggleMenu', handleToggleMenu);
+        return () => {
+            window.removeEventListener('toggleMenu', handleToggleMenu);
+        };
+    }, []);
     return (
         <>
-            <aside id="layout-menu" className="layout-menu menu-vertical menu bg-menu-theme">
+            <aside id="layout-menu" className={`layout-menu menu-vertical menu bg-menu-theme ${isMenuOpen ? 'layout-menu-open' : ''}`}>
                 <div className="app-brand demo ">
                     <Link to={'/admin/dashboard'} className="app-brand-link">
-                        {/* <span className="app-brand-logo demo">
-                            <svg width={32} height={22} viewBox="0 0 32 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fillRule="evenodd" clipRule="evenodd" d="M0.00172773 0V6.85398C0.00172773 6.85398 -0.133178 9.01207 1.98092 10.8388L13.6912 21.9964L19.7809 21.9181L18.8042 9.88248L16.4951 7.17289L9.23799 0H0.00172773Z" fill="#7367F0" />
-                                <path opacity="0.06" fillRule="evenodd" clipRule="evenodd" d="M7.69824 16.4364L12.5199 3.23696L16.5541 7.25596L7.69824 16.4364Z" fill="#161616" />
-                                <path opacity="0.06" fillRule="evenodd" clipRule="evenodd" d="M8.07751 15.9175L13.9419 4.63989L16.5849 7.28475L8.07751 15.9175Z" fill="#161616" />
-                                <path fillRule="evenodd" clipRule="evenodd" d="M7.77295 16.3566L23.6563 0H32V6.88383C32 6.88383 31.8262 9.17836 30.6591 10.4057L19.7824 22H13.6938L7.77295 16.3566Z" fill="#7367F0" />
-                            </svg>
-                        </span>
-                        <span className="app-brand-text demo menu-text fw-bold">Vuexy</span> */}
                         <div className='text-center'>
-                        <img src={logo} alt="" style={{width: '80px'}}/>
+                            <img src={logo} alt="" style={{ width: '150px' }} />
                         </div>
                     </Link>
-                    <Link to={'#'} className="layout-menu-toggle menu-link text-large ms-auto">
+                    <a href="javascript:void(0);" className="layout-menu-toggle menu-link text-large ms-auto" id="layout-toggle" onClick={toggleMenu}>
                         <i className="ti menu-toggle-icon d-none d-xl-block ti-sm align-middle" />
-                        <i className="ti ti-x d-block d-xl-none ti-sm align-middle" />
-                    </Link>
+                    </a>
+                    <a href="javascript:void(0);" className="layout-menu-toggle menu-link text-large ms-auto mobile_togg_btn" id="layout-toggle" onClick={toggleMenu}>
+                        <i class="ti menu-toggle-icon ti-sm align-middle"></i>
+                    </a>
                 </div>
                 <div className="menu-inner-shadow" />
                 <ul className="menu-inner py-1">
-
-
-                    <li className="menu-item">
+                    <li className="menu-item active">
                         <Link to={'/admin/dashboard'} className="menu-link">
                             <i className="menu-icon tf-icons ti ti-table" />
                             <div data-i18n="Tables">Dashboard</div>
@@ -45,83 +49,64 @@ const Sidebar = () => {
                         <ul className="collapse" id="products">
                             <li className="menu-item">
                                 <Link to={'/admin/products'} className="menu-link">
-                                    <div data-i18n="Product List">Product List</div>
+                                    <div data-i18n="Product List">All Product </div>
                                 </Link>
                             </li>
-                            <li className="menu-item">
-                                <Link to={'/admin/add-products'} className="menu-link">
-                                    <div data-i18n="Add Product">Add Product</div>
-                                </Link>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li className="menu-item">
-                        <Link to={'#'} className="navbar-toggler menu-link menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#orders" aria-controls="orders" aria-expanded="false" aria-label="Toggle navigation">
-                            <i className="menu-icon tf-icons ti ti-shopping-cart" />
-                            <div data-i18n="Order">Order</div>
-                        </Link>
-                        <ul className="collapse" id="orders">
-                            <li className="menu-item">
-                                <Link to={'#'} className="menu-link">
-                                    <div data-i18n="Order List">Order List</div>
-                                </Link>
-                            </li>
-                            <li className="menu-item">
-                                <Link to={'#'} className="menu-link">
-                                    <div data-i18n="Order Details">Order Details</div>
-                                </Link>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li className="menu-item">
-                        <Link to={'#'} className="navbar-toggler menu-link menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#customers" aria-controls="customers" aria-expanded="false" aria-label="Toggle navigation">
-                            <i className="menu-icon tf-icons ti ti-users" />
-                            <div data-i18n="Order">Customer</div>
-                        </Link>
-                        <ul className="collapse" id="customers">
-                            <li className="menu-item">
-                                <Link to={'/admin/customer'} className="menu-link">
-                                    <div data-i18n="Order List">All Customer</div>
-                                </Link>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li className="menu-item">
-                        <Link to={'#'} className="navbar-toggler menu-link menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#utility" aria-controls="utility" aria-expanded="false" aria-label="Toggle navigation">
-                            <i className="menu-icon tf-icons ti ti-users" />
-                            <div data-i18n="Order">Utility</div>
-                        </Link>
-                        <ul className="collapse" id="utility">
                             <li className="menu-item">
                                 <Link to={'/admin/category'} className="menu-link">
-                                    <div>Category</div>
+                                    <div>All Category</div>
                                 </Link>
                             </li>
                             <li className="menu-item">
                                 <Link to={'/admin/brand'} className="menu-link">
-                                    <div>Brand</div>
+                                    <div>All Brand</div>
                                 </Link>
                             </li>
                             <li className="menu-item">
                                 <Link to={'/admin/attributes'} className="menu-link">
-                                    <div>Attributes</div>
+                                    <div>All Attributes</div>
                                 </Link>
                             </li>
                         </ul>
                     </li>
 
                     <li className="menu-item">
-                        <Link to={'#'} className="navbar-toggler menu-link menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#web_attributes" aria-controls="web_attributes" aria-expanded="false" aria-label="Toggle navigation">
+                        <Link to={'/admin/orders'} className="menu-link">
+                            <i class="fa-solid fa-truck-ramp-box me-2"></i>
+                            <div data-i18n="Tables">All Orders</div>
+                        </Link>
+                    </li>
+
+                    <li className="menu-item">
+                        <Link to={'/admin/transaction'} className="menu-link">
+                            <i class="fa-solid fa-truck-ramp-box me-2"></i>
+                            <div data-i18n="Tables">Transaction</div>
+                        </Link>
+                    </li>
+
+                    <li className="menu-item">
+                        <Link to={'/admin/customer'} className="menu-link">
                             <i className="menu-icon tf-icons ti ti-users" />
-                            <div data-i18n="Order">Web Attributes</div>
+                            <div data-i18n="Tables">Customers</div>
+                        </Link>
+                    </li>
+                    <li className="menu-item">
+                        <Link to={'/admin/customer-reviews'} className="menu-link">
+                            <i className="menu-icon tf-icons ti ti-star" />
+                            <div data-i18n="Tables">Customer Reviews</div>
+                        </Link>
+                    </li>
+
+                    {/* Web Settings */}
+                    <li className="menu-item">
+                        <Link to={'#'} className="navbar-toggler menu-link menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#web_attributes" aria-controls="web_attributes" aria-expanded="false" aria-label="Toggle navigation">
+                            <i class="fa-solid fa-gears me-2"></i>
+                            <div data-i18n="Order">Web Settings</div>
                         </Link>
                         <ul className="collapse" id="web_attributes">
                             <li className="menu-item">
                                 <Link to={'/admin/offers'} className="menu-link">
-                                    <div>Offers</div>
+                                    <div>Coupon & Offers</div>
                                 </Link>
                             </li>
                             <li className="menu-item">
@@ -131,12 +116,112 @@ const Sidebar = () => {
                             </li>
                             <li className="menu-item">
                                 <Link to={'/admin/ayurved-experience'} className="menu-link">
-                                    <div>Ayurved Experience</div>
+                                    <div>Homepage Content</div>
                                 </Link>
                             </li>
                         </ul>
                     </li>
 
+                    {/* Pages */}
+                    <li className="menu-item">
+                        <Link to={'#'} className="navbar-toggler menu-link menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#web_pages" aria-controls="web_pages" aria-expanded="false" aria-label="Toggle navigation">
+                            <i class="fa-solid fa-pager  me-2"></i>
+                            <div data-i18n="Order">Pages</div>
+                        </Link>
+                        <ul className="collapse" id="web_pages">
+                            <li className="menu-item">
+                                <Link to={'/admin/page/about-us'} className="menu-link">
+                                    <div>About Us</div>
+                                </Link>
+                            </li>
+                            <li className="menu-item">
+                                <Link to={'/admin/page/contact-us'} className="menu-link">
+                                    <div>Contact Us</div>
+                                </Link>
+                            </li>
+                            <li className="menu-item">
+                                <Link to={'/admin/page/term-and-condition'} className="menu-link">
+                                    <div>Term & Condition</div>
+                                </Link>
+                            </li>
+                            <li className="menu-item">
+                                <Link to={'/admin/page/privacy-policy'} className="menu-link">
+                                    <div>Privacy Policy</div>
+                                </Link>
+                            </li>
+                            <li className="menu-item">
+                                <Link to={'/admin/page/shipping-policy'} className="menu-link">
+                                    <div>Shipping Policy</div>
+                                </Link>
+                            </li>
+                            <li className="menu-item">
+                                <Link to={'/admin/page/cancellation-returns-refunds-policy'} className="menu-link">
+                                    <div>Cancellation Policy</div>
+                                </Link>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li className="menu-item">
+                        <Link to={'#'} className="navbar-toggler menu-link menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#blogs" aria-controls="blogs" aria-expanded="false" aria-label="Toggle navigation">
+                            <i class="fa-solid fa-square  me-2"></i>
+                            <div data-i18n="Order">Blog</div>
+                        </Link>
+                        <ul className="collapse" id="blogs">
+                            <li className="menu-item">
+                                <Link to={'/admin/blog/all'} className="menu-link">
+                                    <div data-i18n="Tables">Blogs</div>
+                                </Link>
+                            </li>
+                            <li className="menu-item">
+                                <Link to={'/admin/blog/comments'} className="menu-link">
+                                    <div>Comments</div>
+                                </Link>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li className="menu-item">
+                        <Link to={'/admin/reviews/all'} className="menu-link">
+                            <i className="menu-icon tf-icons ti ti-star" />
+                            <div data-i18n="Tables">Reviews</div>
+                        </Link>
+                    </li>
+
+                    <li className="menu-item">
+                        <Link to={'/admin/queries'} className="menu-link">
+                            <i className="menu-icon fa-solid fa-clipboard-question" />
+                            <div data-i18n="Tables">Queries</div>
+                        </Link>
+                    </li>
+
+                    <li className="menu-item">
+                        <Link to={'/admin/utils'} className="menu-link">
+                            <i className="menu-icon fa-solid fa-magnet" />
+                            <div data-i18n="Tables">Utility</div>
+                        </Link>
+                    </li>
+
+                    <li className="menu-item">
+                        <Link to={'#'} className="navbar-toggler menu-link menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#reports" aria-controls="reports" aria-expanded="false" aria-label="Toggle navigation">
+                            <i class="fa-solid fa-gears me-2"></i>
+                            <div data-i18n="Order">Reports</div>
+                        </Link>
+                        <ul className="collapse" id="reports">
+                            <li className="menu-item">
+                                <Link to={'/admin/reports/customer'} className="menu-link">
+                                    <div>Customer</div>
+                                </Link>
+                            </li>
+
+                            <li className="menu-item">
+                                <Link to={'/admin/reports/order-products'} className="menu-link">
+                                    <div>GSTR</div>
+                                </Link>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </aside>
         </>

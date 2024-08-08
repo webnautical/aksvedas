@@ -28,13 +28,32 @@ import ProductDetail from './front/pages/product-details/ProductDetail';
 import { OfferList } from './admin/pages/Offers/OfferList';
 import ImagesVideo from './admin/pages/ImagesVideos/ImagesVideo';
 import PrivacyPolicy from './front/pages/privacy-policy/PrivacyPolicy';
+import { TermsConditions } from './front/pages/terms-and-conditons/TermsConditions';
 import Address from './front/pages/address/address';
-import Cart from './front/pages/cart/Cart';
-import CheckOut from './front/pages/checkout/CheckOut';
-import Payment from './front/pages/payment/Payment';
 import Account from './front/pages/account/Account';
 import { AyurvedExperience } from './admin/pages/SubPage/AyurvedExperience';
 import Index from './front/pages/cart-checkout-payment/Index';
+import OrderDetails from './front/pages/account/OrderDetails';
+import OrderList from './admin/pages/Orders/OrderList';
+import { OrderDetails as AdminOrderDetails } from './admin/pages/Orders/OrderDetails';
+import OrderSuccess from './front/pages/account/OrderSuccess';
+import Blog from './front/pages/blog/Blog';
+import BlogDetails from './front/pages/blog/BlogDetails';
+import ScrollToTop from './components/front/ScrollToTop';
+import CancellationReturnsRefundsPolicy from './front/pages/terms-and-conditons/CancellationReturnsRefundsPolicy';
+import ShippingPolicy from './front/pages/shipping-policy/ShippingPolicy';
+import ShippingNow from './admin/pages/Orders/ShippingNow';
+import CustomerReviewList from './admin/pages/Reviews/CustomerReviewList';
+import StaticPages from './admin/pages/StaticPages/StaticPages';
+import BlogCommentList from './admin/pages/Blog/BlogCommentList';
+import StaticPagesFront from './front/pages/staticPages/StaticPages';
+import FixedReviews from './admin/pages/Reviews/FixedReviews';
+import QueryList from './admin/pages/Query/QueryList';
+import Utils from './admin/pages/Utils/Utils';
+import CustomerReports from './admin/pages/Reports/CustomerReports';
+import OrderFailure from './front/pages/account/OrderFailure';
+import Transaction from './admin/pages/Orders/Transaction';
+import OrderProducts from './admin/pages/Reports/OrderProducts';
 function App() {
   const path = useLocation().pathname
   useEffect(() => {
@@ -43,20 +62,29 @@ function App() {
   }, [path]);
   return (
     <>
+      <ScrollToTop />
       <Routes>
-
         <Route path='/' element={<FrontWeb cmp={Home} />} />
-        <Route path='/about' element={<FrontWeb cmp={About} />} />
-        <Route path='/contact-us' element={<FrontWeb cmp={ContactUs} />} />
+        <Route path='/about' element={<FrontWeb cmp={StaticPagesFront} />} />
+        <Route path='/privacy-policy' element={<FrontWeb cmp={StaticPagesFront} />} />
+        <Route path='/term-and-condition' element={<FrontWeb cmp={StaticPagesFront} />} />
+        <Route path='/cancellation-returns-refunds-policy' element={<FrontWeb cmp={StaticPagesFront} />} />
+        <Route path='/shipping-policy' element={<FrontWeb cmp={StaticPagesFront} />} />
+        <Route path='/contact-us' element={<FrontWeb cmp={StaticPagesFront} />} />
+
+        <Route path='/blog' element={<FrontWeb cmp={Blog} />} />
+        <Route path='/blog-details/:slug' element={<FrontWeb cmp={BlogDetails} />} />
         <Route path='/collections' element={<FrontWeb cmp={Collections} />} />
         <Route path='/product-detail/:slug' element={<FrontWeb cmp={ProductDetail} />} />
         <Route path='/shop/:category' element={<FrontWeb cmp={Shop} />} />
-        <Route path='/privacy-policy' element={<FrontWeb cmp={PrivacyPolicy} />} />
         <Route path='/address' element={<FrontWeb cmp={Address} />} />
         <Route path='/cart' element={<FrontWeb cmp={Index} />} />
         <Route path='/payment' element={<FrontWeb cmp={Index} />} />
         <Route path='/checkout' element={<FrontWeb cmp={Index} />} />
-        <Route path='/account' element={<FrontWeb cmp={Account} />} />
+        <Route path='/account/:page' element={<FrontWeb cmp={Account} />} />
+        <Route path='/order-details/:order_id' element={<FrontWeb cmp={OrderDetails} />} />
+        <Route path='/order-success/:order_id' element={<FrontWeb cmp={OrderSuccess} />} />
+        <Route path='/order-failure/:tracking_id' element={<FrontWeb cmp={OrderFailure} />} />
         <Route path='/login' Component={FrontLogin} />
 
         <Route path='/admin' Component={Login} />
@@ -70,6 +98,12 @@ function App() {
         <Route exact path="/admin/products" element={<AdminAuth cmp={Product} />} />
         <Route exact path="/admin/products/:slug" element={<AdminAuth cmp={ProductDetails} />} />
 
+        <Route exact path="/admin/orders" element={<AdminAuth cmp={OrderList} />} />
+        <Route exact path="/admin/transaction" element={<AdminAuth cmp={Transaction} />} />
+        <Route exact path="/admin/order-details/:order_id" element={<AdminAuth cmp={AdminOrderDetails} />} />
+        <Route exact path="/admin/shipping-now/:order_id" element={<AdminAuth cmp={ShippingNow} />} />
+
+
         <Route exact path="/admin/add-products" element={<AdminAuth cmp={AddProduct} />} />
         <Route exact path="/admin/my-profile" element={<AdminAuth cmp={MyProfile} />} />
         <Route exact path="/admin/customer" element={<AdminAuth cmp={Customer} />} />
@@ -78,6 +112,19 @@ function App() {
         <Route exact path="/admin/offers" element={<AdminAuth cmp={OfferList} />} />
         <Route exact path="/admin/images-videos" element={<AdminAuth cmp={ImagesVideo} />} />
         <Route exact path="/admin/ayurved-experience" element={<AdminAuth cmp={AyurvedExperience} />} />
+
+        <Route exact path="/admin/customer-reviews" element={<AdminAuth cmp={CustomerReviewList} />} />
+        <Route exact path="/admin/page/:route" element={<AdminAuth cmp={StaticPages} />} />
+        <Route exact path="/admin/blog/:page" element={<AdminAuth cmp={BlogCommentList} />} />
+        <Route exact path="/admin/reviews/:page" element={<AdminAuth cmp={FixedReviews} />} />
+        <Route exact path="/admin/queries" element={<AdminAuth cmp={QueryList} />} />
+        <Route exact path="/admin/utils" element={<AdminAuth cmp={Utils} />} />
+
+
+        <Route exact path="/admin/reports/customer" element={<AdminAuth cmp={CustomerReports} />} />
+        <Route exact path="/admin/reports/order-products" element={<AdminAuth cmp={OrderProducts} />} />
+
+
 
         {/* Redirect Page */}
         <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />

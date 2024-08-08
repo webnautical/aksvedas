@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { defaultUserIMG } from '../../../utility/Utility'
 import { useParams } from 'react-router'
-import { getDataAPI } from '../../../utility/api/api'
+import { APICALL, getDataAPI } from '../../../utility/api/api'
 import Spinner from '../../../components/admin/Spinner'
 import { timeAgo } from '../../../utility/Date'
+import { Link } from 'react-router-dom'
 
 const CustomerDetails = () => {
     const { id } = useParams()
@@ -11,6 +12,8 @@ const CustomerDetails = () => {
     const [customerDetails, setCustomerDetails] = useState({})
     const [subPage, setSubPage] = useState(null)
 
+    const [editLoyalty, setEditLoyalty] = useState(false)
+    const [loyaltyVal, setLoyaltyVal] = useState(0)
     useEffect(() => {
         if (id) {
             getCustomerDetails()
@@ -25,10 +28,10 @@ const CustomerDetails = () => {
         setLoading(true)
         try {
             const res = await getDataAPI(`/v1/customer-details/${id}`)
-            console.log(res)
             if (res.status) {
                 setLoading(false)
-                setCustomerDetails(res?.data)
+                setCustomerDetails(res?.data?.data)
+                setLoyaltyVal(res?.data?.data?.loyalty)
             } else {
                 setLoading(false)
                 setCustomerDetails({})
@@ -46,20 +49,34 @@ const CustomerDetails = () => {
         }
     }
 
+    const handleUpdate = async () =>{
+        setLoading(true)
+        try {
+            const params = {id: id, loyalty: loyaltyVal}
+            const res = await APICALL(`/v1/update-customer-details`, 'post', params)
+            if (res.status) {
+                setLoading(false)
+                setEditLoyalty(false)
+                getCustomerDetails()
+            } else {
+                setLoading(false)
+            }
+        } catch (error) {
+            setLoading(false)
+            console.log(error)
+        }
+    }
+
+
     return (
         <>
             <div className="content-wrapper">
-                <div className="container-xxl flex-grow-1 container-p-y">
+                <div className="flex-grow-1 container-p-y">
                     <div className="d-flex flex-column flex-sm-row align-items-center justify-content-sm-between mb-4 text-center text-sm-start gap-2">
                         <div className="mb-2 mb-sm-0">
-                            <h4 className="mb-1">
-                                Customer ID #{id}
-                            </h4>
-                            <p className="mb-0">
-                                {timeAgo(customerDetails?.created_at)}
-                            </p>
+                            <h4 className="mb-1"> Customer ID #{id}</h4>
+                            <p className="mb-0">{timeAgo(customerDetails?.created_at)}</p>
                         </div>
-                        <button type="button" className="btn btn-label-danger delete-customer">Delete Customer</button>
                     </div>
                     <div className="row">
                         <div className="col-xl-4 col-lg-5 col-md-5 order-1 order-md-0">
@@ -74,32 +91,8 @@ const CustomerDetails = () => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="d-flex justify-content-around flex-wrap my-4">
-                                        <div className="d-flex align-items-center gap-2">
-                                            <div className="avatar">
-                                                <div className="avatar-initial rounded bg-label-primary">
-                                                    <i className="ti ti-shopping-cart ti-md" />
-                                                </div>
-                                            </div>
-                                            <div className="gap-0 d-flex flex-column">
-                                                <p className="mb-0 fw-medium">184</p>
-                                                <small>Orders</small>
-                                            </div>
-                                        </div>
-                                        <div className="d-flex align-items-center gap-2">
-                                            <div className="avatar">
-                                                <div className="avatar-initial rounded bg-label-primary">
-                                                    <i className="ti ti-currency-dollar ti-md" />
-                                                </div>
-                                            </div>
-                                            <div className="gap-0 d-flex flex-column">
-                                                <p className="mb-0 fw-medium">$12,378</p>
-                                                <small>Spent</small>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div className="info-container">
-                                        <small className="d-block pt-4 border-top fw-normal text-uppercase text-muted my-3">DETAILS</small>
+                                        <small className="d-block pt-4 border-top fw-normal text-uppercase my-3">DETAILS</small>
                                         <ul className="list-unstyled">
                                             <li className="mb-3">
                                                 <span className="fw-medium me-2">Username:</span>
@@ -111,16 +104,13 @@ const CustomerDetails = () => {
                                             </li>
                                             <li className="mb-3">
                                                 <span className="fw-medium me-2">Status:</span>
-                                                {customerDetails.status == 1 ? <><span className="badge bg-label-success">Active</span></> : <><span className="badge bg-label-danger">Deactive</span></>}
+                                                {customerDetails.status == 1 ? <><span className="btn btn-success btn-sm">Active</span></> : <><span className="btn btn-danger btn-sm">Deactive</span></>}
                                             </li>
                                             <li className="mb-3">
                                                 <span className="fw-medium me-2">Contact:</span>
                                                 <span>{checkEmptyElm(customerDetails?.phone)}</span>
                                             </li>
                                         </ul>
-                                        <div className="d-flex justify-content-center">
-                                            <a href="javascript:;" className="btn btn-primary me-3" data-bs-target="#editUser" data-bs-toggle="modal">Edit Details</a>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -128,7 +118,7 @@ const CustomerDetails = () => {
                         <div className="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
                             <ul className="nav nav-pills flex-column flex-md-row mb-3">
                                 <li className="nav-item"><button onClick={() => setTabsPage(null)} className={`nav-link ${subPage == null ? 'active' : ''}`}><i className="ti ti-user me-1" />Overview</button></li>
-                                <li className="nav-item"><button onClick={() => setTabsPage("Security")} className={`nav-link ${subPage == "Security" ? 'active' : ''}`}><i className="ti ti-lock me-1" />Security</button></li>
+                                {/* <li className="nav-item"><button onClick={() => setTabsPage("Security")} className={`nav-link ${subPage == "Security" ? 'active' : ''}`}><i className="ti ti-lock me-1" />Security</button></li> */}
                                 <li className="nav-item"><button onClick={() => setTabsPage("Address")} className={`nav-link ${subPage == "Address" ? 'active' : ''}`}><i className="ti ti-file-invoice me-1" />Address &amp; Billing</button></li>
                             </ul>
 
@@ -136,50 +126,14 @@ const CustomerDetails = () => {
                                 subPage == null ?
                                     <>
                                         <div className="row text-nowrap">
-                                            <div className="col-md-6 mb-4">
-                                                <div className="card h-100">
-                                                    <div className="card-body">
-                                                        <div className="card-icon mb-3">
-                                                            <div className="avatar">
-                                                                <div className="avatar-initial rounded bg-label-primary">
-                                                                    <i className="ti ti-currency-dollar ti-md" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="card-info">
-                                                            <h4 className="card-title mb-3">Account Balance</h4>
-                                                            <div className="d-flex align-items-baseline mb-1 gap-1">
-                                                                <h4 className="text-primary mb-0">$2345</h4>
-                                                                <p className="mb-0"> Credit Left</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6 mb-4">
-                                                <div className="card h-100">
-                                                    <div className="card-body">
-                                                        <div className="card-icon mb-3">
-                                                            <div className="avatar">
-                                                                <div className="avatar-initial rounded bg-label-success">
-                                                                    <i className="ti ti-gift ti-md" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="card-info">
-                                                            <h4 className="card-title mb-3">Loyalty Program</h4>
-                                                            <span className="badge bg-label-success mb-2">Platinum member</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+
                                             <div className="col-md-6 mb-4">
                                                 <div className="card">
                                                     <div className="card-body">
                                                         <div className="card-icon mb-3">
                                                             <div className="avatar">
                                                                 <div className="avatar-initial rounded bg-label-warning">
-                                                                    <i className="ti ti-star ti-md" />
+                                                                    <i class="fa-regular fa-heart"></i>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -199,16 +153,51 @@ const CustomerDetails = () => {
                                                         <div className="card-icon mb-3">
                                                             <div className="avatar">
                                                                 <div className="avatar-initial rounded bg-label-info">
-                                                                    <i className="ti ti-discount ti-md" />
+                                                                    <i class="fa-solid fa-cart-shopping"></i>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div className="card-info">
-                                                            <h4 className="card-title mb-3">Coupons</h4>
+                                                            <h4 className="card-title mb-3">Cart</h4>
                                                             <div className="d-flex align-items-baseline mb-1 gap-1">
-                                                                <h4 className="text-info mb-0">21</h4>
-                                                                <p className="mb-0">Coupons you win</p>
+                                                                <h4 className="text-info mb-0">{customerDetails?.cart?.length}</h4>
+                                                                <p className="mb-0">Item in cart</p>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="col-md-6 mb-4">
+                                                <div className="card h-100">
+                                                    <div className="card-body">
+                                                        <div className="card-icon mb-3 d-flex justify-content-between">
+                                                            <div className="avatar">
+                                                                <div className="avatar-initial rounded bg-label-success">
+                                                                    <i className="ti ti-gift ti-md" />
+                                                                </div>
+                                                            </div>
+                                                            {
+                                                                editLoyalty ?
+                                                                    <button className='icon_btn __danger mx-2' onClick={() => setEditLoyalty(false)}><i className='fa fa-times'></i></button>
+                                                                    :
+                                                                    <button className='icon_btn __warning mx-2' onClick={() => setEditLoyalty(true)}><i className='fa fa-pencil'></i></button>
+                                                            }
+                                                        </div>
+                                                        <div className="card-info">
+                                                            <h4 className="card-title mb-3"> AksCoins</h4>
+                                                            {
+                                                                editLoyalty ?
+                                                                    <>
+                                                                        <div className="form d-flex pb-4">
+                                                                            <input type="text" onChange={(e) => setLoyaltyVal(e.target.value)} value={loyaltyVal} className='form-control' />
+                                                                            <button className='btn btn-primary ms-2' onClick={()=>handleUpdate()}>Save</button>
+                                                                        </div>
+                                                                    </>
+                                                                    :
+
+                                                                    <h1 className="loyalty_text">₹{customerDetails?.loyalty}</h1>
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>
@@ -218,7 +207,7 @@ const CustomerDetails = () => {
                                     :
                                     subPage == 'Security' ?
                                         <>
-                                            <div className="card mb-4">
+                                            {/* <div className="card mb-4">
                                                 <h5 className="card-header">Change Password</h5>
                                                 <div className="card-body">
                                                     <form id="formChangePassword" method="GET" onsubmit="return false" className="fv-plugins-bootstrap5 fv-plugins-framework" noValidate="novalidate">
@@ -265,267 +254,68 @@ const CustomerDetails = () => {
                                                         <a href="javascript:void(0);" className="text-body">Learn more.</a>
                                                     </p>
                                                 </div>
-                                            </div>
-
+                                            </div> */}
 
                                         </>
                                         :
                                         subPage == 'Address' ?
                                             <>
 
-                                                <div className="card card-action mb-4">
-                                                    <div className="card-header align-items-center py-4">
-                                                        <h5 className="card-action-title mb-0">Address Book</h5>
-                                                        <div className="card-action-element">
-                                                            <button className="btn btn-label-primary waves-effect" type="button" data-bs-toggle="modal" data-bs-target="#addNewAddress">Add new address</button>
-                                                        </div>
-                                                    </div>
-                                                    <div className="card-body">
-                                                        <div className="accordion accordion-flush accordion-arrow-left" id="ecommerceBillingAccordionAddress">
-                                                            <div className="accordion-item border-bottom">
-                                                                <div className="accordion-header d-flex justify-content-between align-items-center flex-wrap flex-sm-nowrap" id="headingHome">
-                                                                    <a className="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#ecommerceBillingAddressHome" aria-expanded="false" aria-controls="headingHome" role="button">
-                                                                        <span>
-                                                                            <span className="d-flex gap-2 align-items-baseline">
-                                                                                <span className="h6 mb-1">Home</span>
-                                                                                <span className="badge bg-label-success">Default Address</span>
-                                                                            </span>
-                                                                            <span className="mb-0 text-muted">23 Shatinon Mekalan</span>
-                                                                        </span>
-                                                                    </a>
-                                                                    <div className="d-flex gap-3 p-4 p-sm-0 pt-0 ms-1 ms-sm-0">
-                                                                        <a href="javascript:void(0);"><i className="ti ti-pencil text-secondary ti-sm" /></a>
-                                                                        <a href="javascript:void(0);"><i className="ti ti-trash text-secondary ti-sm" /></a>
-                                                                        <button className="btn p-0" data-bs-toggle="dropdown" aria-expanded="false" role="button"><i className="ti ti-dots-vertical text-secondary ti-sm mt-1" /></button>
-                                                                        <ul className="dropdown-menu">
-                                                                            <li><a className="dropdown-item" href="javascript:void(0);">Set as default address</a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                                <div id="ecommerceBillingAddressHome" className="accordion-collapse collapse" data-bs-parent="#ecommerceBillingAccordionAddress" style={{}}>
-                                                                    <div className="accordion-body ps-4 ms-2">
-                                                                        <h6 className="mb-1">Violet Mendoza</h6>
-                                                                        <p className="mb-1">23 Shatinon Mekalan,</p>
-                                                                        <p className="mb-1">Melbourne, VIC 3000,</p>
-                                                                        <p className="mb-1">LondonUK</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="accordion-item border-bottom border-top-0">
-                                                                <div className="accordion-header d-flex justify-content-between align-items-center flex-wrap flex-sm-nowrap" id="headingOffice">
-                                                                    <a className="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#ecommerceBillingAddressOffice" aria-expanded="false" aria-controls="headingOffice" role="button">
-                                                                        <span className="d-flex flex-column">
-                                                                            <span className="h6 mb-0">Office</span>
-                                                                            <span className="mb-0 text-muted">45 Roker Terrace</span>
-                                                                        </span>
-                                                                    </a>
-                                                                    <div className="d-flex gap-3 p-4 p-sm-0 pt-0 ms-1 ms-sm-0">
-                                                                        <a href="javascript:void(0);"><i className="ti ti-pencil text-secondary ti-sm" /></a>
-                                                                        <a href="javascript:void(0);"><i className="ti ti-trash text-secondary ti-sm" /></a>
-                                                                        <button className="btn p-0" data-bs-toggle="dropdown" aria-expanded="false" role="button"><i className="ti ti-dots-vertical text-secondary ti-sm mt-1" /></button>
-                                                                        <ul className="dropdown-menu">
-                                                                            <li><a className="dropdown-item" href="javascript:void(0);">Set as default address</a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                                <div id="ecommerceBillingAddressOffice" className="accordion-collapse collapse" aria-labelledby="headingOffice" data-bs-parent="#ecommerceBillingAccordionAddress" style={{}}>
-                                                                    <div className="accordion-body ps-4 ms-2">
-                                                                        <h6 className="mb-1">Violet Mendoza</h6>
-                                                                        <p className="mb-1">45 Roker Terrace,</p>
-                                                                        <p className="mb-1">Latheronwheel,</p>
-                                                                        <p className="mb-1">KW5 8NW</p>
-                                                                        <p className="mb-1">LondonUK</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="accordion-item border-top-0">
-                                                                <div className="accordion-header d-flex justify-content-between align-items-center flex-wrap flex-sm-nowrap" id="headingFamily">
-                                                                    <a className="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#ecommerceBillingAddressFamily" aria-expanded="false" aria-controls="headingFamily" role="button">
-                                                                        <span className="d-flex flex-column">
-                                                                            <span className="h6 mb-0">Family</span>
-                                                                            <span className="mb-0 text-muted">512 Water Plant</span>
-                                                                        </span>
-                                                                    </a>
-                                                                    <div className="d-flex gap-3 p-4 p-sm-0 pt-0 ms-1 ms-sm-0">
-                                                                        <a href="javascript:void(0);"><i className="ti ti-pencil text-secondary ti-sm" /></a>
-                                                                        <a href="javascript:void(0);"><i className="ti ti-trash text-secondary ti-sm" /></a>
-                                                                        <button className="btn p-0" data-bs-toggle="dropdown" aria-expanded="false" role="button"><i className="ti ti-dots-vertical text-secondary ti-sm mt-1" /></button>
-                                                                        <ul className="dropdown-menu" style={{}}>
-                                                                            <li><a className="dropdown-item" href="javascript:void(0);">Set as default address</a></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                                <div id="ecommerceBillingAddressFamily" className="accordion-collapse collapse" aria-labelledby="headingFamily" data-bs-parent="#ecommerceBillingAccordionAddress" style={{}}>
-                                                                    <div className="accordion-body ps-4 ms-2">
-                                                                        <h6 className="mb-1">Violet Mendoza</h6>
-                                                                        <p className="mb-1">512 Water Plant,</p>
-                                                                        <p className="mb-1">Melbourne, NY 10036,</p>
-                                                                        <p className="mb-1">New York,</p>
-                                                                        <p className="mb-1">United States</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <div className="accordion accordion-flush accordion-arrow-left" id="ecommerceBillingAccordionAddress">
 
+                                                    {
+                                                        customerDetails?.address?.length > 0 ?
+                                                            customerDetails?.address.map((item, i) => (
+                                                                <div className="accordion-item border-bottom">
+                                                                    <div className="accordion-header d-flex justify-content-between align-items-center flex-wrap flex-sm-nowrap" id="headingHome">
+                                                                        <Link className="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target={`#accordianDropDown${item.id}`} aria-expanded="false" aria-controls="headingHome" role="button">
+                                                                            <span>
+                                                                                <span className="d-flex gap-2 align-items-baseline">
+                                                                                    <span className="h6 mb-1">Address {i + 1}</span>
+                                                                                    {/* <span className="badge bg-label-success">Default Address</span> */}
+                                                                                </span>
+                                                                                <span className="mb-0">{item?.phone}</span>
+                                                                            </span>
+                                                                        </Link>
+                                                                        <div className="d-flex gap-3 p-4 p-sm-0 pt-0 ms-1 ms-sm-0">
+                                                                            {/* <a href="javascript:void(0);"><i className="ti ti-pencil text-secondary ti-sm" /></a>
+                                                                        <a href="javascript:void(0);"><i className="ti ti-trash text-secondary ti-sm" /></a> */}
+                                                                            <button className="btn p-0" data-bs-toggle="dropdown" aria-expanded="false" role="button"><i className="ti ti-dots-vertical text-secondary ti-sm mt-1" /></button>
+
+                                                                            <ul className="dropdown-menu">
+                                                                                <li><Link className="dropdown-item">Set as default address</Link></li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div id={`accordianDropDown${item.id}`} className="accordion-collapse collapse" data-bs-parent="#ecommerceBillingAccordionAddress" style={{}}>
+                                                                        <div className="accordion-body ps-4 ms-2">
+                                                                            {item.address}
+                                                                            <div className='row mt-3'>
+                                                                                <div className="col-md-6">
+                                                                                    <p className='fw-bold'>State : {item.state}</p>
+                                                                                </div>
+                                                                                <div className="col-md-6">
+                                                                                    <p className='fw-bold'>City : {item.city}</p>
+                                                                                </div>
+                                                                                <div className="col-md-6">
+                                                                                    <p className='fw-bold'>Zip Code : {item.zip}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            ))
+                                                            :
+                                                            <>Address not added</>
+                                                    }
+                                                </div>
 
                                             </>
                                             :
                                             <></>
                             }
 
-                        </div>
-                    </div>
-
-
-                    <div className="modal fade" id="editUser" tabIndex={-1} aria-hidden="true">
-                        <div className="modal-dialog modal-lg modal-simple modal-edit-user">
-                            <div className="modal-content p-3 p-md-5">
-                                <div className="modal-body">
-                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" />
-                                    <div className="text-center mb-4">
-                                        <h3 className="mb-2">Edit User Information</h3>
-                                        <p className="text-muted">Updating user details will receive a privacy audit.</p>
-                                    </div>
-                                    <form id="editUserForm" className="row g-3" onsubmit="return false">
-                                        <div className="col-12 col-md-6">
-                                            <label className="form-label" htmlFor="modalEditUserFirstName">First Name</label>
-                                            <input type="text" id="modalEditUserFirstName" name="modalEditUserFirstName" className="form-control" placeholder="John" />
-                                        </div>
-                                        <div className="col-12 col-md-6">
-                                            <label className="form-label" htmlFor="modalEditUserLastName">Last Name</label>
-                                            <input type="text" id="modalEditUserLastName" name="modalEditUserLastName" className="form-control" placeholder="Doe" />
-                                        </div>
-                                        <div className="col-12">
-                                            <label className="form-label" htmlFor="modalEditUserName">Username</label>
-                                            <input type="text" id="modalEditUserName" name="modalEditUserName" className="form-control" placeholder="john.doe.007" />
-                                        </div>
-                                        <div className="col-12 col-md-6">
-                                            <label className="form-label" htmlFor="modalEditUserEmail">Email</label>
-                                            <input type="text" id="modalEditUserEmail" name="modalEditUserEmail" className="form-control" placeholder="example@domain.com" />
-                                        </div>
-                                        <div className="col-12 col-md-6">
-                                            <label className="form-label" htmlFor="modalEditUserStatus">Status</label>
-                                            <select id="modalEditUserStatus" name="modalEditUserStatus" className="select2 form-select" aria-label="Default select example">
-                                                <option selected>Status</option>
-                                                <option value={1}>Active</option>
-                                                <option value={2}>Inactive</option>
-                                                <option value={3}>Suspended</option>
-                                            </select>
-                                        </div>
-                                        <div className="col-12 col-md-6">
-                                            <label className="form-label" htmlFor="modalEditTaxID">Tax ID</label>
-                                            <input type="text" id="modalEditTaxID" name="modalEditTaxID" className="form-control modal-edit-tax-id" placeholder="123 456 7890" />
-                                        </div>
-                                        <div className="col-12 col-md-6">
-                                            <label className="form-label" htmlFor="modalEditUserPhone">Phone Number</label>
-                                            <div className="input-group">
-                                                <span className="input-group-text">US (+1)</span>
-                                                <input type="text" id="modalEditUserPhone" name="modalEditUserPhone" className="form-control phone-number-mask" placeholder="202 555 0111" />
-                                            </div>
-                                        </div>
-                                        <div className="col-12 col-md-6">
-                                            <label className="form-label" htmlFor="modalEditUserLanguage">Language</label>
-                                            <select id="modalEditUserLanguage" name="modalEditUserLanguage" className="select2 form-select" multiple>
-                                                <option value>Select</option>
-                                                <option value="english" selected>English</option>
-                                                <option value="spanish">Spanish</option>
-                                                <option value="french">French</option>
-                                                <option value="german">German</option>
-                                                <option value="dutch">Dutch</option>
-                                                <option value="hebrew">Hebrew</option>
-                                                <option value="sanskrit">Sanskrit</option>
-                                                <option value="hindi">Hindi</option>
-                                            </select>
-                                        </div>
-                                        <div className="col-12 col-md-6">
-                                            <label className="form-label" htmlFor="modalEditUserCountry">Country</label>
-                                            <select id="modalEditUserCountry" name="modalEditUserCountry" className="select2 form-select" data-allow-clear="true">
-                                                <option value>Select</option>
-                                                <option value="Australia">Australia</option>
-                                                <option value="Bangladesh">Bangladesh</option>
-                                                <option value="Belarus">Belarus</option>
-                                                <option value="Brazil">Brazil</option>
-                                                <option value="Canada">Canada</option>
-                                                <option value="China">China</option>
-                                                <option value="France">France</option>
-                                                <option value="Germany">Germany</option>
-                                                <option value="India">India</option>
-                                                <option value="Indonesia">Indonesia</option>
-                                                <option value="Israel">Israel</option>
-                                                <option value="Italy">Italy</option>
-                                                <option value="Japan">Japan</option>
-                                                <option value="Korea">Korea, Republic of</option>
-                                                <option value="Mexico">Mexico</option>
-                                                <option value="Philippines">Philippines</option>
-                                                <option value="Russia">Russian Federation</option>
-                                                <option value="South Africa">South Africa</option>
-                                                <option value="Thailand">Thailand</option>
-                                                <option value="Turkey">Turkey</option>
-                                                <option value="Ukraine">Ukraine</option>
-                                                <option value="United Arab Emirates">United Arab Emirates</option>
-                                                <option value="United Kingdom">United Kingdom</option>
-                                                <option value="United States">United States</option>
-                                            </select>
-                                        </div>
-                                        <div className="col-12">
-                                            <label className="switch">
-                                                <input type="checkbox" className="switch-input" />
-                                                <span className="switch-toggle-slider">
-                                                    <span className="switch-on" />
-                                                    <span className="switch-off" />
-                                                </span>
-                                                <span className="switch-label">Use as a billing address?</span>
-                                            </label>
-                                        </div>
-                                        <div className="col-12 text-center">
-                                            <button type="submit" className="btn btn-primary me-sm-3 me-1">Submit</button>
-                                            <button type="reset" className="btn btn-label-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="modal fade" id="upgradePlanModal" tabIndex={-1} aria-hidden="true">
-                        <div className="modal-dialog modal-dialog-centered modal-simple modal-upgrade-plan">
-                            <div className="modal-content p-3 p-md-5">
-                                <div className="modal-body">
-                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" />
-                                    <div className="text-center mb-4">
-                                        <h3 className="mb-2">Upgrade Plan</h3>
-                                        <p>Choose the best plan for user.</p>
-                                    </div>
-                                    <form id="upgradePlanForm" className="row g-3" onsubmit="return false">
-                                        <div className="col-sm-8">
-                                            <label className="form-label" htmlFor="choosePlan">Choose Plan</label>
-                                            <select id="choosePlan" name="choosePlan" className="form-select" aria-label="Choose Plan">
-                                                <option selected>Choose Plan</option>
-                                                <option value="standard">Standard - $99/month</option>
-                                                <option value="exclusive">Exclusive - $249/month</option>
-                                                <option value="Enterprise">Enterprise - $499/month</option>
-                                            </select>
-                                        </div>
-                                        <div className="col-sm-4 d-flex align-items-end">
-                                            <button type="submit" className="btn btn-primary">Upgrade</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <hr className="mx-md-n5 mx-n3" />
-                                <div className="modal-body">
-                                    <p className="mb-0">User current plan is standard plan</p>
-                                    <div className="d-flex justify-content-between align-items-center flex-wrap">
-                                        <div className="d-flex justify-content-center me-2">
-                                            <sup className="h6 pricing-currency pt-1 mt-3 mb-0 me-1 text-primary">$</sup>
-                                            <h1 className="display-5 mb-0 text-primary">99</h1>
-                                            <sub className="h5 pricing-duration mt-auto mb-2 text-muted">/month</sub>
-                                        </div>
-                                        <button className="btn btn-label-danger cancel-subscription mt-3">Cancel Subscription</button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

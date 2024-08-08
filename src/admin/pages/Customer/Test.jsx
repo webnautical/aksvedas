@@ -174,7 +174,7 @@ console.log("DEEEEEEEEEEEEEEEEEEEEEE",total);
         <>
             <div className="content-wrapper">
                 {/* Content */}
-                <div className="container-xxl flex-grow-1 container-p-y">
+                <div className="flex-grow-1 container-p-y">
                     <button onClick={exportToExcel}>Export to Excel {user.length}</button>
                     <button onClick={handleDownloadExcel}>Export to Excel 1 {user.length}</button>
                     {/* <PageHeaderCom pageTitle="Product" link='/admin/add-products' linkBtnName={'add product'} /> */}
@@ -187,7 +187,7 @@ console.log("DEEEEEEEEEEEEEEEEEEEEEE",total);
                                     <div>
                                         <h6 className="mb-2">In-store Sales</h6>
                                         <h4 className="mb-2">$5,345.43</h4>
-                                        <p className="mb-0"><span className="text-muted me-2">5k orders</span><span className="badge bg-label-success">+5.7%</span></p>
+                                        <p className="mb-0"><span className=" me-2">5k orders</span><span className="badge bg-label-success">+5.7%</span></p>
                                     </div>
                                     <span className="avatar me-sm-4">
                                         <span className="avatar-initial bg-label-secondary rounded"><i className="ti-md ti ti-smart-home text-body" /></span>
@@ -200,7 +200,7 @@ console.log("DEEEEEEEEEEEEEEEEEEEEEE",total);
                                     <div>
                                         <h6 className="mb-2">Website Sales</h6>
                                         <h4 className="mb-2">$674,347.12</h4>
-                                        <p className="mb-0"><span className="text-muted me-2">21k orders</span><span className="badge bg-label-success">+12.4%</span></p>
+                                        <p className="mb-0"><span className=" me-2">21k orders</span><span className="badge bg-label-success">+12.4%</span></p>
                                     </div>
                                     <span className="avatar p-2 me-lg-4">
                                         <span className="avatar-initial bg-label-secondary rounded"><i className="ti-md ti ti-device-laptop text-body" /></span>
@@ -213,7 +213,7 @@ console.log("DEEEEEEEEEEEEEEEEEEEEEE",total);
                                     <div>
                                         <h6 className="mb-2">Discount</h6>
                                         <h4 className="mb-2">$14,235.12</h4>
-                                        <p className="mb-0 text-muted">6k orders</p>
+                                        <p className="mb-0 ">6k orders</p>
                                     </div>
                                     <span className="avatar p-2 me-sm-4">
                                         <span className="avatar-initial bg-label-secondary rounded"><i className="ti-md ti ti-gift text-body" /></span>
@@ -225,7 +225,7 @@ console.log("DEEEEEEEEEEEEEEEEEEEEEE",total);
                                     <div>
                                         <h6 className="mb-2">Affiliate</h6>
                                         <h4 className="mb-2">$8,345.23</h4>
-                                        <p className="mb-0"><span className="text-muted me-2">150 orders</span><span className="badge bg-label-danger">-3.5%</span></p>
+                                        <p className="mb-0"><span className=" me-2">150 orders</span><span className="badge bg-label-danger">-3.5%</span></p>
                                     </div>
                                     <span className="avatar p-2">
                                         <span className="avatar-initial bg-label-secondary rounded"><i className="ti-md ti ti-wallet text-body" /></span>

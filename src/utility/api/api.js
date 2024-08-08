@@ -74,3 +74,16 @@ export const deleteDataAPI = async (endpoint) => {
         return response
     }
 }
+
+export const APICALL = async (endPoint = '', method = 'GET',value = null) => {
+    try {
+        const response = await axiosInstance({
+            method: method,
+            url: endPoint,
+            data: value
+        });
+        return response.data;
+    } catch (error) {
+        return error;
+    }
+}

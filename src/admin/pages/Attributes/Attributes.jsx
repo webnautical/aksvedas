@@ -234,7 +234,7 @@ const Attributes = () => {
   return (
     <>
       <div className="content-wrapper">
-        <div className="container-xxl flex-grow-1 container-p-y">
+        <div className="flex-grow-1 container-p-y">
           <div className="row">
             {/* Attributes */}
             <div className="col-xl-6 col-lg-5 col-md-5 order-1 order-md-0">

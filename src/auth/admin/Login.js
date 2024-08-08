@@ -47,15 +47,15 @@ const Login = () => {
 
     }
     useEffect(() => {
-        if(authUser()?.role == 1){
+        if (authUser()?.role == 1) {
             navigate('/admin/dashboard')
         }
         if (error.username === true && error.password === true) {
             handleLogin()
         }
     }, [validateCount, error.username, error.password])
-    const [msg, setMsg] = useState('')
-    const handleLogin = async () => {   
+    const [msg, setMsg] = useState(null)
+    const handleLogin = async () => {
         setLoading(true)
         try {
             const params = { email: value.username, password: value.password }
@@ -74,69 +74,63 @@ const Login = () => {
                     navigate('/admin/dashboard')
                     setLoading(false)
                 }, 2000);
-            }else{
+            } else {
                 setLoading(false)
             }
         } catch (error) {
             setLoading(false)
-            if (error?.response?.status === 422) {
-                setMsg(error?.response?.data?.message)
-            }
+            console.log("ADMINLOGIN",error)
+            setMsg(error?.response?.data?.message)
         }
-
-        // navigate('/admin/dashboard')
     }
+
+    console.log("msg",msg)
+
+
     return (
         <>
             <div className="authentication-wrapper authentication-cover authentication-bg">
                 <div className="authentication-inner row">
                     {/* /Left Text */}
-                    <div className="d-none d-lg-flex col-lg-7 p-0">
-                        <div className="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
-                            <img src={img1} alt="auth-login-cover" className="img-fluid my-5 auth-illustration" data-app-light-img="illustrations/auth-login-illustration-light.png" data-app-dark-img="illustrations/auth-login-illustration-dark.html" />
-                            <img src={img2} alt="auth-login-cover" className="platform-bg" data-app-light-img="illustrations/bg-shape-image-light.png" data-app-dark-img="illustrations/bg-shape-image-dark.html" />
-                        </div>
-                    </div>
-                    {/* /Left Text */}
-                    {/* Login */}
-                    <div className="d-flex col-12 col-lg-5 align-items-center p-sm-5 p-4">
-                        <div className="w-px-400 mx-auto">
-                            {/* Logo */}
-                            <div className="app-brand mb-4">
-                                <Link to={'#'} className="app-brand-link gap-2">
+                    <div className=" col-lg-4 mx-auto">
+                        <div className="p-md-5 p-4 auth-cover-bg-color w-100 ">
+                            <div className="w-100 mx-auto">
+                                {/* Logo */}
+                                <div className="app-logog mb-4 text-center">
+                                    <Link to={'#'} className="app-brand-link gap-2">
                                         <img src={logo} alt="" />
-                                </Link>
-                            </div>
-                            {/* /Logo */}
-                            <h3 className="mb-1">Welcome to Aksveda! 👋</h3>
-                            <p className="mb-1">Please sign-in to your account.</p>
-                            {
-                                <div class={`alert alert-danger alert-dismissible fade ${msg ? 'show' : ''}`} role="alert">
-                                    <strong>Alert : </strong> {msg}
-                                    {/* <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> */}
+                                    </Link>
                                 </div>
-                            }
-                            <form className="mb-3" onSubmit={validate}>
-                                <div className="mb-3">
-                                    <label htmlFor="email" className="form-label">Email or Username</label>
-                                    <input type="text" className="form-control" id="email" name="username" onChange={handleChange} value={value.username} placeholder="Enter your email or username" autofocus />
-                                    <span className='text-danger'>{error.username}</span>
-                                </div>
-                                <div className="mb-3 form-password-toggle">
-                                    <div className="d-flex justify-content-between">
-                                        <label className="form-label" htmlFor="password">Password</label>
-                                        <Link to={'/admin/forgot-password'}>
+                                {/* /Logo */}
+                                <h3 className="mb-1 text-center">Welcome to Aksveda! 👋</h3>
+                                <p className="mb-3 text-center">Please sign-in to your account.</p>
+                                {   
+                                msg &&
+                                    <div class={`alert alert-danger alert-dismissible`} role="alert">
+                                        <strong>Alert : </strong> {msg}
+                                    </div>
+                                }
+                                <form className="mb-3" onSubmit={validate}>
+                                    <div className="mb-3">
+                                        <label htmlFor="email" className="form-label">Email or Username</label>
+                                        <input type="text" className="form-control" id="email" name="username" onChange={handleChange} value={value.username} placeholder="Enter your email or username" autofocus />
+                                        <span className='text-danger'>{error.username}</span>
+                                    </div>
+                                    <div className="mb-3 form-password-toggle">
+                                        <div className="d-flex justify-content-between">
+                                            <label className="form-label" htmlFor="password">Password</label>
+                                            {/* <Link to={'/admin/forgot-password'}>
                                             <small>Forgot Password?</small>
-                                        </Link>
-                                    </div>
-                                    <div className="input-group input-group-merge">
-                                        <input type={passToggle ? "text" : "password"} id="password" className="form-control" name="password" onChange={handleChange} value={value.password} placeholder="············" aria-describedby="password" />
-                                        <span className="input-group-text cursor-pointer" onClick={()=> setPassToggle(!passToggle)}><i className={`ti ${passToggle ? 'ti-eye' : 'ti-eye-off'}`} /></span>
+                                        </Link> */}
+                                        </div>
+                                        <div className="input-group input-group-merge">
+                                            <input type={passToggle ? "text" : "password"} id="password" className="form-control" name="password" onChange={handleChange} value={value.password} placeholder="············" aria-describedby="password" />
+                                            <span className="input-group-text cursor-pointer" onClick={() => setPassToggle(!passToggle)}><i className={`ti ${passToggle ? 'ti-eye' : 'ti-eye-off'}`} /></span>
 
+                                        </div>
+                                        <span className='text-danger'>{error.password}</span>
                                     </div>
-                                    <span className='text-danger'>{error.password}</span>
-                                </div>
-                                {/* <div className="mb-3">
+                                    {/* <div className="mb-3">
                                     <div className="form-check">
                                         <input className="form-check-input" type="checkbox" id="remember-me" />
                                         <label className="form-check-label" htmlFor="remember-me">
@@ -145,20 +139,20 @@ const Login = () => {
                                     </div>
                                 </div> */}
 
-                                {
-                                    loading ?
-                                        <button className="btn btn-primary w-100 waves-effect waves-light" type="button">
-                                            <span className="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true" />
-                                            Loading...
-                                        </button>
-                                        :
-                                        <button className="btn btn-primary d-grid w-100 waves-effect waves-light">
-                                            Sign in
-                                        </button>
-                                }
+                                    {
+                                        loading ?
+                                            <button className="btn btn-primary w-100 waves-effect waves-light" type="button">
+                                                <span className="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true" />
+                                                Loading...
+                                            </button>
+                                            :
+                                            <button className="btn btn-primary d-grid w-100 waves-effect waves-light">
+                                                Sign in
+                                            </button>
+                                    }
 
-                            </form>
-                            {/* <div className="divider my-4">
+                                </form>
+                                {/* <div className="divider my-4">
                                 <div className="divider-text">or</div>
                             </div>
                             <div className="d-flex justify-content-center">
@@ -172,8 +166,12 @@ const Login = () => {
                                     <i className="tf-icons fa-brands fa-twitter fs-5" />
                                 </Link>
                             </div> */}
+                            </div>
                         </div>
                     </div>
+                    {/* /Left Text */}
+                    {/* Login */}
+
                     {/* /Login */}
                 </div>
             </div>

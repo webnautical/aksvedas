@@ -1,157 +1,227 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { imgBaseURL } from "../../../utility/Utility";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  authCustomer,
+  imgBaseURL,
+  stringToArray,
+} from "../../../utility/Utility";
 import { useFrontDataContext } from "../../../context/FrontContextProvider";
+import emptycart from "../../../assets/img/empty-cart.png";
+import { cartQntChange } from "../../../utility/api/RepeaterAPI";
+import FrontLoader from "../../../components/front/FrontLoader";
+
 const CheckOut = () => {
-  const { cartData } = useFrontDataContext()
+  const [loading, setLoading] = useState(true)
+  const navigate = useNavigate();
+
+  const {
+    cartData,
+    removeCartItemFun,
+    addProductInWishlistFun,
+    getCartFun,
+    products,
+  } = useFrontDataContext();
+
+
+  useEffect(() => {
+    if (!authCustomer()?.token) {
+      navigate('/login')
+    }
+  }, [])
+
+
+  const [cartList, setCartList] = useState([]);
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+    getCartFun()
+  }, [])
+  useEffect(() => {
+    if (cartData.length > 0) {
+      setCartList(cartData);
+    }
+  }, [cartData]);
+  const [loadingPlusId, setLoadingPlusId] = useState(null);
+  const [loadingMinusId, setLoadingMinusId] = useState(null);
+  const handleQntChange = async (qntType, itemId) => {
+    if (qntType === 'plus') {
+      setLoadingPlusId(itemId);
+    } else {
+      setLoadingMinusId(itemId);
+    }
+    const updatedCartItems = cartList.map((item) => {
+      if (item.id === itemId) {
+        let newQuantity;
+        if (qntType === "minus") {
+          newQuantity = Math.max(1, parseInt(item.qnt) - 1);
+        } else {
+          newQuantity = Math.min(5, parseInt(item.qnt) + 1);
+        }
+        if (newQuantity <= 5) {
+          const param = { product_id: item.product_id, qnt: newQuantity };
+          cartQntChange(param);
+        }
+        getCartFun()
+        return { ...item, qnt: newQuantity };
+      }
+      return item;
+    });
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    getCartFun()
+
+    setCartList(updatedCartItems);
+    setLoadingPlusId(null);
+    setLoadingMinusId(null);
+  };
+
+
+  const commoProducts = (product_ids) => {
+    if (product_ids) {
+      const idsss = stringToArray(product_ids);
+      const filteredProducts = products.filter((product) =>
+        idsss.includes(product.id)
+      );
+      return filteredProducts;
+    }
+  };
+
   return (
     <>
-      <div className="col-xl-8">
-        <div className="card">
-          <div className="card-body">
-            <div className="table-responsive table-card whishlist-page">
-              <table className="table align-middle table-borderless table-nowrap text-center mb-0">
-                <thead>
-                  <tr>
-                    <th scope="col" className="text-start">
-                      Product
-                    </th>
-                    <th scope="col">Price</th>
-                    <th scope="col">QNT</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    cartData?.length > 0 ?
-                      cartData?.map((item, i) => (
-                        <tr>
-                          <td className="text-start">
-                            <div className="d-flex align-items-center gap-2">
-                              <div className="avatar-sm flex-shrink-0">
-                                <div className="avatar-title  rounded-3">
-                                  <img
-                                    src={imgBaseURL() + item?.product?.cover}
-                                    alt=""
-                                    className="avatar-xs"
-                                  />
-                                </div>
-                              </div>
-                              <div className="flex-grow-1">
-                                <h6 className="fs-16">
-                                  {item?.product?.name}
-                                </h6>
-                                <p className="mb-0 text-muted fs-13">
-                                  {item?.product?.sku}
-                                </p>
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <div className="price_product">
-                              ₹{item?.product?.sale_price} <span className="high_price">₹{item?.product?.price}</span>
-                            </div>
-                          </td>
-                          <td>{item?.qnt}</td>
-                        </tr>
-                      ))
-                      :
-                      <>
-                        <h5>There are no product added on your cart.</h5>
-                      </>
-                  }
-                </tbody>
-              </table>
-            </div>
+      {loading && <FrontLoader />}
+
+      <div className="col-xl-12">
+        <div class="col-lg-12">
+          <div class="d-flex align-items-center justify-content-end">
+            {cartData?.length > 0 && (
+              <div class="flex-shrink-0 mb-3">
+                <button type="button" className="btn-normals w-xs" onClick={() => removeCartItemFun(`C_${authCustomer()?.id}`)} >
+                  Clear Cart
+                </button>
+              </div>
+            )}
           </div>
+
+          {cartData?.length > 0 &&
+            cartList?.map((item, i) => (
+              <div class="card product mb-3">
+                <div class="card-body">
+                  <div class="row gy-3 algin-items-baseline">
+                    <div class="col-sm-auto">
+                      <div class="avatar-lg">
+                        <div class="avatar-title rounded py-3">
+                          <img src={imgBaseURL() + item?.cover} alt="" class="avatar-md" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <a href="#!">
+                        <h5 class="main_check lh-base mb-1">{item?.name}</h5>
+                      </a>
+                      <ul class=" list-inline  fs-13 mb-0">
+                        <span> SKU : <span style={{ color: '#E0A11C' }}>{item?.sku}</span></span>
+                      </ul>
+                      {commoProducts(item.product_items_id)?.length > 0 && (
+                        <ol className="bundle-pro-check mt-2">
+                          <>
+                            {commoProducts(item.product_items_id)?.map(
+                              (bundle_pro, i) => (
+                                <li>
+                                  <span>
+                                    {bundle_pro?.name}{" "}
+                                  </span>
+                                </li>
+                              )
+                            )}
+                          </>
+                        </ol>
+                      )}
+                      {
+                        item?.subscription_id &&
+                        <p className="subscription_plan_label"> Subscription Plan : <span className="checkmark"></span>{item?.subscription_days} Days ₹{item?.subscription_sale_price} @{item?.subscription_discount}% off</p>
+                      }
+                      <div className="product-button mb-0 mt-2">
+                        <div className="input-step">
+
+                          {loadingMinusId === item.id ? (
+                            <button type="button" className="minus">
+                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            </button>
+                          ) : (
+                            <button type="button" className="minus" onClick={() => handleQntChange("minus", item.id)}>-</button>
+                          )}
+                          <input type="text" className="product-quantity1" value={item?.qnt} readOnly />
+                          {loadingPlusId === item.id ? (
+                            <button type="button" className="plus">
+                              <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            </button>
+                          ) : (
+                            <button type="button" className="plus" onClick={() => handleQntChange("plus", item.id)}>+</button>
+                          )}
+
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-auto">
+                      <div class="text-lg-end">
+                        <p class=" mb-1 fs-12">Item Price:</p>
+                        <h5 class="fs-16">
+                          ₹<span class="product-price">{item?.sale_price}</span>
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer pt-2">
+                  <div class="row align-items-center gy-3">
+                    <div class="col-sm">
+                      <div class="d-flex flex-wrap my-n1">
+                        <div className="text-danger">
+                          <Link
+                            className="d-block colorRedcolor"
+                            to={"#"}
+                            onClick={() => removeCartItemFun(item?.id)}
+                          >
+                            <i class="fa fa-trash  me-1"></i> Remove
+                          </Link>
+                        </div>
+                        {/* <div>
+                          <Link
+                            className="d-block"
+                            to={"#"}
+                            onClick={() =>
+                              addProductInWishlistFun(item?.product_id)
+                            }
+                          >
+                            <i class="fa fa-heart  me-1"></i> Add Wishlist
+                          </Link>
+                        </div> */}
+                      </div>
+                    </div>
+                    <div class="col-sm-auto">
+                      <div class="d-flex align-items-center gap-2">
+                        <div>Total :</div>
+                        <h5 class="fs-14 mb-0">
+                          ₹
+                          <span class="product-line-price">
+                            {item?.sale_price * parseInt(item.qnt)}
+                          </span>
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
         </div>
 
-        <div className="mt-4">
-          <div className="d-flex align-items-center mb-4">
-            <div className="flex-grow-1">
-              <h5 className="mb-0">Billing Address</h5>
-            </div>
-            <div className="flex-shrink-0">
-              <Link href="/add-address" className="fs-14">
-                Add Address
-              </Link>
-            </div>
-          </div>
-          <div className="row gy-3">
-            <div className="col-lg-6 col-12">
-              <div className="form-check card-radio">
-                <input
-                  id="shippingAddress03"
-                  name="shippingAddress"
-                  type="radio"
-                  className="form-check-input"
-                />
-                <label
-                  className="form-check-label"
-                  for="shippingAddress03"
-                >
-                  <h6 className="mb-2">Witney Blessington</h6>
-                  <p className="mb-0">
-                    144 Cavendish Avenue, Indianapolis, IN 46251
-                  </p>
-                  <p className="mb-0">Mo. 012-345-6789</p>
-                </label>
-              </div>
-              <div className="d-flex flex-wrap p-2 py-1 bg-grays rounded-bottom border mt-n1">
-                <div>
-                  <a href="" className="d-block p-1 px-2">
-                    <i className="fa fa-edit me-1"></i> Edit
-                  </a>
-                </div>
-                <div>
-                  <a
-                    href="#removeAddressModal"
-                    className="d-block p-1 px-2"
-                    data-bs-toggle="modal"
-                  >
-                    <i className="fa fa-trash me-1"></i> Remove
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-6 col-12">
-              <div className="form-check card-radio">
-                <input
-                  id="shippingAddress04"
-                  name="shippingAddress"
-                  type="radio"
-                  className="form-check-input"
-                />
-                <label
-                  className="form-check-label"
-                  for="shippingAddress04"
-                >
-                  <h6 className="mb-2">Witney Blessington</h6>
-                  <p className="mb-0">
-                    144 Cavendish Avenue, Indianapolis, IN 46251
-                  </p>
-                  <p className="mb-0">Mo. 012-345-6789</p>
-                </label>
-              </div>
-              <div className="d-flex flex-wrap p-2 py-1 bg-grays rounded-bottom border mt-n1">
-                <div>
-                  <a href="" className="d-block p-1 px-2">
-                    <i className="fa fa-edit me-1"></i> Edit
-                  </a>
-                </div>
-                <div>
-                  <a
-                    href="#removeAddressModal"
-                    className="d-block p-1 px-2"
-                    data-bs-toggle="modal"
-                  >
-                    <i className="fa fa-trash me-1"></i> Remove
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+
       </div>
+
+
+
     </>
   );
 };

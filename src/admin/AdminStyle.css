@@ -1,0 +1,82 @@
+.layout-menu.layout-menu-open:hover li.menu-item{
+    width: 16.25rem;
+}
+.text-body:hover {
+    color: #DDAD67!important;
+}
+.dropdown-menu .dropdown-item {
+    margin: 5px 0px !important;
+    line-height: 0px !important;
+}
+.rdt_Table .rdt_TableHead {
+    font-size: 14px;
+    font-weight: 600;
+}
+.layout-menu.layout-menu-open li.menu-item{
+    width: 5.25rem;
+}
+.dropdown-menu.drowp-menu .dropdown-item {
+    line-height: normal !important;
+    display: block;
+    width: 100%;
+    margin-bottom: 0px !important;
+    margin-top: 0px !important;
+}
+ul.dropdown-menu.dropdown-menu-end.drowp-menu {
+    padding: 10px 0px !important;
+}
+.layout-navbar.navbar-detached {
+    width: 100%;
+}
+.layout-menu~.layout-page{
+    width:calc(100% - 16.25rem);
+    margin-left: 16.25rem;
+    padding: 20px;
+}
+.menu-inner {
+    padding-top: 20px!important;
+    gap: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.layout-menu {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+.layout-menu.layout-menu-open:hover li.menu-item ul.collapse{
+display: block;
+}
+.layout-menu.layout-menu-open li.menu-item  ul.collapse{
+display: none;
+}
+.layout-menu.layout-menu-open~.layout-page {
+width: calc(100% - 5.25rem);
+margin-left: 5.25rem;
+}
+@media (min-width: 1200px) {
+/* .layout-menu.layout-menu-open~.layout-page{
+    padding-left: 5.25rem;
+    padding-right: 5.25rem;
+} */
+}
+
+.tag-box{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.tags{
+    display: inline-flex;
+    background-color: #ddd;
+    box-shadow: 0px 0px 2px #999;
+    padding: 3px 10px;
+    border-radius: 20px;
+    gap: 6px;
+    align-items: center;
+    text-transform: uppercase;
+    margin: 0px;
+}

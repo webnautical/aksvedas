@@ -10,20 +10,25 @@ const MultiPageData = (props) => {
 
     return (
         <>
-            <div className="row my-3" style={{ borderTop: '1px solid red' }}>
+            <div className="row my-3" style={{ borderTop: '1px solid rgb(236, 236, 236)' }}>
                 {
                     contentData.length > 0 ?
                         contentData.map((item, i) => (
-                            <div className="col-6">
+                            <div className="col-12">
                                 <div className='main_box_product_conent'>
-                                    <div className="row align-items-center justify-content-between mt-3">
-                                        <div className='col-md-9'>
+                                    <div className="row justify-content-between ">
+                                    <div className='col-md-1'>
+                                    <div style={{ backgroundColor:'#ececec'}}>
+                                    <img src={imgBaseURL() + item.img} alt="" />
+                                    </div>
+                                        </div>
+                                        <div className='col-md-11'>
                                             <h4>
                                                 {i + 1}. {item?.title}
 
                                             </h4>
                                             <div style={{textAlign: 'justify'}} dangerouslySetInnerHTML={{ __html: item?.desc }} />
-                                            <div>
+                                            <div className='text-end'>
                                                 <button
                                                     onClick={() => handleAction(item, 'edit')} 
                                                     className='icon_btn __warning me-2' type="button" data-bs-toggle="offcanvas" data-bs-target="#productContents" aria-controls="productContents">Edit <i className='fa fa-pencil' /></button>
@@ -33,9 +38,7 @@ const MultiPageData = (props) => {
                                                 >Remove <i className='fa fa-trash' /></button>
                                             </div>
                                         </div>
-                                        <div className='col-md-3'>
-                                            <img src={imgBaseURL() + item.img} alt="" />
-                                        </div>
+                                   
                                     </div>
                                 </div>
                             </div>

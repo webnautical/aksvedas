@@ -1,6 +1,6 @@
 @media (max-width: 1500.98px) {
   .product_box_main button {
-    font-size: 13px;
+    /* font-size: 13px; */
     letter-spacing: 0px;
   }
 }
@@ -12,18 +12,15 @@
 }
 
 @media (max-width: 991.98px) {
-  .cat_box-outer {
-    width: 240px;
-    height: 230px;
-  }
+  .order_fliter{ flex-direction: column; gap: 10px;}
+ 
+
   .thumb-slider-pro .product-images-slider-thumbs-wrapper img {
-    height: 100px;
+    min-height: 70px;
     object-fit: cover;
-}
-  .cat_box {
-    width: 240px;
-    height: 230px;
   }
+
+ 
 
   .container {
     max-width: 100%;
@@ -91,12 +88,40 @@
     overflow-y: auto;
     padding: 0px 1rem 1rem;
   }
+  .shop_by_consern, 
+  .customer_review {
+    padding: 40px 0px;
+  }
+  .shop_by_consern .owl-nav {
+    display: none;
+  }
+  .checkout-pay-card  {
+    flex-wrap: wrap;
+  }
+  .checkout-pay-card .custom-nav {
+    width: 100%;
+  }
+  .checkout-pay-card .tab-content {
+    width: 100%;
+  }
+  .product-details {
+    padding-top: 0px;
+}
+.innabout-section {
+  min-height: 150px;
+}
+.budle-produts li .imgsection-pro~span {
+  width: 100%;
+}
+  .checkout-pay-card .card {
+    padding: 10px 0px;
+  }
 }
 
 /* header resposnive */
 
-@media (min-width: 992px) {
-  header nav  .dropdown-menu {
+@media (min-width: 991.98px) {
+  header nav .dropdown-menu {
     -webkit-box-shadow: 0 5px 10px rgba(135, 138, 153, .12);
     box-shadow: 0 5px 10px rgba(135, 138, 153, .12);
     -webkit-animation-name: DropDownSlide;
@@ -107,14 +132,19 @@
     animation-fill-mode: both;
     position: absolute;
     z-index: 1;
-    min-width: 250px;
+    min-width: 280px;
+    column-count: 1;
+    padding: 10px 0px !important;
+    left: -120px;
 
   }
+
   .sticky-side-div {
     position: sticky;
     top: 0px;
-}
-  .dropdown-hover:hover>.dropdown-menu {
+  }
+
+  .dropdown-hover:hover .dropdown-menu {
     display: block;
   }
 
@@ -139,43 +169,72 @@
     transition: all .5s ease;
     opacity: 0;
   }
-
+  .planBtn svg {
+    margin-right: 0px!important;
+  }
   header nav ul li ul.submenu a {
-    color: #2A2A2A;
-    padding: 6px 12px;
+    color: #000;
+    padding: 8px 12px;
     white-space: unset;
-    font-size: 14px;
-    font-weight: 600;
-    text-transform: capitalize;
+    font-size: 16px;
+    font-weight: 400;
   }
 
   header nav ul ul li a:hover {
     padding-left: 15px;
   }
+  
 }
 
 @media (max-width: 767.98px) {
   .f_menu img {
     width: 50%;
   }
-  
+  .payment-logogs img {
+    height: 20px;
+  }
+  .goes_great_with .off_price_badge {
+    padding: 3px 6px;
+    top: 5px;
+    left: 5px;
+    font-size: 8px;
+  }
+
+  .cart_canvas.offcanvas .offcanvas-body, .cart_canvas.offcanvas .offcanvas-header {
+    padding: 15px;
+  }
+
+  .cart_canvas .scrollable_part {
+    height: calc(100vh - 185px);
+    overflow-y: auto;
+    overflow-x: inherit;
+  }
+
+  .mbile-heaader {
+    padding: 15px 0px;
+  }
+
   .userrevie-info img {
     width: 50px;
     border-radius: 100px;
     height: 50px;
     margin: 0px 0px 10px;
-}
-.upload-img-show img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-}
+  }
+
+  .upload-img-show img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+  }
+
   .userrevie-info {
     text-align: left;
-}
+  }
+
   .revie-feddback {
     display: block;
   }
+
   .review_box {
     padding: 20px 10px;
   }
@@ -206,20 +265,130 @@
     padding: 30px 0px 40px;
   }
 
+  .slider_product {
+    margin-bottom: 0px;
+  }
+
   .collectioncategries li .img-bg-cat {
     height: 130px;
     width: 130px;
   }
+
+  .cart_canvas {
+    width: 320px !important;
+  }
+
+ 
+  .product_box_main img {
+    min-height: 244px;
+  }
+
+  .left_product_about button {
+    padding: 10px 30px;
+    margin-top: 15px;
+  }
+
+  .new_arrivals_box {
+    padding: 20px 20px;
+  }
+
+  .bestseller {
+    overflow: hidden;
+  }
+
+  .bottum_bar {
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .social_icons {
+    margin-bottom: 0px;
+  }
+
+  .product_box_main button i {
+    margin-left: 4px;
+  }
+
+  .thumb-slider-pro {
+    margin-bottom: 20px;
+  }
+
+  .accordion.accordion-flush {
+    padding: 20px;
+  }
+
+  .product-info-accordion {
+    padding-right: 10px;
+  }
+
+  .about_experince .small_second_image {
+    left: 0px;
+  }
+
+  .product_knowlenge_base .product_cnt ul li:before {
+    top: 6px;
+  }
+
+  .news_letter {
+    padding: 50px 0;
+  }
+
+
+  div#root {
+    overflow-x: hidden;
+  }
+
+  
 }
 
 @media (max-width: 575.98px) {
+
+  .c-modal-for-banner .c-modal-dialog img {height: unset!important;}
+  .product-deatisl-content .budle-produts h5.fs-24 {
+    margin-bottom: 0px;
+  }
+  .free-box br {
+    display: none;
+  }
+  .budle-produts li {
+    width: 100%;
+    gap: 0px;
+    border: 1px solid #ddad67;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 7px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .added_cart_product .row {
+    margin: 0px;
+  }
+
   .collectioncategries li .img-bg-cat {
     height: 150px;
     width: 150px;
   }
 
+  .payemenet_accept {
+    background-color: #f6f6f6;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .scrollable_part {
+    padding: 0px;
+  }
+
   .moble-logo img {
-    height: 60px;
+    width: 130px;
+    height: auto;
   }
 
   .new_arrivals_box {
@@ -234,58 +403,50 @@
     background-position: left;
   }
 
-  .cat_box {
-    width: 155px;
-    height: 155px;
-    clip-path: unset;
-    border-radius: 100px;
-  }
-
-  .free-box br {
-    display: none;
-  }
-
-  .cat_box-outer, .categri-title {
-    width: 160px;
-    overflow: hidden;
-    height: 160px;
-    clip-path: unset;
-    border-radius: 100px;
-  }
 
   .loginouter-inner {
     padding: 20px;
   }
+
   .about-shilaimg {
     border-radius: 0px;
     border-left: 0px;
     border-bottom: 0px;
-}
-.product-button {
-  flex-wrap: wrap;
-}
-.subscribe-date {
-  width: 100%;
-}
+  }
+
+  .product-button {
+    flex-wrap: wrap;
+  }
+
+  .subscribe-date {
+    width: 100%;
+  }
+
   .editnum {
     margin-top: 5px;
   }
-  .thumb-slider-pro .product-images-slider-thumbs-wrapper img{
-    height: 50px;
-  
+
+  .thumb-slider-pro .product-images-slider-thumbs-wrapper img {
+    min-height: 50px;
+
   }
-  .arrow-navtabs .nav-item .nav-link i{
+
+  .arrow-navtabs .nav-item .nav-link i {
     font-size: 20px;
-  } 
+  }
+
   .rating_box ul {
     flex-wrap: wrap;
   }
+
   .skuno li {
     width: 100%;
   }
+
   .spotlight {
     padding-bottom: 50px;
   }
+
   .loginouter {
     padding: 50px 0px;
   }
