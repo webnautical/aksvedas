@@ -64,7 +64,7 @@ const OrderSummary = (props) => {
         const shippingCharge = parseInt(shippingDetails?.shipping_charge ?? 0);
 
         if (amountAfterSaving < parseInt(shippingDetails?.total_amnt)) {
-            return <> <span>₹{shippingCharge}</span> </>
+            return <> <span>{shippingCharge > 0 ? `+ ₹${shippingCharge}` : ` ₹${shippingCharge}`}</span> </>
         } else {
             return <> <span className='text-success text-uppercase'><del className="high_price fw-bold">₹{shippingCharge}</del> Free delivery</span> </>
         }
@@ -164,6 +164,8 @@ const OrderSummary = (props) => {
         }
     };
 
+    const shippingChargeVar = getFreeDeliveryText()
+
     return (
         <>
             <div className="card">
@@ -236,11 +238,11 @@ const OrderSummary = (props) => {
                                             </>
                                         }
                                     </td>
-                                    <td className="text-end cart-tax"> ₹{loyaltyDiscount}</td>
+                                    <td className="text-end cart-tax">{loyaltyDiscount > 0 ? `- ₹${loyaltyDiscount}` : `₹${loyaltyDiscount}` }</td>
                                 </tr>
                                 <tr>
                                     <td>Shipping Charge :</td>
-                                    <td className="text-end cart-shipping">{getFreeDeliveryText()}</td>
+                                    <td className="text-end cart-shipping">{shippingChargeVar}</td>
                                 </tr>
                                 <tr className=" bg-grays">
                                     <th><strong>Total :</strong></th>

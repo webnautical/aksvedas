@@ -4,18 +4,16 @@ import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import { useFrontDataContext } from "../../context/FrontContextProvider";
-import {
-  getPercentageOff,
-  imgBaseURL,
-} from "../../utility/Utility";
+import { getPercentageOff, imgBaseURL } from "../../utility/Utility";
 import { Link, useNavigate } from "react-router-dom";
 import { cartQntChange } from "../../utility/api/RepeaterAPI";
 import { Rating } from "@mui/material";
 
-const CartPopUp = () => {
+const CartPopUp = ({ item }) => {
   const navigate = useNavigate();
-  const { cartData, allData, removeCartItemFun , offcanvas, setOffcanvas} = useFrontDataContext();
-  const [cartList, setCartList] = useState([])
+  const { cartData, allData, removeCartItemFun, offcanvas, setOffcanvas } =
+    useFrontDataContext();
+  const [cartList, setCartList] = useState([]);
 
   const goesgretwith = {
     // loop: true,
@@ -23,7 +21,7 @@ const CartPopUp = () => {
     // autoplaySpeed: 100,
     margin: 10,
     dots: false,
-    nav: false,
+    nav: true,
     responsiveClass: true,
     infinite: true,
     speed: 100,
@@ -62,25 +60,25 @@ const CartPopUp = () => {
 
   const goToCheckOut = () => {
     navigate("/checkout");
-    setOffcanvas(false)
+    setOffcanvas(false);
   };
 
   useEffect(() => {
     if (cartData.length > 0) {
-      setCartList(cartData)
+      setCartList(cartData);
     }
-  }, [cartData])
+  }, [cartData]);
 
   const handleQntChange = (qntType, itemId) => {
-    const updatedCartItems = cartList.map(item => {
+    const updatedCartItems = cartList.map((item) => {
       if (item.id === itemId) {
         let newQuantity;
-        if (qntType === 'minus') {
+        if (qntType === "minus") {
           newQuantity = Math.max(1, parseInt(item.qnt) - 1);
         } else {
           newQuantity = Math.min(5, parseInt(item.qnt) + 1);
         }
-        if(newQuantity <= 5){
+        if (newQuantity <= 5) {
           const param = { product_id: item.product_id, qnt: newQuantity };
           cartQntChange(param);
         }
@@ -89,7 +87,7 @@ const CartPopUp = () => {
       return item;
     });
     setCartList(updatedCartItems);
-  }
+  };
 
   return (
     <div
@@ -107,7 +105,7 @@ const CartPopUp = () => {
           className="btn-close"
           data-bs-dismiss="offcanvas"
           aria-label="Close"
-          onClick={()=>setOffcanvas(false)}
+          onClick={() => setOffcanvas(false)}
         >
           <i className="fa-solid fa-xmark text-black"></i>
         </button>
@@ -130,26 +128,36 @@ const CartPopUp = () => {
                     <div className="col-8">
                       <div className="add_cart_product_details">
                         <h2>{item?.name}</h2>
-                        <p>SKU: <span style={{color: '#E0A11C'}}>{item?.sku}</span></p>
+                        <p>
+                          SKU:{" "}
+                          <span style={{ color: "#E0A11C" }}>{item?.sku}</span>
+                        </p>
                         <p>₹{item?.sale_price}</p>
-                      
+
                         <div className="d-flex justify-content-between align-items-center">
-                        <div className="quantity_select">
-                          <button onClick={() => handleQntChange('minus', item.id)}>
-                            <i className="fa-solid fa-minus"></i>
-                          </button>
-                          <span>{item?.qnt}</span>
-                          <button onClick={() => handleQntChange('plus', item.id)}>
-                            <i className="fa-solid fa-plus"></i>
-                          </button>
-                        </div>
+                          <div className="quantity_select">
+                            <button
+                              onClick={() => handleQntChange("minus", item.id)}
+                            >
+                              <i className="fa-solid fa-minus"></i>
+                            </button>
+                            <span>{item?.qnt}</span>
+                            <button
+                              onClick={() => handleQntChange("plus", item.id)}
+                            >
+                              <i className="fa-solid fa-plus"></i>
+                            </button>
+                          </div>
 
-                        <div>
-                          <button className="icon_btn __danger mx-1" onClick={() => removeCartItemFun(item.id)}><i class="fa-solid fa-trash"></i></button>
+                          <div>
+                            <button
+                              className="icon_btn __danger mx-1"
+                              onClick={() => removeCartItemFun(item.id)}
+                            >
+                              <i class="fa-solid fa-trash"></i>
+                            </button>
+                          </div>
                         </div>
-                        
-                        </div>
-
                       </div>
                     </div>
                   </div>
@@ -158,17 +166,21 @@ const CartPopUp = () => {
             ) : (
               <>
                 <div class="product-item-inner">
-                  <img src={emptycart} alt="" style={{ width: '100px' }} />
+                  <img src={emptycart} alt="" style={{ width: "100px" }} />
                   <h5>There are no product added on your cart</h5>
                   <p className=" w-75 mx-auto">
                     <Link
                       className="text-decoration"
                       to="/shop/all"
-                      data-bs-dismiss="offcanvas" aria-label="Close"
-                      onClick={()=>navigate('/shop/all')}
+                      data-bs-dismiss="offcanvas"
+                      aria-label="Close"
+                      onClick={() => navigate("/shop/all")}
                     >
                       Add Items{" "}
-                      <i style={{fontSize:'16px'}} className="fa-solid fa-arrow-right  ms-2"></i>
+                      <i
+                        style={{ fontSize: "16px" }}
+                        className="fa-solid fa-arrow-right  ms-2"
+                      ></i>
                     </Link>
                   </p>
                 </div>
@@ -182,37 +194,37 @@ const CartPopUp = () => {
               <OwlCarousel className="owl-theme" {...goesgretwith}>
                 {allData?.products?.map((item, i) => (
                   <div className="item">
-                    <div className="product_box_main">
-                      <div className="img_product">
-                        <img
-                          src={imgBaseURL() + item.cover}
-                          alt="product_img"
-                        />
-                      </div>
-                      <div className="rating_box mt-2">
-                        <ul>
-                          
-                        <Rating name="read-only" value={item?.review_average} readOnly />
+                    <a href={`/product-detail/${item?.slug}`}>
+                      <div className="product_box_main">
+                        <div className="img_product">
+                          <img
+                            src={imgBaseURL() + item.cover}
+                            alt="product_img"
+                          />
+                        </div>
+                        <div className="rating_box mt-2">
+                          <ul>
+                            <Rating
+                              name="read-only"
+                              value={item?.review_average}
+                              readOnly
+                            />
+                          </ul>
+                        </div>
+                        <div className="product_name">{item.name}</div>
+                        <div className="price_product">
+                          ₹{item.sale_price}{" "}
+                          <span className="high_price">{item.price}</span>
+                        </div>
 
-                        </ul>
+                        <div className="off_price_badge">
+                          {parseInt(
+                            getPercentageOff(item.price, item.sale_price)
+                          ) || 0}
+                          % off
+                        </div>
                       </div>
-                      <div className="product_name">
-                        <Link to={`/product-detail/${item?.slug}`}>
-                          {item.name}
-                        </Link>
-                      </div>
-                      <div className="price_product">
-                        ₹{item.sale_price}{" "}
-                        <span className="high_price">{item.price}</span>
-                      </div>
-
-                      <div className="off_price_badge">
-                        {parseInt(
-                          getPercentageOff(item.price, item.sale_price)
-                        ) || 0}
-                        % off
-                      </div>
-                    </div>
+                    </a>
                   </div>
                 ))}
               </OwlCarousel>
@@ -228,7 +240,12 @@ const CartPopUp = () => {
                 <p>₹{getSubTotalFunc()}</p>
               </div>
               <div className="checkout">
-                <button className="btn-2 w-100" onClick={() => goToCheckOut()} data-bs-dismiss="offcanvas" aria-label="Close">
+                <button
+                  className="btn-2 w-100"
+                  onClick={() => goToCheckOut()}
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                >
                   Checkout
                 </button>
               </div>

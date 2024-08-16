@@ -36,19 +36,19 @@ const OrderProducts = () => {
         },
         {
             name: <span className='text-capitalize'>TAXABLE VALUE</span>,
-            selector: row => <>{taxablePrice(row?.product_price, row.product?.gst_rate)}</>,
+            selector: row => <>{taxablePrice(parseInt(row?.product_price) * parseInt(row.qnt), row.product?.gst_rate)}</>,
         },
         {
             name: <span className='text-capitalize'>IGST</span>,
-            selector: row => <>{row.order?.address?.state?.toLowerCase() === 'rajasthan' ? 0 : igst(row?.product_price, taxablePrice(row?.product_price, row.product?.gst_rate))}</>,
+            selector: row => <>{row.order?.address?.state?.toLowerCase() === 'rajasthan' ? 0 : igst(parseInt(row?.product_price) * parseInt(row.qnt), taxablePrice(parseInt(row?.product_price) * parseInt(row.qnt), row.product?.gst_rate))}</>,
         },
         {
             name: <span className='text-capitalize'>SGST</span>,
-            selector: row => <>{row.order?.address?.state?.toLowerCase() === 'rajasthan' ? sgst(row?.product_price, row.product?.gst_rate) : 0}</>,
+            selector: row => <>{row.order?.address?.state?.toLowerCase() === 'rajasthan' ? sgst(parseInt(row?.product_price) * parseInt(row.qnt), row.product?.gst_rate) : 0}</>,
         },
         {
             name: <span className='text-capitalize'>CGST</span>,
-            selector: row => <>{row.order?.address?.state?.toLowerCase() === 'rajasthan' ? sgst(row?.product_price, row.product?.gst_rate) : 0}</>,
+            selector: row => <>{row.order?.address?.state?.toLowerCase() === 'rajasthan' ? sgst(parseInt(row?.product_price) * parseInt(row.qnt), row.product?.gst_rate) : 0}</>,
         },
         {
             name: <span className='text-capitalize'>TOTAL VALUE</span>,
@@ -133,10 +133,10 @@ const OrderProducts = () => {
             "HSN": sponsor.product?.hsn,
             "QNT": sponsor.qnt,
             "GST RATE (% OF GST)": sponsor.product?.gst_rate,
-            "TAXABLE VALUE": taxablePrice(sponsor?.product_price, sponsor.product?.gst_rate),
-            "IGST": sponsor.order?.address?.state?.toLowerCase() === 'rajasthan' ? 0 : igst(sponsor?.product_price, taxablePrice(sponsor?.product_price, sponsor.product?.gst_rate)),
-            "SGST": sponsor.order?.address?.state?.toLowerCase() === 'rajasthan' ? sgst(sponsor?.product_price, sponsor.product?.gst_rate) : 0,
-            "CGST": sponsor.order?.address?.state?.toLowerCase() === 'rajasthan' ? sgst(sponsor?.product_price, sponsor.product?.gst_rate) : 0,
+            "TAXABLE VALUE": taxablePrice(parseInt(sponsor?.product_price) * parseInt(sponsor?.qnt), sponsor.product?.gst_rate),
+            "IGST": sponsor.order?.address?.state?.toLowerCase() === 'rajasthan' ? 0 : igst(parseInt(sponsor?.product_price) * parseInt(sponsor?.qnt), taxablePrice(parseInt(sponsor?.product_price) * parseInt(sponsor?.qnt), sponsor.product?.gst_rate)),
+            "SGST": sponsor.order?.address?.state?.toLowerCase() === 'rajasthan' ? sgst(parseInt(sponsor?.product_price) * parseInt(sponsor?.qnt), sponsor.product?.gst_rate) : 0,
+            "CGST": sponsor.order?.address?.state?.toLowerCase() === 'rajasthan' ? sgst(parseInt(sponsor?.product_price) * parseInt(sponsor?.qnt), sponsor.product?.gst_rate) : 0,
             "TOTAL VALUE": sponsor.product_price,
         })
         )

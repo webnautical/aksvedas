@@ -66,7 +66,7 @@ const OrderDetails = () => {
         }
     }
 
-    console.log("orderDetails",orderDetails)
+    console.log("orderDetails", orderDetails)
 
     return (
         <>
@@ -86,20 +86,20 @@ const OrderDetails = () => {
                         <div className="d-flex align-content-center text-end flex-wrap gap-2">
                             {
                                 (!orderDetails?.shipment_id && orderDetails?.order_status == "pending") &&
-                                <button type='button' className="btn btn-primary" onClick={()=>cancelOrder()}> {cancelLoader ? "Wait..." : "Cancel Order"} </button>
+                                <button type='button' className="btn btn-primary" onClick={() => cancelOrder()}> {cancelLoader ? "Wait..." : "Cancel Order"} </button>
                             }
                             {
-                                orderDetails?.order_status !== "Cancelled" && 
+                                orderDetails?.order_status !== "Cancelled" &&
                                 <>
-                                {shippingStatus ?
-                                    <>
-                                        <div>
-                                            <button className="btn btn-primary" disabled>Shipping Now</button>
-                                            <p className='text-success'>Shippement is completed </p>
-                                        </div>
-                                    </>
-                                    :
-                                    <Link to={`/admin/shipping-now/${orderDetails?.id}`} className="btn btn-primary">Shipping Now</Link>}
+                                    {shippingStatus ?
+                                        <>
+                                            <div>
+                                                <button className="btn btn-primary" disabled>Shipping Now</button>
+                                                <p className='text-success'>Shippement is completed </p>
+                                            </div>
+                                        </>
+                                        :
+                                        <Link to={`/admin/shipping-now/${orderDetails?.id}`} className="btn btn-primary">Shipping Now</Link>}
                                 </>
                             }
                         </div>
@@ -168,20 +168,20 @@ const OrderDetails = () => {
                                     <div className="d-flex justify-content-end align-items-center m-3 mb-2 p-1">
                                         <div className="order-calculations">
                                             <div className="d-flex justify-content-between mb-2">
-                                                <span className="w-px-100 ">Subtotal:</span>
+                                                <span className="w-px-100">Subtotal:</span>
                                                 <h6 className="mb-0">₹{calculateTotalPrice(orderDetails?.order_products)}</h6>
                                             </div>
                                             <div className="d-flex justify-content-between mb-2">
-                                                <span className="w-px-100 ">Discount:</span>
-                                                <h6 className="mb-0">- ₹{orderDetails?.discounts}</h6>
+                                                <span className="w-px-100">Discount:</span>
+                                                <h6 className="mb-0"> {parseInt(orderDetails?.discounts) > 0 ? `- ₹${orderDetails?.discounts}` : `₹${orderDetails?.discounts}`} </h6>
                                             </div>
                                             <div className="d-flex justify-content-between mb-2">
-                                                <span className="w-px-100 ">AksCoins:</span>
-                                                <h6 className="mb-0">- ₹{orderDetails?.loyalty_discounts}</h6>
+                                                <span className="w-px-100">AksCoins:</span>
+                                                <h6 className="mb-0"> {parseInt(orderDetails?.loyalty_discounts) > 0 ? `- ₹${orderDetails?.loyalty_discounts}` : `₹${orderDetails?.loyalty_discounts}`} </h6>
                                             </div>
                                             <div className="d-flex justify-content-between mb-2">
-                                                <span className="w-px-100 ">Shipping Charge:</span>
-                                                <h6 className="mb-0">₹{orderDetails?.total_shipping}</h6>
+                                                <span className="w-px-100">Shipping Charge:</span>
+                                                <h6 className="mb-0"> {parseInt(orderDetails?.total_shipping) > 0 ? `+ ₹${orderDetails?.total_shipping}` : `₹${orderDetails?.total_shipping}`} </h6>
                                             </div>
                                             <div className="d-flex justify-content-between">
                                                 <h6 className="w-px-100 mb-0">Total:</h6>

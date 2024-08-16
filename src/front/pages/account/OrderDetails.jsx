@@ -216,15 +216,15 @@ const OrderDetails = () => {
                       </div>
                       <div className="d-flex justify-content-between mb-2">
                         <span className="w-px-100">Discount:</span>
-                        <h6 className="mb-0">- ₹{orderDetails?.discounts}</h6>
+                        <h6 className="mb-0"> {parseInt(orderDetails?.discounts) > 0 ? `- ₹${orderDetails?.discounts}` :  `₹${orderDetails?.discounts}`} </h6>
                       </div>
                       <div className="d-flex justify-content-between mb-2">
                         <span className="w-px-100">AksCoins:</span>
-                        <h6 className="mb-0">- ₹{orderDetails?.loyalty_discounts}</h6>
+                        <h6 className="mb-0"> {parseInt(orderDetails?.loyalty_discounts) > 0 ? `- ₹${orderDetails?.loyalty_discounts}` :  `₹${orderDetails?.loyalty_discounts}`} </h6>
                       </div>
                       <div className="d-flex justify-content-between mb-2">
                         <span className="w-px-100">Shipping Charge:</span>
-                        <h6 className="mb-0">₹{orderDetails?.total_shipping}</h6>
+                        <h6 className="mb-0"> {parseInt(orderDetails?.total_shipping) > 0 ? `+ ₹${orderDetails?.total_shipping}` :  `₹${orderDetails?.total_shipping}`} </h6>
                       </div>
                       <div className="d-flex justify-content-between">
                         <h6 className="w-px-100 mb-0">Total:</h6>

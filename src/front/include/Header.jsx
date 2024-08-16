@@ -189,8 +189,8 @@ const Header = () => {
                   </li>
                 )}
 
-                {authCustomer()?.id && (
-                  <li style={{ position: "relative" }}>
+                {/* {authCustomer()?.id && (
+                  <li class="ak_coin" style={{ position: "relative" }}>
                     <button
                       className="text-dark wallet_btn planBtn p-0"
                       onClick={() => redirectPage("my-loyalty-points")}
@@ -229,7 +229,7 @@ const Header = () => {
                       )}
                     </button>
                   </li>
-                )}
+                )} */}
 
                 {authCustomer()?.id && (
                   <li
@@ -403,7 +403,7 @@ const Header = () => {
                     </li>
                   )}
 
-                  {authCustomer()?.id && (
+                  {/* {authCustomer()?.id && (
                     <li>
                       <button
                         className="text-dark planBtn"
@@ -438,11 +438,12 @@ const Header = () => {
                             </g>
                           </g>
                         </svg>
-                        {customerDetails?.loyalty != 0 &&
-                          "(" + customerDetails?.loyalty + ")"}
+                        {customerDetails?.loyalty !== undefined && customerDetails?.loyalty !== 0 && (
+                        <span>{customerDetails.loyalty}</span>
+                      )}
                       </button>
                     </li>
-                  )}
+                  )} */}
 
                   {authCustomer()?.id && (
                     <li>
@@ -451,8 +452,9 @@ const Header = () => {
                         onClick={() => redirectPage("wishlist")}
                       >
                         <i class="fa-regular fa-heart"></i>
-                        {wishlistData?.length != 0 &&
-                          "(" + wishlistData?.length + ")"}
+                        {wishlistData?.length != 0 && (
+                        <span>{wishlistData?.length}</span>
+                      )}
                       </button>
                     </li>
                   )}
@@ -528,7 +530,8 @@ const Header = () => {
                             ></path>
                           </g>
                         </svg>
-                        {cartData?.length != 0 && "(" + cartData?.length + ")"}
+                        {cartData?.length != 0 && <span>{cartData?.length}</span>}
+                       <span> {cartData?.length != 0 &&  cartData?.length}</span>
                       </Link>
                     </li>
                   )}
@@ -655,7 +658,7 @@ const Header = () => {
                 </div>
               </div>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link
                 to="#"
                 onClick={() => handleMobileRedirect("/blog")}
@@ -665,7 +668,7 @@ const Header = () => {
               >
                 Blog
               </Link>
-            </li>
+            </li> */}
             <li className="nav-item">
               <Link
                 data-bs-dismiss="offcanvas"

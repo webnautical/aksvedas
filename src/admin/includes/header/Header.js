@@ -28,7 +28,7 @@ const Header = () => {
         { name: 'all category', url: 'category' },
         { name: 'all brand', url: 'brand' },
         { name: 'all attributes', url: 'attributes' },
-        { name: 'all reviews', url: 'reviews' },
+        { name: 'all reviews', url: 'reviews/all' },
         { name: 'all customer', url: 'customer' },
         { name: 'offers coupon', url: 'offers' },
         { name: 'utils utility', url: 'utils' },

@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ordersucssefull from "../../../assets/img/ordersucssefull.png";
+import firework from "../../../assets/img/youwon.gif";
+import akscoins from "../../../assets/img/akscoin.png"
 import { APICALL } from "../../../utility/api/api";
 import { formatdedDate } from "../../../utility/Utility";
 
 const OrderSuccess = () => {
   const { order_id } = useParams();
   const [orderDetails, setOrderDetails] = useState(null);
+  const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
     getOrderDetailsFun();
@@ -16,6 +19,7 @@ const OrderSuccess = () => {
     try {
       const res = await APICALL(`/v1/get-order-details/${order_id}`);
       if (res?.status) {
+        setOpen(true)
         setOrderDetails(res?.data);
       } else {
         setOrderDetails(null);
@@ -25,6 +29,14 @@ const OrderSuccess = () => {
     }
   };
 
+  useEffect(() => {
+    if (open) {
+      const timer = setTimeout(() => {
+        setOpen(false);
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [open]);
 
   return (
     <>
@@ -48,6 +60,8 @@ const OrderSuccess = () => {
                       We received your purchase request, we'll be in touch
                       shortly!
                     </h4>
+              <h5 className="grneen-text"><span>Congratulations!!</span> <br /> You earn  {orderDetails?.earned_loyalty_discount} akscoins for this order. </h5>
+
                   </div>
                   <hr
                     className="mt-2 mb-4"
@@ -93,18 +107,18 @@ const OrderSuccess = () => {
                   ))}
                   <div className="d-flex justify-content-between">
                     <p className="mb-0">AksCoins:</p>
-                    <p className="mb-0">₹{orderDetails?.loyalty_discounts}</p>
+                    <p className="mb-0">{parseInt(orderDetails?.loyalty_discounts) > 0 ? `- ₹${orderDetails?.loyalty_discounts}` : `₹${orderDetails?.loyalty_discounts}`} </p>
                   </div>
 
                   <div className="d-flex justify-content-between">
                     <p className="mb-0">Shipping</p>
-                    <p className="mb-0">₹{orderDetails?.total_shipping}</p>
+                    <p className="mb-0">{parseInt(orderDetails?.total_shipping) > 0 ? `+ ₹${orderDetails?.total_shipping}` : `₹${orderDetails?.total_shipping}`} </p>
                   </div>
                   <div className="d-flex justify-content-between">
                     <p className="mb-0">Discount</p>
-                    <p className="mb-0">₹{orderDetails?.discounts}</p>
+                    <p className="mb-0">{parseInt(orderDetails?.discounts) > 0 ? `- ₹${orderDetails?.discounts}` : `₹${orderDetails?.discounts}`}</p>
                   </div>
-                  
+
                   <div className="d-flex justify-content-between">
                     <p className="fw-bold">Total</p>
                     <p className="fw-bold">₹{orderDetails?.total_amount}</p>
@@ -112,9 +126,30 @@ const OrderSuccess = () => {
                 </div>
               </div>
             </div>
+            <div className="col-12">
+            </div>
           </div>
         </div>
       </section>
+      {/* {
+        open &&
+        <div class="modal fade show cointmodalshow"  id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: "block" }}>
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header p-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setOpen(false)}></button>
+              </div>
+              <div class="modal-body text-center p-0">
+                <img src={firework} alt=""  className="w-100" />
+                <div>
+              
+                <h1 className="youerocoin">    <img src={akscoins} alt="" />  {orderDetails?.earned_loyalty_discount}</h1>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      } */}
 
     </>
   );

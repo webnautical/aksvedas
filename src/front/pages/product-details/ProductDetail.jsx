@@ -86,14 +86,19 @@ const ProductDetail = () => {
   const [reviewError, setReviewError] = useState('');
   const cartItem = cartData.find(cartItem => cartItem?.product_id == productDetails?.id);
   const handleQntChange = (type) => {
-
     if (type === 'plus') {
       if (cartItem && (cartItem.qnt > 4 || quantity > 4)) {
         toastifyError('You cannot add more than 5 of this item.');
         return false
-      }
-      if (productDetails.quantity > quantity) {
-        setQuantity((prevQuantity) => prevQuantity + 1);
+      }else{
+        if (productDetails.quantity > quantity) {
+          if(quantity == 5){
+            toastifyError('You cannot add more than 5 of this item.');
+            return false
+          }else{
+            setQuantity((prevQuantity) => prevQuantity + 1);
+          }
+        }
       }
     } else {
       if (quantity > 1) {
@@ -238,10 +243,11 @@ const ProductDetail = () => {
   const [disabledBtn, setDisabledBtn] = useState(false)
   const addToCartFun = async (type, product_id) => {
     setDisabledBtn(true)
-    const cartQnt = cartItem?.qnt ? cartItem?.qnt : 1;
-    const selectedQuantity = quantity;
-    const maxAllowedQuantity = Math.min(5 - cartQnt, selectedQuantity);
+
+    const cartQnt = cartItem?.qnt ? cartItem?.qnt : 0;
+    const maxAllowedQuantity = Math.min(5 - cartQnt, quantity);
     const param = { product_id: productDetails?.id, qnt: maxAllowedQuantity, subscription_id: selectedPlan?.id };
+
     if (authCustomer()?.id) {
       const canvas = type == "buy" ? 0 : 1
       addToCartRepeater(param, getWishlistFun, getCartFun, 0, canvas);

@@ -47,9 +47,9 @@ ul.dropdown-menu.dropdown-menu-end.drowp-menu {
     margin-right: 0 !important;
     margin-left: 0 !important;
 }
-.layout-menu.layout-menu-open:hover li.menu-item ul.collapse{
+/* .layout-menu.layout-menu-open:hover li.menu-item ul.collapse{
 display: block;
-}
+} */
 .layout-menu.layout-menu-open li.menu-item  ul.collapse{
 display: none;
 }
@@ -80,3 +80,7 @@ margin-left: 5.25rem;
     text-transform: uppercase;
     margin: 0px;
 }
+
+
+
+.collapse.show  {display: block!important;} 

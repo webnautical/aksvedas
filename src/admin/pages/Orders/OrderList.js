@@ -249,7 +249,7 @@ const OrderList = () => {
                                     </>
                             }
 
-                            <button class="btn btn-success buttons-collection dropdown-toggle btn-label-secondary waves-effect waves-light export_btn" onClick={() => customFun("refresh")}><span><i class="ti ti-reload me-1"></i>Refresh</span></button>
+                            {/* <button class="btn btn-success buttons-collection dropdown-toggle btn-label-secondary waves-effect waves-light export_btn" onClick={() => customFun("refresh")}><span><i class="ti ti-reload me-1"></i>Refresh</span></button> */}
                         </div>
                     </div>
 

@@ -408,8 +408,8 @@ video {
 .wish_phone_btn span {
   background: #E0A11C;
   position: absolute;
-  top: 0px;
-  right: -8px;
+  top: -6px;
+  right: -12px;
   font-size: 8px;
   line-height: 14px;
   font-weight: 700;
@@ -418,15 +418,15 @@ video {
   color: #fff;
   padding: 0px;
   border-radius: 170px;
-  width: 14px;
+  width: 26px;
   height: 14px;
 }
 
 .planBtn span {
   background: #E0A11C;
   position: absolute;
-  top: -5px;
-  right: -8px;
+  top: -7px;
+  right: -14px;
   font-size: 8px;
   line-height: 14px;
   font-weight: 700;
@@ -435,8 +435,8 @@ video {
   color: #fff;
   padding: 0px;
   border-radius: 170px;
-  width: 14px;
-  height: 14px;
+  width: 30px;
+  height: 15px;
 }
 
 .mboiel-right ul a {
@@ -566,11 +566,11 @@ section.new_arrivals {
 }
 
 .mboiel-right ul a span {
-  /* display: none; */
+  /* display: none;  */
   background: #E0A11C;
   position: absolute;
-  top: 0px;
-  right: -8px;
+  top: -3px;
+  right: -17px;
   font-size: 8px;
   line-height: 14px;
   font-weight: 700;
@@ -579,7 +579,7 @@ section.new_arrivals {
   color: #fff;
   padding: 0px;
   border-radius: 170px;
-  width: 14px;
+  width: 26px;
   height: 14px;
 }
 

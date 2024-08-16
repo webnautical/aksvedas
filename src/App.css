@@ -513,6 +513,16 @@ body {
 
 @media only screen and (max-width: 767px) {
 
+    .planBtn span {
+        background: #E0A11C;
+        position: absolute;
+        top: -7px !important;
+        right: -11px !important;
+        font-size: 8px;
+        width: 26px !important;
+        height: 15px !important;
+    }
+
     .top_min_header button {
         margin-top: 20px;
         width: 100%;
@@ -773,3 +783,47 @@ optgroup.divider {
     
   .suggestions li a{ display: block; font-size: 12px!important;
     line-height: 16px;}
+
+
+    .wallet_btn.planBtn span {
+        top: -3px !important;
+    }
+
+
+  .cart_li span{
+    background: #E0A11C;
+    position: absolute;
+    top: -4px;
+    right: -17px;
+    font-size: 8px;
+    line-height: 14px;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-align: center;
+    color: #fff;
+    padding: 0px;
+    border-radius: 170px;
+    width: 30px;
+    height: 15px;
+        }
+
+
+/* 
+        @media screen and (max-width: 1200.98px) {
+            .layout-menu:hover .collapse{ display: none!important;}
+          } */
+          h1.youerocoin img {
+            width: 39px;
+            display: inline-block;
+        }
+
+        h1.youerocoin {
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .grneen-text {
+            color: green;
+        }
