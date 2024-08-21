@@ -408,8 +408,8 @@ video {
 .wish_phone_btn span {
   background: #E0A11C;
   position: absolute;
-  top: -6px;
-  right: -12px;
+  top: -2px;
+  right: -8px;
   font-size: 8px;
   line-height: 14px;
   font-weight: 700;
@@ -418,15 +418,15 @@ video {
   color: #fff;
   padding: 0px;
   border-radius: 170px;
-  width: 26px;
-  height: 14px;
+  width: 15px;
+  height: 15px;
 }
 
 .planBtn span {
   background: #E0A11C;
   position: absolute;
   top: -7px;
-  right: -14px;
+  right: -7px;
   font-size: 8px;
   line-height: 14px;
   font-weight: 700;
@@ -435,7 +435,7 @@ video {
   color: #fff;
   padding: 0px;
   border-radius: 170px;
-  width: 30px;
+  width: 15px;
   height: 15px;
 }
 
@@ -569,8 +569,8 @@ section.new_arrivals {
   /* display: none;  */
   background: #E0A11C;
   position: absolute;
-  top: -3px;
-  right: -17px;
+  top: 0px;
+  right: -10px;
   font-size: 8px;
   line-height: 14px;
   font-weight: 700;
@@ -579,8 +579,8 @@ section.new_arrivals {
   color: #fff;
   padding: 0px;
   border-radius: 170px;
-  width: 26px;
-  height: 14px;
+  width: 15px;
+  height: 15px;
 }
 
 .main_inner_header .top_logo_section a {
@@ -4476,6 +4476,7 @@ span.mont-head {
 }
 
 .right_option_bar .dropdown-menu.show i {
+  width: 20px;
   font-size: 14px;
   color: #333330;
 }

@@ -13,6 +13,7 @@ import { APICALL } from "../../utility/api/api";
 import { imgBaseURL, toastifyError } from "../../utility/Utility";
 import { SOMETHING_ERR } from "../../utility/Constants";
 import HTMLContent from "../../components/HTMLContent";
+import icon2 from "../../assets/img/qualitys.png";
 
 const Footer = () => {
   const { categories, getWebAttrFun, webAttr,allData } = useFrontDataContext();
@@ -102,7 +103,7 @@ const Footer = () => {
             </div>
             <div className="col borer-right">
               <div className="free-box">
-              <img src={free4} alt="footer_logo" />
+              <img src={icon2} alt="footer_logo" />
                 <h5>
                 QUALITY GUARANTEE
                 </h5>

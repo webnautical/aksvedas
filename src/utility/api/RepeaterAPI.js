@@ -8,7 +8,7 @@ export const addToCartRepeater = async (data, getWishlistFun, getCartFun, toast 
         const res = await postDataAPI('/v1/add-cart', param)
         if (res?.status) {
             if (toast == 0) {
-                // toastifySuccess(res?.msg)
+                toastifySuccess(res?.msg)
             }
             getWishlistFun()
             getCartFun(offcanvas)

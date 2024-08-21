@@ -156,26 +156,29 @@ const Header = () => {
                         <h6 className="dropdown-header">
                           Welcome {authCustomer()?.name?.split(" ")[0]}
                         </h6>
+                        <Link className="dropdown-item" to={`/account/account-info`} onClick={() => setDropdownOpen(false)}>
+                          <i className="fa fa-user me-1"></i>My Account
+                        </Link>
+
+                        <Link className="dropdown-item coin_gap " to={"/account/my-loyalty-points"}>
+                          <i className="fa fa-wallet me-1"></i>  My Akscoins
+                            {customerDetails?.loyalty !== undefined && customerDetails?.loyalty !== 0 && (
+                              <span class="mobile_ak ak_coinss">{customerDetails.loyalty}</span>
+                            )}
+
+                        </Link>
+
                         <Link className="dropdown-item" to={"/account/orders"} onClick={() => setDropdownOpen(false)}>
-                          <i className="fa fa-cart-plus me-1"></i> My Orders
+                          <i className="fa fa-cart-plus me-1"></i>My Orders
                         </Link>
-                        {/* <Link className="dropdown-item" to={"#"}>
-                          <i className="fa fa-truck me-1"></i> Track Orders
-                        </Link> */}
-                        <Link
-                          className="dropdown-item"
-                          to={`/account/account-info`}
-                          onClick={() => setDropdownOpen(false)}
-                        >
-                          <i className="fa fa-user me-1"></i> My Account
-                        </Link>
+
                         <div className="dropdown-divider"></div>
                         <Link
                           to={"/"}
                           onClick={() => handleLogout()}
                           className="dropdown-item"
                         >
-                          <i class="fa-solid fa-right-from-bracket"></i> Logout
+                          <i class="fa-solid fa-right-from-bracket"></i>Logout
                         </Link>
                       </div>
                     )}
@@ -320,7 +323,7 @@ const Header = () => {
               onChange={handleChange}
             />
             <button onClick={(e) => handleSearch(e)}>
-            <i className="fa fa-search"></i>
+              <i className="fa fa-search"></i>
             </button>
 
             <div className="suggestion">
@@ -372,25 +375,27 @@ const Header = () => {
                         <h6 className="dropdown-header">
                           Welcome {authCustomer()?.name}
                         </h6>
+                        <Link className="dropdown-item" to={`/account/account-info`}>
+                          <i className="fa fa-user me-1"></i>My Account
+                        </Link>
+                        <Link className="dropdown-item" to={"/account/my-loyalty-points"}>
+                          <i className="fa fa-wallet me-1"></i>My Akscoins
+                            {customerDetails?.loyalty !== undefined && customerDetails?.loyalty !== 0 && (
+                              <span class="ak_coinss">{customerDetails.loyalty}</span>
+                            )}
+                        </Link>
                         <Link className="dropdown-item" to={"/account/orders"}>
-                          <i className="fa fa-cart-plus me-1"></i> My Orders
+                          <i className="fa fa-cart-plus"></i>My Orders
                         </Link>
-                        {/* <Link className="dropdown-item" to={"#"}>
-                          <i className="fa fa-truck me-1"></i> Track Orders
-                        </Link> */}
-                        <Link
-                          className="dropdown-item"
-                          to={`/account/account-info`}
-                        >
-                          <i className="fa fa-user me-1"></i> My Account
-                        </Link>
+
+
                         <div className="dropdown-divider"></div>
                         <Link
                           to={"/"}
                           onClick={() => handleLogout()}
                           className="dropdown-item"
                         >
-                          <i class="fa-solid fa-right-from-bracket"></i> Logout
+                          <i class="fa-solid fa-right-from-bracket"></i>Logout
                         </Link>
                       </div>
                     </li>
@@ -453,8 +458,8 @@ const Header = () => {
                       >
                         <i class="fa-regular fa-heart"></i>
                         {wishlistData?.length != 0 && (
-                        <span>{wishlistData?.length}</span>
-                      )}
+                          <span>{wishlistData?.length}</span>
+                        )}
                       </button>
                     </li>
                   )}
@@ -531,7 +536,7 @@ const Header = () => {
                           </g>
                         </svg>
                         {cartData?.length != 0 && <span>{cartData?.length}</span>}
-                       <span> {cartData?.length != 0 &&  cartData?.length}</span>
+                        <span> {cartData?.length != 0 && cartData?.length}</span>
                       </Link>
                     </li>
                   )}

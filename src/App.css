@@ -794,7 +794,7 @@ optgroup.divider {
     background: #E0A11C;
     position: absolute;
     top: -4px;
-    right: -17px;
+    right: -10px;
     font-size: 8px;
     line-height: 14px;
     font-weight: 700;
@@ -803,7 +803,7 @@ optgroup.divider {
     color: #fff;
     padding: 0px;
     border-radius: 170px;
-    width: 30px;
+    width: 15px;
     height: 15px;
         }
 
@@ -827,3 +827,49 @@ optgroup.divider {
         .grneen-text {
             color: green;
         }
+
+
+        .cart_canvas .owl-nav button {
+            width: 32px;
+            height: 32px;
+            font-size: 14px !important;
+        }
+
+
+
+        .mboiel-right .dropdown-menu .dropdown-item {
+        
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+
+        .mboiel-right .dropdown-menu .dropdown-item i{
+
+            margin-right: .25rem !important;
+            width: 17px;
+            font-size: 14px;
+
+        }
+
+        .ak_coinss{    background-color: #E0A11C;
+            color: white;
+            font-size: 12px;
+            border-radius: 5px;
+            padding: 3px 3px;
+            margin-left: 5px;
+            font-weight: 600;
+        }
+
+
+        .mobile_ak{
+            width: 49px!important;
+            height: 20px!important;
+            position: unset!important;
+            font-size: 12px!important;
+            line-height: 20px!important;
+            font-weight: 700!important;
+        }
+
+        .coin_gap  { gap: 8px!important;}

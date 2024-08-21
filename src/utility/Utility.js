@@ -112,6 +112,8 @@ export const toastifySuccess = (message) => {
 };
 
 export const toastifyError = (message) => {
+    toast.dismiss();
+
     toast.error(`${message}`, {
         position: 'top-right',
         autoClose: 1000,

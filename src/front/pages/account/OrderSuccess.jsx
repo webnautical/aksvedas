@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ordersucssefull from "../../../assets/img/ordersucssefull.png";
 import firework from "../../../assets/img/youwon.gif";
 import akscoins from "../../../assets/img/akscoin.png"
@@ -60,7 +60,7 @@ const OrderSuccess = () => {
                       We received your purchase request, we'll be in touch
                       shortly!
                     </h4>
-              <h5 className="grneen-text"><span>Congratulations!!</span> <br /> You earn  {orderDetails?.earned_loyalty_discount} akscoins for this order. </h5>
+                    <h5 className="grneen-text"><span>Congratulations!!</span> <br /> You earn  {orderDetails?.earned_loyalty_discount} akscoins for this order. </h5>
 
                   </div>
                   <hr
@@ -124,6 +124,11 @@ const OrderSuccess = () => {
                     <p className="fw-bold">₹{orderDetails?.total_amount}</p>
                   </div>
                 </div>
+
+                <div className="text-center">
+                  <h6>Need assistance with your order? <Link to={'/contact-us'} target="_blank">Click here for help.</Link></h6>
+                </div>
+
               </div>
             </div>
             <div className="col-12">
@@ -131,7 +136,7 @@ const OrderSuccess = () => {
           </div>
         </div>
       </section>
-      {/* {
+      {
         open &&
         <div class="modal fade show cointmodalshow"  id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: "block" }}>
           <div class="modal-dialog modal-dialog-centered">
@@ -149,7 +154,7 @@ const OrderSuccess = () => {
             </div>
           </div>
         </div>
-      } */}
+      }
 
     </>
   );

@@ -480,7 +480,8 @@ const Account = () => {
                                                   qnt: 1,
                                                 },
                                                 getWishlistFun,
-                                                getCartFun
+                                                getCartFun,
+                                                0
                                               )
                                             }
                                           >

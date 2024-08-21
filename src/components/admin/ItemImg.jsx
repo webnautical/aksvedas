@@ -2,12 +2,11 @@ import React from 'react'
 import { defaultIMG, imgBaseURL } from '../../utility/Utility'
 
 const ItemImg = ({img}) => {
-  const isVideo = img.endsWith('.mp4') || img.endsWith('.mov');
+  const isString = typeof img === 'string';
+  const isVideo = isString && (img.endsWith('.mp4') || img.endsWith('.mov'));
   const mediaURL = img ? imgBaseURL() + img : defaultIMG;
   return (
     <>
-    {/* <img src={img ? imgBaseURL() + img : defaultIMG} alt={'img'} style={{height: '40px', width: '40px', borderRadius: '50%', objectFit: 'contain', background: '#ddd'}} /> */}
-
     <div className="media-item" style={{ position: 'relative', margin: '5px' }}>
       {isVideo ? (
         <video

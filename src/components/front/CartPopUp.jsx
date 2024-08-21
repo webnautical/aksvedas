@@ -25,15 +25,19 @@ const CartPopUp = ({ item }) => {
     responsiveClass: true,
     infinite: true,
     speed: 100,
+    navText: [
+      '<i class="fa fa-chevron-left"></i>',
+      '<i class="fa fa-chevron-right"></i>',
+    ], // Custom arrow icons
 
     responsive: {
       0: {
         items: 2,
-        nav: false,
+        nav: true,
       },
       600: {
         items: 2.1,
-        nav: false,
+        nav: true,
       },
       1000: {
         items: 2.1,
