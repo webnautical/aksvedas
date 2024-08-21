@@ -5,10 +5,10 @@ import TopHeader from "../../components/front/TopHeader";
 import CartPopUp from "../../components/front/CartPopUp";
 import { useFrontDataContext } from "../../context/FrontContextProvider";
 import { authCustomer, imgBaseURL } from "../../utility/Utility";
-
+ 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-
+ 
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -18,9 +18,9 @@ const Header = () => {
         setIsScrolled(false);
       }
     };
-
+ 
     window.addEventListener("scroll", handleScroll);
-
+ 
     // Clean up the event listener on component unmount
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -38,7 +38,7 @@ const Header = () => {
   const navigate = useNavigate();
   const [isOpen, setDropdownOpen] = useState(false);
   const [headerSearchVal, setHeaderSearchVal] = useState();
-
+ 
   useEffect(() => {
     const handleBodyClick = (event) => {
       if (!event.target.closest(".dropdown") && isOpen) {
@@ -50,28 +50,28 @@ const Header = () => {
       document.body.removeEventListener("click", handleBodyClick);
     };
   }, [isOpen]);
-
+ 
   const toggleDropdown = () => {
     setDropdownOpen((prevState) => !prevState);
   };
-
+ 
   const handleLinkClick = () => {
     // setIsOpen(false);
   };
-
+ 
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const searchRef = useRef(null);
-
+ 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
   };
-
+ 
   const closeSearch = () => {
     setIsSearchOpen(false);
     setHeaderSearchVal();
     setSuggestions([])
   };
-
+ 
   useEffect(() => {
     getFuxedReviewList();
     const handleOutsideClick = (event) => {
@@ -84,12 +84,12 @@ const Header = () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
-
+ 
   const redirectPage = (tab) => {
     // const data = { tab: tab };
     navigate(`/account/${tab}`);
   };
-
+ 
   const handleLogout = async () => {
     navigate("/");
     localStorage.clear();
@@ -98,21 +98,21 @@ const Header = () => {
     // if(res?.data.status){
     // }
   };
-
+ 
   const handleMobileRedirect = (page) => {
     navigate(page);
   };
-
+ 
   const handleSearch = (e) => {
     e.preventDefault();
     navigate("/shop/all", { state: { searchVal: headerSearchVal } });
   };
-
+ 
   const [suggestions, setSuggestions] = useState([]);
   const handleChange = (e) => {
     const value = e.target.value;
     setHeaderSearchVal(value);
-
+ 
     if (value) {
       const filteredSuggestions = products?.filter((product) =>
         product.name.toLowerCase().includes(value.toLowerCase())
@@ -122,7 +122,7 @@ const Header = () => {
       setSuggestions([]);
     }
   };
-
+ 
   const handleSuggestionClick = () => {
     setHeaderSearchVal('');
     setIsSearchOpen(false)
@@ -159,19 +159,19 @@ const Header = () => {
                         <Link className="dropdown-item" to={`/account/account-info`} onClick={() => setDropdownOpen(false)}>
                           <i className="fa fa-user me-1"></i>My Account
                         </Link>
-
+ 
                         <Link className="dropdown-item coin_gap " to={"/account/my-loyalty-points"}>
                           <i className="fa fa-wallet me-1"></i>  My Akscoins
                             {customerDetails?.loyalty !== undefined && customerDetails?.loyalty !== 0 && (
                               <span class="mobile_ak ak_coinss">{customerDetails.loyalty}</span>
                             )}
-
+ 
                         </Link>
-
+ 
                         <Link className="dropdown-item" to={"/account/orders"} onClick={() => setDropdownOpen(false)}>
                           <i className="fa fa-cart-plus me-1"></i>My Orders
                         </Link>
-
+ 
                         <div className="dropdown-divider"></div>
                         <Link
                           to={"/"}
@@ -191,7 +191,7 @@ const Header = () => {
                     </Link>{" "}
                   </li>
                 )}
-
+ 
                 {/* {authCustomer()?.id && (
                   <li class="ak_coin" style={{ position: "relative" }}>
                     <button
@@ -233,7 +233,7 @@ const Header = () => {
                     </button>
                   </li>
                 )} */}
-
+ 
                 {authCustomer()?.id && (
                   <li
                     className="wish_phone_btn"
@@ -268,7 +268,7 @@ const Header = () => {
                     </button>
                   </li>
                 )}
-
+ 
                 {authCustomer()?.id && (
                   <li className="cart_li">
                     <Link
@@ -325,7 +325,7 @@ const Header = () => {
             <button onClick={(e) => handleSearch(e)}>
               <i className="fa fa-search"></i>
             </button>
-
+ 
             <div className="suggestion">
               {suggestions.length > 0 && (
                 <ul className="suggestions">
@@ -340,10 +340,10 @@ const Header = () => {
               )}
             </div>
           </div>
-
+ 
         </div>
       </div>
-
+ 
       <div className={`main_header ${isScrolled ? "scrolled" : ""}`}>
         <section className="header d-md-block d-none">
           <div className="container">
@@ -358,7 +358,7 @@ const Header = () => {
                   />
                 </Link>
               </div>
-
+ 
               <div className="right_option_bar">
                 <ul>
                   {authCustomer()?.id ? (
@@ -387,8 +387,8 @@ const Header = () => {
                         <Link className="dropdown-item" to={"/account/orders"}>
                           <i className="fa fa-cart-plus"></i>My Orders
                         </Link>
-
-
+ 
+ 
                         <div className="dropdown-divider"></div>
                         <Link
                           to={"/"}
@@ -407,7 +407,7 @@ const Header = () => {
                       </Link>{" "}
                     </li>
                   )}
-
+ 
                   {/* {authCustomer()?.id && (
                     <li>
                       <button
@@ -449,7 +449,7 @@ const Header = () => {
                       </button>
                     </li>
                   )} */}
-
+ 
                   {authCustomer()?.id && (
                     <li>
                       <button
@@ -463,7 +463,7 @@ const Header = () => {
                       </button>
                     </li>
                   )}
-
+ 
                   <li>
                     <Link>
                       <div className="search-icon" onClick={toggleSearch}>
@@ -483,7 +483,7 @@ const Header = () => {
                                 <button type="button" onClick={closeSearch}>
                                   <i className="fa-solid fa-xmark"></i>
                                 </button>
-
+ 
                                 <div className="suggestion">
                                   {suggestions.length > 0 && (
                                     <ul className="suggestions">
@@ -498,15 +498,15 @@ const Header = () => {
                                   )}
                                 </div>
                               </div>
-
+ 
                             </div>
                           </form>
-
+ 
                         </>
                       )}
                     </Link>
                   </li>
-
+ 
                   {authCustomer()?.id && (
                     <li className="cart_li">
                       <Link
@@ -536,7 +536,7 @@ const Header = () => {
                           </g>
                         </svg>
                         {cartData?.length != 0 && <span>{cartData?.length}</span>}
-                        <span> {cartData?.length != 0 && cartData?.length}</span>
+                        {/* <span> {cartData?.length != 0 && cartData?.length}</span> */}
                       </Link>
                     </li>
                   )}
@@ -545,7 +545,7 @@ const Header = () => {
             </div>
           </div>
         </section>
-
+ 
         <header className="d-md-block d-none">
           <nav>
             <ul>
@@ -580,7 +580,7 @@ const Header = () => {
           </nav>
         </header>
       </div>
-
+ 
       <div
         className="offcanvas offcanvas-start offcanvas-mobile-header"
         tabIndex="-1"
@@ -691,5 +691,5 @@ const Header = () => {
     </>
   );
 };
-
+ 
 export default Header;

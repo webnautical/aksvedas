@@ -83,6 +83,13 @@ const Sidebar = () => {
                         <Link to={'/admin/orders'} className="menu-link" onClick={closeMenu}>
                             <i class="fa-solid fa-truck-ramp-box me-2"></i>
                             <div data-i18n="Tables">All Orders</div>
+                        </Link> 
+                    </li>
+
+                    <li className="menu-item">
+                        <Link to={'/admin/reasons'} className="menu-link" onClick={closeMenu}>
+                            <i class="fa-solid fa-truck-ramp-box me-2"></i>
+                            <div data-i18n="Tables">Help queries</div>
                         </Link>
                     </li>
 

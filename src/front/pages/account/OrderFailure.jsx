@@ -87,6 +87,10 @@ const OrderFailure = () => {
                     }}
                   />
                 </div>
+
+                <div className="text-center">
+                  <h6>Need assistance with your order? <Link to={'/contact-us'} target="_blank">Click here for help.</Link></h6>
+                </div>
               </div>
             </div>
           </div>

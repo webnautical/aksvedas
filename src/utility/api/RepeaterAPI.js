@@ -13,7 +13,8 @@ export const addToCartRepeater = async (data, getWishlistFun, getCartFun, toast 
             getWishlistFun()
             getCartFun(offcanvas)
         } else {
-            toastifyError('Product can not be added in Cart')
+            console.log("ERRRRRRRRRRRRRR", res)
+            // toastifyError(res?.)
         }
     } catch (error) {
         // toastifyError('Server error')

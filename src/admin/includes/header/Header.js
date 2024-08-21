@@ -33,6 +33,7 @@ const Header = () => {
         { name: 'offers coupon', url: 'offers' },
         { name: 'utils utility', url: 'utils' },
         { name: 'queries', url: 'queries' },
+        { name: 'help reasons', url: 'reasons' },
         { name: 'blog', url: 'blog/all' },
         { name: 'comments', url: 'blog/comments' },
         { name: 'about us', url: 'page/about-us' },

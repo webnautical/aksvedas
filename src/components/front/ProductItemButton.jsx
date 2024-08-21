@@ -8,11 +8,17 @@ const ProductItemButton = ({ row }) => {
   const { getWishlistFun, getCartFun, cartData } = useFrontDataContext();
   const [cartLoading, setCartLoading] = useState(false)
   const navigate = useNavigate()
+  const [clickCount, setClickCount] = useState(0)
   const addToCartFun = async (type, item) => {
+    setClickCount(clickCount + 1)
     const cartItem = cartData.find(cartItem => cartItem.product_id == item.id);
     if (cartItem && cartItem.qnt > 4) {
+      if(clickCount > 5){
+       return false
+      }else{
         toastifyError('You cannot add more than 5 of this item.');
         return false
+      }
     }
 
     const param = { product_id: item.id, qnt: 1 };

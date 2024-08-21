@@ -85,17 +85,26 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [reviewError, setReviewError] = useState('');
   const cartItem = cartData.find(cartItem => cartItem?.product_id == productDetails?.id);
+  const [clickCount, setClickCount] = useState(0)
+
   const handleQntChange = (type) => {
     if (type === 'plus') {
+      setClickCount(clickCount + 1)
+
       if (cartItem && (cartItem.qnt > 4 || quantity > 4)) {
-        toastifyError('You cannot add more than 5 of this item.');
-        return false
-      }else{
+        setClickCount(clickCount + 1)
+        if(clickCount === 0){
+          toastifyError('You cannot add more than 5 of this item.');
+          return false
+        }else{
+          return false
+        }
+      } else {
         if (productDetails.quantity > quantity) {
-          if(quantity == 5){
+          if (quantity == 5) {
             toastifyError('You cannot add more than 5 of this item.');
             return false
-          }else{
+          } else {
             setQuantity((prevQuantity) => prevQuantity + 1);
           }
         }
@@ -245,18 +254,30 @@ const ProductDetail = () => {
     setDisabledBtn(true)
 
     const cartQnt = cartItem?.qnt ? cartItem?.qnt : 0;
+    setClickCount(clickCount + 1)
+
+    if(cartQnt == 5){
+      if (type == "buy") {
+        navigate("/checkout");
+      }
+      if(clickCount === 0){
+        toastifyError('You cannot add more than 5 of this item.');
+        return false
+      }else{
+        return false
+      }
+    }
     const maxAllowedQuantity = Math.min(5 - cartQnt, quantity);
     const param = { product_id: productDetails?.id, qnt: maxAllowedQuantity, subscription_id: selectedPlan?.id };
-
     if (authCustomer()?.id) {
       const canvas = type == "buy" ? 0 : 1
       addToCartRepeater(param, getWishlistFun, getCartFun, 0, canvas);
-        selectedProducts?.map(item => {
-          const param = { product_id: item, qnt: 1 };
-          return addToCartRepeater(param, getWishlistFun, getCartFun, 1);
-        })
+      selectedProducts?.map(item => {
+        const param = { product_id: item, qnt: 1 };
+        return addToCartRepeater(param, getWishlistFun, getCartFun, 1);
+      })
       const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-      await delay(2000); 
+      await delay(2000);
       setDisabledBtn(false)
       if (type == "buy") {
         navigate("/checkout");
@@ -661,10 +682,10 @@ const ProductDetail = () => {
                               <button
                                 className="btn-2 buy-btn"
                                 onClick={() => addToCartFun("buy")}
-                                disabled={disabledBtn}
+                                // disabled={disabledBtn}
 
                               >
-                                Buy Now
+                                Buy Now 1
                               </button>
                             </div>
                           ) : (

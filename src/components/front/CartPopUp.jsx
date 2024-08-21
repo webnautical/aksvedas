@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef  } from "react";
 import emptycart from "../../assets/img/empty-cart.png";
 import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
@@ -8,20 +8,20 @@ import { getPercentageOff, imgBaseURL } from "../../utility/Utility";
 import { Link, useNavigate } from "react-router-dom";
 import { cartQntChange } from "../../utility/api/RepeaterAPI";
 import { Rating } from "@mui/material";
-
+ 
 const CartPopUp = ({ item }) => {
   const navigate = useNavigate();
   const { cartData, allData, removeCartItemFun, offcanvas, setOffcanvas } =
     useFrontDataContext();
   const [cartList, setCartList] = useState([]);
-
+ 
   const goesgretwith = {
     // loop: true,
     // autoplay: true,
     // autoplaySpeed: 100,
     margin: 10,
     dots: false,
-    nav: true,
+    nav: false,
     responsiveClass: true,
     infinite: true,
     speed: 100,
@@ -29,30 +29,30 @@ const CartPopUp = ({ item }) => {
       '<i class="fa fa-chevron-left"></i>',
       '<i class="fa fa-chevron-right"></i>',
     ], // Custom arrow icons
-
+ 
     responsive: {
       0: {
         items: 2,
-        nav: true,
+        nav: false,
       },
       600: {
-        items: 2.1,
-        nav: true,
+        items: 2,
+        nav: false,
       },
       1000: {
-        items: 2.1,
-
-        loop: true,
+        items: 2,
+ 
+        loop: false,
       },
-
+ 
       1500: {
-        items: 2.1,
-
+        items: 2,
+ 
         loop: true,
       },
     },
   };
-
+ 
   const getSubTotalFunc = () => {
     const subtotal = cartList.reduce(
       (total, item) =>
@@ -61,18 +61,18 @@ const CartPopUp = ({ item }) => {
     );
     return subtotal;
   };
-
+ 
   const goToCheckOut = () => {
     navigate("/checkout");
     setOffcanvas(false);
   };
-
+ 
   useEffect(() => {
     if (cartData.length > 0) {
       setCartList(cartData);
     }
   }, [cartData]);
-
+ 
   const handleQntChange = (qntType, itemId) => {
     const updatedCartItems = cartList.map((item) => {
       if (item.id === itemId) {
@@ -92,7 +92,17 @@ const CartPopUp = ({ item }) => {
     });
     setCartList(updatedCartItems);
   };
-
+ 
+  const owlRef = useRef(null);
+ 
+  const goToPrev = () => {
+    owlRef.current.prev();
+  };
+ 
+  const goToNext = () => {
+    owlRef.current.next();
+  };
+ 
   return (
     <div
       className={`cart_canvas offcanvas offcanvas-end ${offcanvas && "show"}`}
@@ -137,7 +147,7 @@ const CartPopUp = ({ item }) => {
                           <span style={{ color: "#E0A11C" }}>{item?.sku}</span>
                         </p>
                         <p>₹{item?.sale_price}</p>
-
+ 
                         <div className="d-flex justify-content-between align-items-center">
                           <div className="quantity_select">
                             <button
@@ -152,7 +162,7 @@ const CartPopUp = ({ item }) => {
                               <i className="fa-solid fa-plus"></i>
                             </button>
                           </div>
-
+ 
                           <div>
                             <button
                               className="icon_btn __danger mx-1"
@@ -191,11 +201,18 @@ const CartPopUp = ({ item }) => {
               </>
             )}
           </div>
-
+ 
           <div className="goes_great_with mt-3">
-            <p>Goes great with</p>
+         <div className="mb-3 d-flex justify-content-between align-items-center">
+         <p className="mb-0">Goes great with</p> <div>
+          <div className="cs_button_arrow">
+          <button onClick={goToPrev}><i class="fa-solid fa-chevron-left"></i></button>
+        <button onClick={goToNext}><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+         </div>
+         </div>
             <div className=" mt-1">
-              <OwlCarousel className="owl-theme" {...goesgretwith}>
+              <OwlCarousel className="owl-theme" {...goesgretwith} ref={owlRef}>
                 {allData?.products?.map((item, i) => (
                   <div className="item">
                     <a href={`/product-detail/${item?.slug}`}>
@@ -220,7 +237,7 @@ const CartPopUp = ({ item }) => {
                           ₹{item.sale_price}{" "}
                           <span className="high_price">{item.price}</span>
                         </div>
-
+ 
                         <div className="off_price_badge">
                           {parseInt(
                             getPercentageOff(item.price, item.sale_price)
@@ -235,7 +252,7 @@ const CartPopUp = ({ item }) => {
             </div>
           </div>
         </div>
-
+ 
         <div className="subtotal_checkout">
           {cartData?.length > 0 && (
             <>
@@ -260,5 +277,5 @@ const CartPopUp = ({ item }) => {
     </div>
   );
 };
-
+ 
 export default CartPopUp;

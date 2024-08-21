@@ -1,6 +1,6 @@
 import { Breadcrumbs, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import siderbg from "../../../assets/img/bg-about.png";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { APICALL } from "../../../utility/api/api";
@@ -9,12 +9,15 @@ import { useFrontDataContext } from "../../../context/FrontContextProvider";
 import FrontLoader from "../../../components/front/FrontLoader";
 import ConfirmModal from "../../../components/ConfirmModal";
 import PDFButton from "../../../components/PDFButton";
+import ReasonModal from "./ReasonModal";
+import { addToCartRepeater } from "../../../utility/api/RepeaterAPI";
 const OrderDetails = () => {
+  const { getWishlistFun, getCartFun } = useFrontDataContext();
   const [loading, setLoading] = useState(false);
   const { products } = useFrontDataContext();
   const { order_id } = useParams();
   const [orderDetails, setOrderDetails] = useState(null);
-
+  const navigate = useNavigate()
   const [submitLoading, setSubmitLoading] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
 
@@ -80,6 +83,15 @@ const OrderDetails = () => {
     return orderProducts.reduce((total, product) => total + parseInt(product.product_price, 10) * product?.qnt, 0);
   };
 
+
+  const reTryOrder = () => {
+    orderDetails?.order_products?.map(item => {
+      const param = { product_id: item?.product_id, qnt: 1 };
+      return addToCartRepeater(param, getWishlistFun, getCartFun, 1);
+    })
+    navigate('/checkout')
+  }
+
   console.log("orderDetails",orderDetails)
 
   return (
@@ -128,14 +140,14 @@ const OrderDetails = () => {
                         <h6 className="card-title m-0">
                           <span className="btn btn-sm text-uppercase me-2" style={{ background: "#ddad67", color: '#fff' }}
                           >Order - {orderDetails?.order_status}</span>
-                          
-                          {!orderDetails?.shipment_id && orderDetails?.order_status == "pending"? 
+
+                          {!orderDetails?.shipment_id && orderDetails?.order_status == "pending" ?
                             <button className="btn btn-sm btn-danger text-uppercase me-2" onClick={() => setModalOpen(true)}>Cancel Order</button>
                             : <></>}
 
                           {
-                            orderDetails?.order_status !== "Cancelled" &&
-                            <PDFButton order_id={orderDetails?.id} btnName={"Download Inovice"}/>
+                            orderDetails?.order_status !== "Cancelled" && orderDetails?.order_status !== "failure" &&
+                            <PDFButton order_id={orderDetails?.id} btnName={"Download Invoice"} />
                           }
                         </h6>
                       </div>
@@ -216,15 +228,15 @@ const OrderDetails = () => {
                       </div>
                       <div className="d-flex justify-content-between mb-2">
                         <span className="w-px-100">Discount:</span>
-                        <h6 className="mb-0"> {parseInt(orderDetails?.discounts) > 0 ? `- ₹${orderDetails?.discounts}` :  `₹${orderDetails?.discounts}`} </h6>
+                        <h6 className="mb-0"> {parseInt(orderDetails?.discounts) > 0 ? `- ₹${orderDetails?.discounts}` : `₹${orderDetails?.discounts}`} </h6>
                       </div>
                       <div className="d-flex justify-content-between mb-2">
                         <span className="w-px-100">AksCoins:</span>
-                        <h6 className="mb-0"> {parseInt(orderDetails?.loyalty_discounts) > 0 ? `- ₹${orderDetails?.loyalty_discounts}` :  `₹${orderDetails?.loyalty_discounts}`} </h6>
+                        <h6 className="mb-0"> {parseInt(orderDetails?.loyalty_discounts) > 0 ? `- ₹${orderDetails?.loyalty_discounts}` : `₹${orderDetails?.loyalty_discounts}`} </h6>
                       </div>
                       <div className="d-flex justify-content-between mb-2">
                         <span className="w-px-100">Shipping Charge:</span>
-                        <h6 className="mb-0"> {parseInt(orderDetails?.total_shipping) > 0 ? `+ ₹${orderDetails?.total_shipping}` :  `₹${orderDetails?.total_shipping}`} </h6>
+                        <h6 className="mb-0"> {parseInt(orderDetails?.total_shipping) > 0 ? `+ ₹${orderDetails?.total_shipping}` : `₹${orderDetails?.total_shipping}`} </h6>
                       </div>
                       <div className="d-flex justify-content-between">
                         <h6 className="w-px-100 mb-0">Total:</h6>
@@ -263,6 +275,12 @@ const OrderDetails = () => {
                       <p className="mb-0">{orderDetails?.address?.phone}</p>
                     </div>
                   </div>
+
+                   {
+                    orderDetails?.order_status === "failure" &&
+                  <button className="btn btn-primary me-2" onClick={() => reTryOrder()}>Re-try Order</button>
+                   }
+                  <ReasonModal order_id={orderDetails?.id} />
                 </div>
               </>
             )}

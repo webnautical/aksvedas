@@ -41,10 +41,10 @@ const Account = () => {
   const { page } = useParams();
 
   useEffect(() => {
-    if(!authCustomer()?.token){
+    if (!authCustomer()?.token) {
       navigate('/login')
     }
-  },[])
+  }, [])
 
   useEffect(() => {
     getWishlistFun();
@@ -129,6 +129,22 @@ const Account = () => {
     navigate('/')
     localStorage.clear()
     sessionStorage.clear();
+  }
+  const [cartCounts, setCartCounts] = useState({});
+  const addToCartFun = (item) => {
+    const itemId = item.product?.id;
+    const currentCount = cartCounts[itemId] || 0;
+    
+    if (currentCount >= 5) {
+      toastifyError('You cannot add more than 5 of this item.');
+      return false;
+    } else {
+      const newCount = currentCount + 1;
+      setCartCounts({ ...cartCounts, [itemId]: newCount });
+      
+      const param = { product_id: item.product?.id, qnt: 1 };
+      addToCartRepeater(param, getWishlistFun, getCartFun, 0);
+    }
   }
 
   return (
@@ -384,16 +400,16 @@ const Account = () => {
                       </div>
 
                       <div>
-                        <img  style={{ width:'400px',margin:'auto' }} src={points} alt=""/>
+                        <img style={{ width: '400px', margin: 'auto' }} src={points} alt="" />
                       </div>
 
-                        <div className="text-center">
-                          <h1 className="loyalty_text"><img style={{width:'30px', height:'30px', objectFit:'contain'}} src={akshicon} alt="icon-aksh"/> {customerDetails?.loyalty}</h1>
-                        </div>
+                      <div className="text-center">
+                        <h1 className="loyalty_text"><img style={{ width: '30px', height: '30px', objectFit: 'contain' }} src={akshicon} alt="icon-aksh" /> {customerDetails?.loyalty}</h1>
+                      </div>
 
-                        <div className="div text-center">
-                          <p >Earn AksCoins with every purchase at Aksvedas - 1 AksCoin = 1 Rs , making your wellness journey even more rewarding!</p>
-                        </div>
+                      <div className="div text-center">
+                        <p >Earn AksCoins with every purchase at Aksvedas - 1 AksCoin = 1 Rs , making your wellness journey even more rewarding!</p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -473,28 +489,13 @@ const Account = () => {
                                           <Link
                                             to="#"
                                             className="btn btn-soft-info btn-icon btn-sm"
-                                            onClick={() =>
-                                              addToCartRepeater(
-                                                {
-                                                  product_id: item?.product?.id,
-                                                  qnt: 1,
-                                                },
-                                                getWishlistFun,
-                                                getCartFun,
-                                                0
-                                              )
-                                            }
+                                            onClick={() => addToCartFun(item)}
                                           >
                                             <i className="fa fa-cart-plus fs-13"></i>
                                           </Link>
                                         </li>
                                         <li>
-                                          <button
-                                            onClick={() =>
-                                              addWishlist(item?.product?.id)
-                                            }
-                                            className="btn btn-soft-danger btn-icon btn-sm"
-                                          >
+                                          <button onClick={() => addWishlist(item?.product?.id)} className="btn btn-soft-danger btn-icon btn-sm">
                                             <i className="fa-solid fa-xmark  fs-13"></i>
                                           </button>
                                         </li>
@@ -513,7 +514,7 @@ const Account = () => {
                               </div>
                             </div>
                             <h4 className="fs-20 mb-3">
-                           Add Wishlist Product
+                              Add Wishlist Product
                             </h4>
                             <p className=" w-75 mx-auto">
                               <Link className="text-decoration" to="/shop/all">
@@ -587,14 +588,14 @@ const Account = () => {
                                       ₹{item?.total_amount}
                                     </td>
                                     <td>
-                                      <span style={{color: getStatusColor(item?.order_status)?.color, background: getStatusColor(item?.order_status)?.bg}}
+                                      <span style={{ color: getStatusColor(item?.order_status)?.color, background: getStatusColor(item?.order_status)?.bg }}
                                         className={`order_status_front`}
                                       >
                                         {item?.order_status}
                                       </span>
                                     </td>
                                     <td className="fw-medium">
-                                    {item.earned_loyalty_discount ? item.earned_loyalty_discount : "---"}
+                                      {item.earned_loyalty_discount ? item.earned_loyalty_discount : "---"}
                                     </td>
                                     <td>{item?.order_status == "Delivered" ? <><Link to={`/product-detail/${item?.order_products[0]?.product?.slug}`}>Add Review</Link></> : "---"}</td>
                                     <td className="fw-medium text-center">
@@ -615,7 +616,7 @@ const Account = () => {
                                       </div>
                                     </div>
                                     <h4 className="fs-20 mb-3">
-                                    You don't have any order history yet
+                                      You don't have any order history yet
                                     </h4>
                                     <p className=" w-75 mx-auto">
                                       <Link
