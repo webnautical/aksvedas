@@ -147,19 +147,35 @@ const OrderProducts = () => {
     };
 
     const taxablePrice = (product_price, gst_rate) => {
-        const gstAmount = product_price * (gst_rate / 100);
-        return product_price - gstAmount.toFixed(2);
+        const taxableValue = product_price / (1 + gst_rate / 100);
+        return taxableValue.toFixed(2);
+
+        // const gstAmount = product_price * (gst_rate / 100);
+        // return product_price - gstAmount.toFixed(2);
     };
 
-    const sgst = (product_price, gst_rate) => {
-        const val = (product_price * (gst_rate / 100)) / 2
-        return val.toFixed(2);
-    };
+    // const sgst = (product_price, gst_rate) => {
+    //     const val = (product_price * (gst_rate / 100)) / 2
+    //     return val.toFixed(2);
+    // };
 
     const igst = (product_price, taxablePrice) => {
         const val = (product_price - taxablePrice)
         return val.toFixed(2);
     };
+
+    const sgst = (product_price, gst_rate) => {
+        const taxableValue = taxablePrice(product_price, gst_rate);
+        const sgstValue = (taxableValue * (gst_rate / 2)) / 100;
+        return sgstValue.toFixed(2);
+    };
+    
+    // Function to calculate IGST (which is the full GST amount)
+    // const igst = (product_price, gst_rate) => {
+    //     const taxableValue = taxablePrice(product_price, gst_rate);
+    //     const igstValue = (taxableValue * gst_rate) / 100;
+    //     return igstValue.toFixed(2);
+    // };
 
     return (
         <>

@@ -92,7 +92,7 @@ const OrderDetails = () => {
     navigate('/checkout')
   }
 
-  console.log("orderDetails",orderDetails)
+  console.log("orderDetails", orderDetails)
 
   return (
     <>
@@ -247,9 +247,9 @@ const OrderDetails = () => {
                 </div>
               </div>
             </div>
-            {orderDetails?.address && (
-              <>
-                <div className="col-12 col-lg-4">
+            <>
+              <div className="col-12 col-lg-4">
+                {orderDetails?.address && (
                   <div className="card mb-4">
                     <div className="card-header d-flex justify-content-between">
                       <h6 className="card-title m-0 fw-bold">
@@ -275,16 +275,16 @@ const OrderDetails = () => {
                       <p className="mb-0">{orderDetails?.address?.phone}</p>
                     </div>
                   </div>
-
-                   {
-                    orderDetails?.order_status === "failure" &&
+                )}
+                {
+                  orderDetails?.order_status === "failure" &&
                   <button className="btn btn-primary me-2" onClick={() => reTryOrder()}>Re-try Order</button>
-                   }
-                  <ReasonModal order_id={orderDetails?.id} />
-                </div>
-              </>
-            )}
+                }
+                <ReasonModal order_id={orderDetails?.id} />
+              </div>
+            </>
           </div>
+
         </div>
       </section>
 
