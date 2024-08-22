@@ -3,8 +3,10 @@ import { Breadcrumbs, Typography } from "@mui/material";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import siderbg from "../../../assets/img/bg-about.png";
-import points from '../../../assets/img/points.jpg'
-import akshicon from '../../../assets/img/akscoin.png'
+import points from "../../../assets/img/points.jpg";
+import akshicon from "../../../assets/img/akscoin.png";
+import akcoin from "../../../assets/img/akscoin.png";
+ 
 import {
   authCustomer,
   checkItem,
@@ -22,11 +24,11 @@ import { APICALL, postDataAPI } from "../../../utility/api/api";
 import { SERVER_ERR } from "../../../utility/Constants";
 import { addToCartRepeater } from "./../../../utility/api/RepeaterAPI";
 import FrontLoader from "../../../components/front/FrontLoader";
-
+ 
 const Account = () => {
   // const [loading, setLoading] = useState(false)
-  const [subLoading, setSubLoading] = useState(false)
-  const [profileUpdate, setProfileUpdate] = useState(false)
+  const [subLoading, setSubLoading] = useState(false);
+  const [profileUpdate, setProfileUpdate] = useState(false);
   const navigate = useNavigate();
   const {
     customerDetails,
@@ -36,22 +38,22 @@ const Account = () => {
     orderList,
     getCartFun,
     getCustomerDetails,
-    loading
+    loading,
   } = useFrontDataContext();
   const { page } = useParams();
-
+ 
   useEffect(() => {
     if (!authCustomer()?.token) {
-      navigate('/login')
+      navigate("/login");
     }
-  }, [])
-
+  }, []);
+ 
   useEffect(() => {
     getWishlistFun();
     getOrderListFun();
-    getCustomerDetails()
+    getCustomerDetails();
   }, []);
-
+ 
   const addWishlist = async (id) => {
     try {
       const param = { customer_id: authCustomer()?.id, product_id: id };
@@ -66,45 +68,45 @@ const Account = () => {
       toastifyError(SERVER_ERR);
     }
   };
-
+ 
   const [value, setValue] = useState({
-    'name': customerDetails?.name,
-    'email': customerDetails?.email,
-    'phone': customerDetails?.phone,
-    'id': customerDetails?.id
-  })
-
+    name: customerDetails?.name,
+    email: customerDetails?.email,
+    phone: customerDetails?.phone,
+    id: customerDetails?.id,
+  });
+ 
   const openEdit = () => {
-    setProfileUpdate(true)
+    setProfileUpdate(true);
     setValue({
       ...value,
-      'name': customerDetails?.name,
-      'email': customerDetails?.email,
-      'phone': customerDetails?.phone,
-      'id': customerDetails?.id
-    })
-  }
+      name: customerDetails?.name,
+      email: customerDetails?.email,
+      phone: customerDetails?.phone,
+      id: customerDetails?.id,
+    });
+  };
   const handleChange = (e) => {
-    setValue({ ...value, [e.target.name]: e.target.value })
-  }
+    setValue({ ...value, [e.target.name]: e.target.value });
+  };
   const [errors, setErrors] = useState({
     name: "",
     email: "",
   });
-
+ 
   const handleUpdateProfile = async () => {
     setSubLoading(true);
-
+ 
     const newErrors = {};
     if (!value.name) {
-      newErrors.name = 'Name is required';
+      newErrors.name = "Name is required";
     }
     if (!value.email) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (!validateEmail(value.email)) {
-      newErrors.email = 'Invalid email address';
+      newErrors.email = "Invalid email address";
     }
-
+ 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       setSubLoading(false);
@@ -113,7 +115,7 @@ const Account = () => {
       setErrors({});
     }
     try {
-      const res = await APICALL('/v1/update-customer-details', 'post', value);
+      const res = await APICALL("/v1/update-customer-details", "post", value);
       if (res?.status) {
         setProfileUpdate(false);
         getCustomerDetails();
@@ -124,32 +126,31 @@ const Account = () => {
       setSubLoading(false);
     }
   };
-
+ 
   const handleLogout = async () => {
-    navigate('/')
-    localStorage.clear()
+    navigate("/");
+    localStorage.clear();
     sessionStorage.clear();
-  }
+  };
   const [cartCounts, setCartCounts] = useState({});
   const addToCartFun = (item) => {
     const itemId = item.product?.id;
     const currentCount = cartCounts[itemId] || 0;
-    
+ 
     if (currentCount >= 5) {
-      toastifyError('You cannot add more than 5 of this item.');
+      toastifyError("You cannot add more than 5 of this item.");
       return false;
     } else {
       const newCount = currentCount + 1;
       setCartCounts({ ...cartCounts, [itemId]: newCount });
-      
+ 
       const param = { product_id: item.product?.id, qnt: 1 };
       addToCartRepeater(param, getWishlistFun, getCartFun, 0);
     }
-  }
-
+  };
+ 
   return (
     <>
-
       {loading && <FrontLoader />}
       <div
         className="innabout-section"
@@ -169,7 +170,7 @@ const Account = () => {
           <h1>{textFormated(page)}</h1>
         </div>
       </div>
-
+ 
       <section className="cart-section">
         <div className="container">
           <div className="row">
@@ -182,8 +183,9 @@ const Account = () => {
                   >
                     <li className="nav-item" role="presentation">
                       <Link
-                        className={`nav-link fs-15 justify-content-start ${page === "account-info" && "active"
-                          }`}
+                        className={`nav-link fs-15 justify-content-start ${
+                          page === "account-info" && "active"
+                        }`}
                         data-bs-toggle="tab"
                         to="#custom-v-pills-profile"
                         role="tab"
@@ -194,25 +196,28 @@ const Account = () => {
                         Info
                       </Link>
                     </li>
-
+ 
                     <li className="nav-item" role="presentation">
                       <Link
-                        className={`nav-link fs-15 justify-content-start ${page === "my-loyalty-points" && "active"
-                          }`}
+                        className={`nav-link fs-15 justify-content-start ${
+                          page === "my-loyalty-points" && "active"
+                        }`}
                         data-bs-toggle="tab"
                         to="#custom-v-pills-loyalty"
                         role="tab"
                         aria-selected={page === "my-loyalty-points" && true}
                         onClick={() => navigate("/account/my-loyalty-points")}
                       >
-                        <i className="fa fa-inr align-middle me-1"></i> My AksCoins
+                        <i className="fa fa-inr align-middle me-1"></i> My
+                        AksCoins
                       </Link>
                     </li>
-
+ 
                     <li className="nav-item" role="presentation">
                       <Link
-                        className={`nav-link fs-15 justify-content-start ${page === "wishlist" && "active"
-                          }`}
+                        className={`nav-link fs-15 justify-content-start ${
+                          page === "wishlist" && "active"
+                        }`}
                         data-bs-toggle="tab"
                         to="#custom-v-pills-list"
                         role="tab"
@@ -226,8 +231,9 @@ const Account = () => {
                     </li>
                     <li className="nav-item" role="presentation">
                       <Link
-                        className={`nav-link fs-15 justify-content-start ${page === "orders" && "active"
-                          }`}
+                        className={`nav-link fs-15 justify-content-start ${
+                          page === "orders" && "active"
+                        }`}
                         data-bs-toggle="tab"
                         to="#custom-v-pills-order"
                         role="tab"
@@ -239,7 +245,7 @@ const Account = () => {
                         Order
                       </Link>
                     </li>
-
+ 
                     <li className="nav-item" role="presentation">
                       <Link
                         className="nav-link fs-15 justify-content-start"
@@ -257,111 +263,160 @@ const Account = () => {
                 </div>
               </div>
             </div>
-
+ 
             <div className="col-md-9">
               <div className="tab-content p-0">
                 {/* Personal Info */}
-                <div className={`tab-pane fade ${page === "account-info" && "active show"}`} id="custom-v-pills-profile" role="tabpanel">
+                <div
+                  className={`tab-pane fade ${
+                    page === "account-info" && "active show"
+                  }`}
+                  id="custom-v-pills-profile"
+                  role="tabpanel"
+                >
                   <div className="card">
                     <div className="card-body">
                       <div className="d-flex mb-4">
-                        <h6 className="fs-15 mb-0 flex-grow-1 mb-0"> Personal Info</h6>
+                        <h6 className="fs-15 mb-0 flex-grow-1 mb-0">
+                          {" "}
+                          Personal Info
+                        </h6>
                         <div className="flex-shrink-0">
-                          <Link to="#" onClick={() => openEdit()} className="editnum">{" "}
+                          <Link
+                            to="#"
+                            onClick={() => openEdit()}
+                            className="editnum"
+                          >
+                            {" "}
                             <i className="fa fa-edit me-1"></i> Edit
                           </Link>
                         </div>
                       </div>
-                      {
-                        !profileUpdate ?
-                          <div className="table-responsive table-card text-dark">
-                            <table className="table table-borderless table-sm">
-                              <tbody>
-                                <tr>
-                                  <td>Customer Name</td>
-                                  <td className="fw-medium">
-                                    {checkItem(customerDetails?.name)}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>Mobile / Phone Number</td>
-                                  <td className="fw-medium">
-                                    {customerDetails?.phone}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>Email Address</td>
-                                  <td className="fw-medium">
-                                    {checkItem(customerDetails?.email)}
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>Since Member</td>
-                                  <td className="fw-medium">
-                                    {timeAgo(customerDetails?.created_at)}
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                          :
-                          <div className="row">
-                            <div className="col-lg-6">
-                              <div className="mb-3">
-                                <label htmlFor="firstnameInput" className="form-label" >Name</label>
-                                <input type="text" className="form-control" id="firstnameInput" placeholder="Name"
-                                  value={value.name}
-                                  name='name'
-                                  onChange={handleChange}
-                                />
-                                <span className="errMsg">{errors?.name}</span>
-                              </div>
-                            </div>
-                            <div className="col-lg-6">
-                              <div className="mb-3">
-                                <label htmlFor="firstnameInput" className="form-label" > Email</label>
-                                <input type="text" className="form-control" id="firstnameInput" placeholder="Email"
-                                  value={value.email}
-                                  name='email'
-                                  onChange={handleChange}
-                                />
-                                <span className="errMsg">{errors?.email}</span>
-
-                              </div>
-                            </div>
-                            <div className="col-lg-6">
-                              <div className="mb-3">
-                                <label htmlFor="firstnameInput" className="form-label" >Phone</label>
-                                <input type="text" className="form-control" id="firstnameInput" placeholder="Phone"
-                                  value={value.phone}
-                                  name='phone'
-                                  readOnly
-                                />
-                              </div>
-                            </div>
-
-                            <div className="col-12 text-end">
-                              <button type="button" className="btn btn-primary mx-2" onClick={() => setProfileUpdate(false)}>Cancel</button>
-
-                              {
-                                subLoading ?
-                                  <button class="btn btn-primary" type="button">
-                                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                                    <span role="status">Loading...</span>
-                                  </button>
-                                  :
-                                  <button type="button" className="btn btn-primary" onClick={() => handleUpdateProfile()}>
-                                    Update <i className="ms-2 fa-solid fa-arrow-right"></i>
-                                  </button>
-                              }
-
-
+                      {!profileUpdate ? (
+                        <div className="table-responsive table-card text-dark">
+                          <table className="table table-borderless table-sm">
+                            <tbody>
+                              <tr>
+                                <td>Customer Name</td>
+                                <td className="fw-medium">
+                                  {checkItem(customerDetails?.name)}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Mobile / Phone Number</td>
+                                <td className="fw-medium">
+                                  {customerDetails?.phone}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Email Address</td>
+                                <td className="fw-medium">
+                                  {checkItem(customerDetails?.email)}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>Since Member</td>
+                                <td className="fw-medium">
+                                  {timeAgo(customerDetails?.created_at)}
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      ) : (
+                        <div className="row">
+                          <div className="col-lg-6">
+                            <div className="mb-3">
+                              <label
+                                htmlFor="firstnameInput"
+                                className="form-label"
+                              >
+                                Name
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="firstnameInput"
+                                placeholder="Name"
+                                value={value.name}
+                                name="name"
+                                onChange={handleChange}
+                              />
+                              <span className="errMsg">{errors?.name}</span>
                             </div>
                           </div>
-                      }
-
-
-
+                          <div className="col-lg-6">
+                            <div className="mb-3">
+                              <label
+                                htmlFor="firstnameInput"
+                                className="form-label"
+                              >
+                                {" "}
+                                Email
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="firstnameInput"
+                                placeholder="Email"
+                                value={value.email}
+                                name="email"
+                                onChange={handleChange}
+                              />
+                              <span className="errMsg">{errors?.email}</span>
+                            </div>
+                          </div>
+                          <div className="col-lg-6">
+                            <div className="mb-3">
+                              <label
+                                htmlFor="firstnameInput"
+                                className="form-label"
+                              >
+                                Phone
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="firstnameInput"
+                                placeholder="Phone"
+                                value={value.phone}
+                                name="phone"
+                                readOnly
+                              />
+                            </div>
+                          </div>
+ 
+                          <div className="col-12 text-end">
+                            <button
+                              type="button"
+                              className="btn btn-primary mx-2"
+                              onClick={() => setProfileUpdate(false)}
+                            >
+                              Cancel
+                            </button>
+ 
+                            {subLoading ? (
+                              <button class="btn btn-primary" type="button">
+                                <span
+                                  class="spinner-border spinner-border-sm"
+                                  aria-hidden="true"
+                                ></span>
+                                <span role="status">Loading...</span>
+                              </button>
+                            ) : (
+                              <button
+                                type="button"
+                                className="btn btn-primary"
+                                onClick={() => handleUpdateProfile()}
+                              >
+                                Update{" "}
+                                <i className="ms-2 fa-solid fa-arrow-right"></i>
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      )}
+ 
                       <div className="mt-3">
                         <h6 className="fs-15 mb-0">Addresses</h6>
                       </div>
@@ -373,10 +428,14 @@ const Account = () => {
                                 <div className="card mb-md-0">
                                   <div className="card-body">
                                     <div>
-                                      <h6 className="fs-15">{"Address"} - {i + 1} - {item?.name}</h6>
+                                      <h6 className="fs-15">
+                                        {"Address"} - {i + 1} - {item?.name}
+                                      </h6>
                                       <span>{item?.address}</span>
                                       <br />
-                                      <p className="mt-2 fw-bold">{item?.phone}</p>
+                                      <p className="mt-2 fw-bold">
+                                        {item?.phone}
+                                      </p>
                                     </div>
                                   </div>
                                 </div>
@@ -390,34 +449,71 @@ const Account = () => {
                     </div>
                   </div>
                 </div>
-
+ 
                 {/* My Loyalty Coins */}
-                <div className={`tab-pane fade ${page === "my-loyalty-points" && "active show"}`} id="custom-v-pills-loyalty" role="tabpanel">
+                <div
+                  className={`tab-pane fade ${
+                    page === "my-loyalty-points" && "active show"
+                  }`}
+                  id="custom-v-pills-loyalty"
+                  role="tabpanel"
+                >
                   <div className="card">
                     <div className="card-body">
+                      <div className="ak_coin_sec">
+                        <div className="ak_coin_img">
+                          <img src={akcoin} alt="aks-coin" />
+                          <div className="">
+                            <h2>Available balance</h2>
+                          </div>
+                        </div>
+                      </div>
                       <div className="d-flex mb-4">
-                        <h6 className="fs-15 mb-0 flex-grow-1 mb-0"> My AksCoins</h6>
+                        <h6 className="fs-15 mb-0 flex-grow-1 mb-0">
+                          {" "}
+                          My AksCoins
+                        </h6>
                       </div>
-
+ 
                       <div>
-                        <img style={{ width: '400px', margin: 'auto' }} src={points} alt="" />
+                        <img
+                          style={{ width: "400px", margin: "auto" }}
+                          src={points}
+                          alt=""
+                        />
                       </div>
-
+ 
                       <div className="text-center">
-                        <h1 className="loyalty_text"><img style={{ width: '30px', height: '30px', objectFit: 'contain' }} src={akshicon} alt="icon-aksh" /> {customerDetails?.loyalty}</h1>
+                        <h1 className="loyalty_text">
+                          <img
+                            style={{
+                              width: "30px",
+                              height: "30px",
+                              objectFit: "contain",
+                            }}
+                            src={akshicon}
+                            alt="icon-aksh"
+                          />{" "}
+                          {customerDetails?.loyalty}
+                        </h1>
                       </div>
-
+ 
                       <div className="div text-center">
-                        <p >Earn AksCoins with every purchase at Aksvedas - 1 AksCoin = 1 Rs , making your wellness journey even more rewarding!</p>
+                        <p>
+                          Earn AksCoins with every purchase at Aksvedas - 1
+                          AksCoin = 1 Rs , making your wellness journey even
+                          more rewarding!
+                        </p>
                       </div>
                     </div>
                   </div>
                 </div>
-
+ 
                 {/*WishList*/}
                 <div
-                  className={`tab-pane fade ${page === "wishlist" && "active show"
-                    }`}
+                  className={`tab-pane fade ${
+                    page === "wishlist" && "active show"
+                  }`}
                   id="custom-v-pills-list"
                   role="tabpanel"
                 >
@@ -435,7 +531,7 @@ const Account = () => {
                                   <th scope="col">Action</th>
                                 </tr>
                               </thead>
-
+ 
                               <tbody>
                                 {wishlistData?.map((item, i) => (
                                   <tr>
@@ -495,7 +591,12 @@ const Account = () => {
                                           </Link>
                                         </li>
                                         <li>
-                                          <button onClick={() => addWishlist(item?.product?.id)} className="btn btn-soft-danger btn-icon btn-sm">
+                                          <button
+                                            onClick={() =>
+                                              addWishlist(item?.product?.id)
+                                            }
+                                            className="btn btn-soft-danger btn-icon btn-sm"
+                                          >
                                             <i className="fa-solid fa-xmark  fs-13"></i>
                                           </button>
                                         </li>
@@ -513,9 +614,7 @@ const Account = () => {
                                 <i className="fa-regular fa-heart"></i>
                               </div>
                             </div>
-                            <h4 className="fs-20 mb-3">
-                              Add Wishlist Product
-                            </h4>
+                            <h4 className="fs-20 mb-3">Add Wishlist Product</h4>
                             <p className=" w-75 mx-auto">
                               <Link className="text-decoration" to="/shop/all">
                                 Add Items{" "}
@@ -546,11 +645,12 @@ const Account = () => {
                     </div>
                   </div>
                 </div>
-
+ 
                 {/*Order List*/}
                 <div
-                  className={`tab-pane fade ${page === "orders" && "active show"
-                    }`}
+                  className={`tab-pane fade ${
+                    page === "orders" && "active show"
+                  }`}
                   id="custom-v-pills-order"
                   role="tabpanel"
                 >
@@ -588,16 +688,38 @@ const Account = () => {
                                       ₹{item?.total_amount}
                                     </td>
                                     <td>
-                                      <span style={{ color: getStatusColor(item?.order_status)?.color, background: getStatusColor(item?.order_status)?.bg }}
+                                      <span
+                                        style={{
+                                          color: getStatusColor(
+                                            item?.order_status
+                                          )?.color,
+                                          background: getStatusColor(
+                                            item?.order_status
+                                          )?.bg,
+                                        }}
                                         className={`order_status_front`}
                                       >
                                         {item?.order_status}
                                       </span>
                                     </td>
                                     <td className="fw-medium">
-                                      {item.earned_loyalty_discount ? item.earned_loyalty_discount : "---"}
+                                      {item.earned_loyalty_discount
+                                        ? item.earned_loyalty_discount
+                                        : "---"}
                                     </td>
-                                    <td>{item?.order_status == "Delivered" ? <><Link to={`/product-detail/${item?.order_products[0]?.product?.slug}`}>Add Review</Link></> : "---"}</td>
+                                    <td>
+                                      {item?.order_status == "Delivered" ? (
+                                        <>
+                                          <Link
+                                            to={`/product-detail/${item?.order_products[0]?.product?.slug}`}
+                                          >
+                                            Add Review
+                                          </Link>
+                                        </>
+                                      ) : (
+                                        "---"
+                                      )}
+                                    </td>
                                     <td className="fw-medium text-center">
                                       <Link to={`/order-details/${item?.id}`}>
                                         <i className="fa fa-eye"></i>
@@ -607,7 +729,7 @@ const Account = () => {
                                 ))}
                               </>
                             ) : (
-                              <tr >
+                              <tr>
                                 <td colspan="5">
                                   <div className="text-center py-3">
                                     <div className="avatar-md avatrat-list mx-auto mb-2">
@@ -631,7 +753,7 @@ const Account = () => {
                                 </td>
                               </tr>
                             )}
-
+ 
                             {/* Add more rows as needed */}
                           </tbody>
                         </table>
@@ -651,15 +773,13 @@ const Account = () => {
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>{" "}
         </div>
       </section>
-
     </>
   );
 };
-
+ 
 export default Account;

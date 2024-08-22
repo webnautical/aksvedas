@@ -23,6 +23,10 @@ const ReasonList = () => {
             name: <span className='text-uppercase'>Message</span>,
             selector: row => <>{row.text || '---'}</>,
         },
+        {
+            name: <span className='text-uppercase'>Attachment</span>,
+            selector: row => <> {row?.url ? <Link to={row?.url} target='_blank'><i class="fa fa-paperclip" aria-hidden="true"></i></Link> : "---"}</>,
+        },
         // {
         //     name: <span className='text-capitalize'>Query At</span>,
         //     selector: row => timeAgo(row.created_at),

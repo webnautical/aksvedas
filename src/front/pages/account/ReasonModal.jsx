@@ -7,10 +7,11 @@ import SpinnerBTN from '../../../components/SpinnerBTN';
 const ReasonModal = ({order_id}) => {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false)
+
     const [value, setValue] = useState({
         'customer_id': authCustomer()?.id,
-        'order_id': order_id,
         'reason': '',
+        'url': '',
         'text': ''
     })
     const handlechange = (e) => {
@@ -24,7 +25,7 @@ const ReasonModal = ({order_id}) => {
                 toastifyError('Oops! Please fill out all fields before submitting.')
                 return false
             }
-            const res = await APICALL('/v1/reason', 'post', value)
+            const res = await APICALL('/v1/reason', 'post', {...value, order_id})
             if (res?.status) {
                 toastifySuccess(res?.message)
                 handleCancel()
@@ -38,7 +39,7 @@ const ReasonModal = ({order_id}) => {
 
     const handleCancel =() =>{
         setOpen(false)
-        setValue({...value, 'reason' : '', 'text' : ''})
+        setValue({...value, 'reason' : '', 'text' : '', 'url': ''})
     }
 
     return (
@@ -81,6 +82,14 @@ const ReasonModal = ({order_id}) => {
                                             value={value.text}
                                             onChange={handlechange}
                                             placeholder='Write a query.'
+                                        />
+                                    </div>
+                                    <div className="col-12">
+                                        <input type="url" className='form-control'
+                                            name='url'
+                                            value={value.url}
+                                            onChange={handlechange}
+                                            placeholder='You can upload files on your drive and paste the link here.'
                                         />
                                     </div>
                                     <div className="col-12 text-end">
