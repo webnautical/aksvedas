@@ -89,7 +89,7 @@ const OrderDetails = () => {
                                 <button type='button' className="btn btn-primary" onClick={() => cancelOrder()}> {cancelLoader ? "Wait..." : "Cancel Order"} </button>
                             }
                             {
-                                orderDetails?.order_status !== "Cancelled" &&
+                                (orderDetails?.order_status !== "Cancelled" && orderDetails?.order_status !== "failure")  &&
                                 <>
                                     {shippingStatus ?
                                         <>
@@ -129,7 +129,7 @@ const OrderDetails = () => {
                                                             orderDetails?.order_products?.map((item, i) => (
                                                                 <tr>
                                                                     <td>
-                                                                        <span>{item?.product_name}</span>
+                                                                        <span className='d-flex align-items-center' style={{gap:'20px'}}> <img style={{width:'50px', height:'50px'}} src={imgBaseURL() + item?.product?.cover} alt="" /> {item?.product_name}</span>
                                                                         {
                                                                             item?.product_subscription &&
                                                                             <p className="subscription_plan_label"> Subscription Plan : <span className="checkmark"></span>{item?.product_subscription?.days} Days ₹{item?.product_subscription?.sale_price} @{item?.product_subscription?.discount}% off</p>
@@ -157,34 +157,40 @@ const OrderDetails = () => {
                                                                     <td className="fw-medium">{item?.qnt}</td>
                                                                     <td className="fw-medium">₹{parseInt(item?.product_price) * parseInt(item?.qnt)}</td>
                                                                 </tr>
+
+                                                                
+                                                                
                                                             ))
                                                         }
                                                     </>
                                                     :
-                                                    <> </>
+                                                    <> 
+                                                  
+                                                    </>
                                             }
                                         </tbody>
+
                                     </table>
                                     <div className="d-flex justify-content-end align-items-center m-3 mb-2 p-1">
                                         <div className="order-calculations">
                                             <div className="d-flex justify-content-between mb-2">
-                                                <span className="w-px-100">Subtotal:</span>
+                                                <span className="">Subtotal:</span>
                                                 <h6 className="mb-0">₹{calculateTotalPrice(orderDetails?.order_products)}</h6>
                                             </div>
                                             <div className="d-flex justify-content-between mb-2">
-                                                <span className="w-px-100">Discount:</span>
+                                                <span className="">Discount:</span>
                                                 <h6 className="mb-0"> {parseInt(orderDetails?.discounts) > 0 ? `- ₹${orderDetails?.discounts}` : `₹${orderDetails?.discounts}`} </h6>
                                             </div>
                                             <div className="d-flex justify-content-between mb-2">
-                                                <span className="w-px-100">AksCoins:</span>
+                                                <span className="">AksCoins:</span>
                                                 <h6 className="mb-0"> {parseInt(orderDetails?.loyalty_discounts) > 0 ? `- ₹${orderDetails?.loyalty_discounts}` : `₹${orderDetails?.loyalty_discounts}`} </h6>
                                             </div>
-                                            <div className="d-flex justify-content-between mb-2">
-                                                <span className="w-px-100">Shipping Charge:</span>
+                                            <div className="d-flex justify-content-between mb-2" style={{gap:'55px'}}>
+                                                <span className="">Shipping Charge:</span>
                                                 <h6 className="mb-0"> {parseInt(orderDetails?.total_shipping) > 0 ? `+ ₹${orderDetails?.total_shipping}` : `₹${orderDetails?.total_shipping}`} </h6>
                                             </div>
                                             <div className="d-flex justify-content-between">
-                                                <h6 className="w-px-100 mb-0">Total:</h6>
+                                                <h6 className=" mb-0">Total:</h6>
                                                 <h6 className="mb-0">{orderDetails?.total_amount}</h6>
                                             </div>
                                         </div>

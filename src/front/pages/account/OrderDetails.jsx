@@ -131,20 +131,20 @@ const OrderDetails = () => {
                   </div>
                   <div className="card-body">
                     <div className="row g-3">
-                      <div className="col-md-6">
+                    <div className="col-md-4">
                         <h6 className="card-title m-0">
                           Order Date: {formatdedDate(orderDetails?.created_at)}
                         </h6>
                       </div>
-                      <div className="col-md-6 text-md-end">
+                      <div className="col-md-8 text-md-end">
                         <h6 className="card-title m-0">
-                          <span className="btn btn-sm text-uppercase me-2" style={{ background: "#ddad67", color: '#fff' }}
+                          <span className="btn btn-sm text-uppercase me-2 mb-md-0 mb-2" style={{ background: "#ddad67", color: '#fff', cursor:'default' }}
                           >Order - {orderDetails?.order_status}</span>
-
+ 
                           {!orderDetails?.shipment_id && orderDetails?.order_status == "pending" ?
-                            <button className="btn btn-sm btn-danger text-uppercase me-2" onClick={() => setModalOpen(true)}>Cancel Order</button>
+                            <button className="btn btn-sm btn-danger text-uppercase me-2 mb-md-0 mb-2" onClick={() => setModalOpen(true)}>Cancel Order</button>
                             : <></>}
-
+ 
                           {
                             orderDetails?.order_status !== "Cancelled" && orderDetails?.order_status !== "failure" &&
                             <PDFButton order_id={orderDetails?.id} btnName={"Download Invoice"} />
@@ -176,8 +176,8 @@ const OrderDetails = () => {
                           {orderDetails?.order_products?.map((item, i) => (
                             <tr>
                               <td className="w-100">
-                                <Link to={`/product-detail/${item?.product?.slug}`}>
-                                  <span className="main_product_tittle w-100 d-block">{item?.product_name}</span>
+                                <Link className="mt-3 d-block" to={`/product-detail/${item?.product?.slug}`}>
+                                  <span className="main_product_tittle w-100 d-block d-flex align-items-center" style={{gap:'20px'}}> <img style={{width:'50px', height:'50px'}} src={imgBaseURL() + item?.product?.cover} alt="" /> {item?.product_name}</span>
                                 </Link>
                                 {
                                   item?.product_subscription &&
@@ -223,23 +223,23 @@ const OrderDetails = () => {
                   <div className="d-flex justify-content-end align-items-center m-3 mb-2 p-1">
                     <div className="order-calculations">
                       <div className="d-flex justify-content-between mb-2">
-                        <span className="w-px-100">Subtotal:</span>
+                        <span className="">Subtotal:</span>
                         <h6 className="mb-0">₹{calculateTotalPrice(orderDetails?.order_products)}</h6>
                       </div>
                       <div className="d-flex justify-content-between mb-2">
-                        <span className="w-px-100">Discount:</span>
+                        <span className="">Discount:</span>
                         <h6 className="mb-0"> {parseInt(orderDetails?.discounts) > 0 ? `- ₹${orderDetails?.discounts}` : `₹${orderDetails?.discounts}`} </h6>
                       </div>
                       <div className="d-flex justify-content-between mb-2">
-                        <span className="w-px-100">AksCoins:</span>
+                        <span className="">AksCoins:</span>
                         <h6 className="mb-0"> {parseInt(orderDetails?.loyalty_discounts) > 0 ? `- ₹${orderDetails?.loyalty_discounts}` : `₹${orderDetails?.loyalty_discounts}`} </h6>
                       </div>
-                      <div className="d-flex justify-content-between mb-2">
-                        <span className="w-px-100">Shipping Charge:</span>
+                      <div className="d-flex justify-content-between mb-2" style={{gap:'55px'}}>
+                        <span className="">Shipping Charge:</span>
                         <h6 className="mb-0"> {parseInt(orderDetails?.total_shipping) > 0 ? `+ ₹${orderDetails?.total_shipping}` : `₹${orderDetails?.total_shipping}`} </h6>
                       </div>
                       <div className="d-flex justify-content-between">
-                        <h6 className="w-px-100 mb-0">Total:</h6>
+                        <h6 className=" mb-0">Total:</h6>
                         <h6 className="mb-0">{orderDetails?.total_amount}</h6>
                       </div>
                     </div>
@@ -261,18 +261,18 @@ const OrderDetails = () => {
                     </div>
                     <div className="card-header d-flex justify-content-between">
                       <h6 className="card-title m-0">
-                        State: {orderDetails?.address?.state}
+                        State: <span style={{ fontWeight:'400'}}>{orderDetails?.address?.state}</span>
                       </h6>
                       <h6 className="card-title m-0">
-                        City: {orderDetails?.address?.city}
+                        City:  <span style={{ fontWeight:'400'}}>{orderDetails?.address?.city}</span>
                       </h6>
                     </div>
 
                     <div className="card-header d-flex justify-content-between">
-                      <h6 className="card-title m-0 fw-bold">Contact Info</h6>
+                      <h6 className="card-title m-0 fw-bold">Contddact Info: <span style={{ fontWeight:'400'}}>{orderDetails?.address?.phone}</span></h6>
                     </div>
                     <div className="card-body">
-                      <p className="mb-0">{orderDetails?.address?.phone}</p>
+                      <p className="mb-0"></p>
                     </div>
                   </div>
                 )}

@@ -5,6 +5,18 @@
   }
 }
 
+
+@media (max-width: 1450.98px) {
+
+  .only_banner{height: 450px!important;}
+
+  .slider {
+
+    height: 450px!important;
+  }
+
+}
+
 @media (max-width: 1199.98px) {
   .shop_now {
     padding: 12px 20px;
@@ -12,6 +24,13 @@
 }
 
 @media (max-width: 991.98px) {
+
+
+  .slider{ height: unset!important;}
+
+  .main_bb {
+    position: absolute;
+    top: 84%!important;}
   .order_fliter{ flex-direction: column; gap: 10px;}
  
 
@@ -184,9 +203,33 @@
     padding-left: 15px;
   }
   
+
 }
 
 @media (max-width: 767.98px) {
+
+
+
+
+  .ak_coin_sec {
+
+    padding: 28px 10px;
+
+}
+
+  .ak_box_inner img {
+    width: 55px!important;
+  
+}
+
+.ak_box_inner:after {
+
+  right: -42px!important;}
+  
+
+  .ak_coin_img img{ width: 60px!important; height: 60px!important;}
+
+  .ak_box_inner:after{ content: unset!important;}
   .f_menu img {
     width: 50%;
   }
@@ -345,6 +388,10 @@
 }
 
 @media (max-width: 575.98px) {
+
+  h1.youerocoin{ font-size: 20px!important;}
+
+  .main_bb .grneen-text{ text-wrap: nowrap; font-size: 14px!important;}
 
   .c-modal-for-banner .c-modal-dialog img {height: unset!important;}
   .product-deatisl-content .budle-produts h5.fs-24 {

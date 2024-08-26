@@ -134,7 +134,7 @@ const ProductKBMobile = () => {
                         <div className="row gy-4 gy-sm-1">
                             <div className="col-sm-12 col-lg-12">
                                 <h5 className="d-flex justify-content-between">
-                                 <div>   Product Knowledge Base Mobile <span style={{fontSize:'12px'}}>(Banner Size 	1900 × 450 px)</span></div>
+                                 <div>   Product Knowledge Base Mobile <span style={{fontSize:'12px'}}>(Banner Size 	800 * 500 px)</span></div>
                                     <button
                                         className="btn btn-primary text-capitalize"
                                         type="button"
@@ -173,7 +173,7 @@ const ProductKBMobile = () => {
 
                                                             <p className="m-0">Upload file Here</p>
                                                             <span>(Image (JPG, JPEG, PNG) and only 2mb)</span>
-                                                            <span className="image_class" style={{ fontWeight: '400!important', fontSize: '14px!important' }}>Image Resolution: 1920px ×  450px </span>
+                                                            <span className="image_class" style={{ fontWeight: '400!important', fontSize: '14px!important' }}>Image Resolution: 800 * 500 </span>
 
                                                             <input
                                                                 className="form-control d-none"

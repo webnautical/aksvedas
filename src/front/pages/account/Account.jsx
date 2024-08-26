@@ -6,6 +6,9 @@ import siderbg from "../../../assets/img/bg-about.png";
 import points from "../../../assets/img/points.jpg";
 import akshicon from "../../../assets/img/akscoin.png";
 import akcoin from "../../../assets/img/akscoin.png";
+import coinpic from '../../../assets/img/coins.png'
+import usepic from '../../../assets/img/click.png'
+import shopbag from '../../../assets/img/shopping-cart.png'
  
 import {
   authCustomer,
@@ -462,49 +465,53 @@ const Account = () => {
                     <div className="card-body">
                       <div className="ak_coin_sec">
                         <div className="ak_coin_img">
+                         <div className="d-flex align-items-center justify-content-center" style={{ gap:'20px'}}>
+                         <div>
                           <img src={akcoin} alt="aks-coin" />
-                          <div className="">
-                            <h2>Available balance</h2>
+                          </div>
+                          <div className="ava_balance text-start">
+                            <h5 className="mb-0">Available balance</h5>
+                            <div className="coin_value">   {customerDetails?.loyalty} <span>Aks Coin</span></div>
+                          </div>
+                         </div>
+                        </div>
+
+
+                        <div className="points_ak mt-5">
+                          <div className="row">
+                            <div className="col-md-4 mb-md-0 mb-4">
+                              <div className="ak_box_inner text-center">
+                                <img src={shopbag } />
+                                <h3>Buy Products</h3>
+                                <p className="mb-0">To Earn Coins</p>
+                              </div>
+                            </div>
+
+                            <div className="col-md-4 mb-md-0 mb-4">
+                              <div className="ak_box_inner text-center">
+                                <img src={coinpic} />
+                                <h3>Get Coins</h3>
+                                <p className="mb-0">After delivery</p>
+                              </div>
+                            </div>
+
+                            <div className="col-md-4 mb-md-0 last_b">
+                              <div className="ak_box_inner text-center">
+                                <img src={usepic} />
+                                <h3>Use Coins</h3>
+                                <p className="mb-0">On purchase</p>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                      <div className="d-flex mb-4">
-                        <h6 className="fs-15 mb-0 flex-grow-1 mb-0">
-                          {" "}
-                          My AksCoins
-                        </h6>
-                      </div>
+                     
  
-                      <div>
-                        <img
-                          style={{ width: "400px", margin: "auto" }}
-                          src={points}
-                          alt=""
-                        />
-                      </div>
+                  
  
-                      <div className="text-center">
-                        <h1 className="loyalty_text">
-                          <img
-                            style={{
-                              width: "30px",
-                              height: "30px",
-                              objectFit: "contain",
-                            }}
-                            src={akshicon}
-                            alt="icon-aksh"
-                          />{" "}
-                          {customerDetails?.loyalty}
-                        </h1>
-                      </div>
+                
  
-                      <div className="div text-center">
-                        <p>
-                          Earn AksCoins with every purchase at Aksvedas - 1
-                          AksCoin = 1 Rs , making your wellness journey even
-                          more rewarding!
-                        </p>
-                      </div>
+                  
                     </div>
                   </div>
                 </div>

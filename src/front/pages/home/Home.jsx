@@ -141,43 +141,44 @@ const Home = () => {
     {/* Your slides here */}
   </OwlCarousel>
 
-  const heroslider = {
-    loop: true,
-    autoplayTimeout: 10000, // Autoplay interval in milliseconds
-    autoplay: true,
-    autoplaySpeed: 4000,
-    margin: 0,
-    dots: false,
-    nav: false,
-    responsiveClass: true,
-    infinite: true,
-    navText: [
-      '<i class="fa fa-chevron-left"></i>',
-      '<i class="fa fa-chevron-right"></i>',
-    ], // Custom arrow icons
-    responsive: {
-      0: {
-        items: 1,
-        nav: false,
-        autoplay: true,
-        autoplaySpeed: 4000,
-      },
-      600: {
-        items: 1,
-        nav: false,
-        autoplay: true,
-        autoplaySpeed: 4000,
-      },
-      1000: {
-        items: 1,
-        margin: 10,
-      },
-
-      1250: {
-        items: 1,
-      },
+const heroslider = {
+  loop: true,
+  autoplayTimeout: 10000, // Autoplay interval in milliseconds
+  autoplay: true,
+  autoplaySpeed: 4000,
+  margin: 0,
+  dots: false,
+  nav: true,
+  responsiveClass: true,
+  infinite: true,
+  navText: [
+    '<i class="fa fa-chevron-left"></i>',
+    '<i class="fa fa-chevron-right"></i>',
+  ], // Custom arrow icons
+  responsive: {
+    0: {
+      items: 1,
+      nav: false,
+      autoplay: true,
+      autoplaySpeed: 4000,
     },
-  };
+    600: {
+      items: 1,
+     
+      autoplay: true,
+      autoplaySpeed: 4000,
+      nav: false,
+    },
+    1000: {
+      items: 1,
+      margin: 10,
+    },
+
+    1250: {
+      items: 1,
+    },
+  },
+};
 
   const isInWishlist = (productId) => {
     return wishlistData.some((item) => item.product_id === productId);
@@ -221,14 +222,19 @@ const Home = () => {
               <>
                 {
                   item?.title == 'null' ?
-                    <div className="only_banner">
-                      <Link to={'/shop/all'}>
-                        <img
-                          src={imgBaseURL() + item?.img}
-                          alt="slider product"
-                        />
-                      </Link>
-                    </div>
+                    <Link to={!item?.url || item?.url !== 'null' ? item?.url : '/shop/all'}>
+                      <div
+                        className="only_banner"
+                        style={{
+                          backgroundImage: `url(${imgBaseURL() + item?.img})`,
+                          backgroundRepeat: 'no-repeat',
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center'
+                        }}
+                      >
+                      </div>
+                    </Link>
+
                     :
                     <div className="item" key={i}>
                       <div
@@ -248,7 +254,7 @@ const Home = () => {
                                 <p>{item?.title}</p>
                                 <h2>{item?.desc}</h2>
                                 <button
-                                  onClick={() => navigate("/shop/all")}
+                                  onClick={() => navigate(!item?.url || item?.url !== 'null' ? item?.url : '/shop/all')}
                                   className="btn-2"
                                 >
                                   Shop Now

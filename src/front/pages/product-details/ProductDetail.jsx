@@ -11,7 +11,7 @@ import userimg from "../../../assets/img/revie-user.png";
 import gauntee from "../../../assets/img/gauntee.png";
 import benefits2 from "../../../assets/img/shilajitbenfuse-1.webp";
 import icon1 from "../../../assets/img/science.png";
-import icon2 from "../../../assets/img/qualitys.png";
+import icon2 from "../../../assets/img/qualitys33.png";
 import icon3 from "../../../assets/img/tested.png";
 import icon4 from "../../../assets/img/noarti.png";
 import BenifitsVideo from "../../../components/front/BenifitsVideo";

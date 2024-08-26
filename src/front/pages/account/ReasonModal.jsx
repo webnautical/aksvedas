@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { APICALL } from '../../../utility/api/api';
 import { authCustomer, toastifyError, toastifySuccess } from '../../../utility/Utility';
 import SpinnerBTN from '../../../components/SpinnerBTN';
+import supportpic from '../../../assets/img/support.png'
 
 const ReasonModal = ({order_id}) => {
     const [open, setOpen] = useState(false);
@@ -44,7 +45,7 @@ const ReasonModal = ({order_id}) => {
 
     return (
         <>
-            <button className='btn btn-primary' onClick={() => setOpen(true)}>Need Help ?</button>
+         <div className='support_btn'>   <button className='btn btn-primary' onClick={() => setOpen(true)}>Need Help ?</button></div>
 
             {
                 open &&
@@ -54,18 +55,21 @@ const ReasonModal = ({order_id}) => {
                             <div class="modal-header p-0">
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => handleCancel()}></button>
                             </div>
-                            <div class="modal-body">
-                                    <h5>Raise an issue</h5>
+                            <div class="modal-body support_pop">
+                                    <h5 className='mt-5 mb-0 text-center'>Contact Us</h5>
+                                 <span className='text-center d-block mb-4'>Your satisfaction is our top priority</span>
                                 <div className="row g-3">
-                                    <div className="col-12">
+                                    <div className="col-12 mb-2">
+                                       <div className='my_select'>
+                                       <label>Reason To Contact</label>
                                         <select
                                             name="reason"
                                             id="reason"
-                                            className='form-control'
+                                            className=' form-control'
                                             value={value.reason}
                                             onChange={handlechange}
                                         >
-                                            <option value="">Select Reason</option>
+                                            <option value="">Select a Reason</option>
                                             <option value="Amount deducted but order not placed">Amount deducted but order not placed.</option>
                                             <option value="my payment is shown as pending">My payment is shown as pending.</option>
                                             <option value="delivery person did not try to deliver my order">Delivery person did not try to deliver my order.</option>
@@ -75,9 +79,11 @@ const ReasonModal = ({order_id}) => {
                                             <option value="i want to modify/cancel my order">I want to modify/cancel my order.</option>
                                             <option value="i received damaged/incorrect product">I received damaged/incorrect product.</option>
                                         </select>
+                                       </div>
                                     </div>
-                                    <div className="col-12">
-                                        <textarea type="text" className='form-control'
+                                    <div className="col-12 mb-2">
+                                    <label>Message</label>
+                                        <textarea type="text" style={{ height:'150px'}} className='form-control'
                                             name='text'
                                             value={value.text}
                                             onChange={handlechange}
@@ -85,6 +91,7 @@ const ReasonModal = ({order_id}) => {
                                         />
                                     </div>
                                     <div className="col-12">
+                                    <label>Attachment Link</label>
                                         <input type="url" className='form-control'
                                             name='url'
                                             value={value.url}
@@ -92,8 +99,8 @@ const ReasonModal = ({order_id}) => {
                                             placeholder='You can upload files on your drive and paste the link here.'
                                         />
                                     </div>
-                                    <div className="col-12 text-end">
-                                        <button className='btn btn-primary mx-2' onClick={() => handleCancel()}>Cancel</button>
+                                    <div className="col-12 text-end support_btn">
+                                        {/* <button className='btn btn-primary mx-2' onClick={() => handleCancel()}>Cancel</button> */}
                                         {
                                             loading ? <button className='btn btn-primary' type="button" disabled>
                                                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -102,6 +109,10 @@ const ReasonModal = ({order_id}) => {
                                                 <button type='button' className='btn btn-primary' onClick={submitReason}>Submit</button>
                                         }
                                     </div>
+                                </div>
+
+                                <div className='support_img'>
+                                    <img src={supportpic } alt=''/>
                                 </div>
                             </div>
                         </div>

@@ -891,11 +891,106 @@ optgroup.divider {
     border-radius: 5px;
     color: white;}
 
-    .ak_coin_sec{ background-image:url(./assets/img/leaf.jpg) ;  background-size: cover; background-repeat: no-repeat; padding: 60px 20px;}
-.ak_coin_img{ text-align: center; background: rgba(255, 255, 255, 0.54);
+    .ak_coin_sec{ background-image:url(./assets/img/leaf.jpg) ;  background-size: cover; background-repeat: no-repeat; padding: 60px 50px; border-radius: 10px;}
+.ak_coin_img{    text-align: center;
+    background: rgb(0 0 0 / 30%);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.3); padding: 30px;}
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 30px;}
     .ak_coin_img img{ width: 100px; height: 100px; object-fit: contain; text-align: center; margin: auto;}
+
+
+    .ava_balance h5{ color: white;}
+
+    .coin_value{ color: white; font-size: 28px; font-weight: bold;}
+
+    .coin_value span{ font-size: 16px; font-weight: 500; }
+
+
+    .ak_box_inner img{ width: 80px; margin: auto;}
+
+    .ak_box_inner{ position: relative;}
+
+    
+    .ak_box_inner:after{    content: "";
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translate(-50%, -50%);
+        background-image: url(./assets/img/right-arrow.png);
+        width: 33px;
+        height: 33px;
+        background-size: contain;
+        background-repeat: no-repeat;}
+    .ak_box_inner h3{ color: white; margin-bottom: 0px; margin-top: 15px;}
+
+    .ak_box_inner p{ color: white;}
+
+
+    .support_pop{ position: relative;}
+
+    .support_img{
+         display: inline-block;
+ position: absolute;
+        top: 0px;
+        left: 50%;
+        /* bring your own prefixes */
+        transform: translate(-50%, -50%);
+        
+    }
+    .support_img img{ width: 100px; }
+    .last_b .ak_box_inner:after{ content: unset;}
+
+
+    .support_btn .btn-primary {
+        color: #fff;
+        background-color: #000000!important;
+        border-color: #000000!important;
+    }
+
+
+
+    .my_select select{
+
+        background: url(./assets/img/down.png) no-repeat right center;
+        appearance: none;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        background-position: 98% 9px;
+        background-size: 20px;
+        padding-right: 20px;
+        right: 20px;
+       
+    }
+
+    /* .my_select:after{ content: ""; position: absolute; right: 10px; top: 28px;background-image: url(./assets/img/down.png); width: 30px; height: 30px; background-repeat: no-repeat; background-size: contain; } */
+
+
+    html:not([dir=rtl]) .modal .btn-close:hover, html:not([dir=rtl]) .modal .btn-close:focus, html:not([dir=rtl]) .modal .btn-close:active {
+        transform: translate(23px, -25px)!important;
+} 
+
+
+.modal .btn-close {
+    background-color: #000;
+    color: white;
+    filter: brightness(1.5);
+}
+
+.support_btn .btn-primary:hover{ background-color: #2a2a2a!important;}
+
+.menu-vertical .menu-inner>.menu-item .menu-link {
+    margin: 0px 20px 0px 0px!important;}
+
+
+    .my_width{ width: 20px!important;}
+
+
+    .only_banner{height: 678px;}
+
+    .hero_section .owl-nav .owl-next{ right: 1%!important;}
+ 
+    .hero_section .owl-nav .owl-prev{ left: 1%;}

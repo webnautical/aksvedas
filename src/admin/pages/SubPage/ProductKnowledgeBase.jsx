@@ -152,7 +152,7 @@ const ProductKnowledgeBase = () => {
                         <div className="row gy-4 gy-sm-1">
                             <div className="col-sm-12 col-lg-12">
                                 <h5 className="d-flex justify-content-between">
-                                    Product Knowledge Base
+                                    Product Knowledge Base 
                                     <button
                                         className="btn btn-primary text-capitalize"
                                         type="button"
@@ -161,6 +161,7 @@ const ProductKnowledgeBase = () => {
                                         <i className="fa fa-plus" /> Add New
                                     </button>
                                 </h5>
+                              
                                 <div className="justify-content-between align-items-start pb-3 pb-sm-0 card-widget-3">
                                     {page == "updateDashboard" ? (
                                         <div className="upd-box">
@@ -186,6 +187,8 @@ const ProductKnowledgeBase = () => {
                                                 </div>
  
                                                 <div className="col-12 col-md-6">
+                                                <span><strong>Dektop size</strong> : 1920 * 450
+                                                </span>
                                                     <div class="file-uploader">
                                                         <label
                                                             className="global_file_upload_deisgn"

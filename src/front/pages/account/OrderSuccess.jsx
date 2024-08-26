@@ -33,7 +33,7 @@ const OrderSuccess = () => {
     if (open) {
       const timer = setTimeout(() => {
         setOpen(false);
-      }, 4000);
+      }, 300000);
       return () => clearTimeout(timer);
     }
   }, [open]);

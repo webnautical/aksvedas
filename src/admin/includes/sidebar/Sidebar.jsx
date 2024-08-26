@@ -45,14 +45,14 @@ const Sidebar = () => {
                 <ul className="menu-inner py-1">
                     <li className="menu-item active">
                         <Link to={'/admin/dashboard'} className="menu-link" onClick={closeMenu}>
-                            <i className="menu-icon tf-icons ti ti-table" />
+                            <i className="my_width menu-icon tf-icons ti ti-table" />
                             <div data-i18n="Tables">Dashboard</div>
                         </Link>
                     </li>
 
                     <li className="menu-item">
                         <Link to={'#'} className="navbar-toggler menu-link menu-toggle " type="button" data-bs-toggle="collapse" data-bs-target="#products" aria-controls="products" aria-expanded="false" aria-label="Toggle navigation" >
-                            <i className="menu-icon tf-icons ti ti-shopping-cart" />
+                            <i className="my_width menu-icon tf-icons ti ti-shopping-cart" />
                             <div data-i18n="Products">Products</div>
                         </Link>
                         <ul className="collapse" id="products">
@@ -81,21 +81,21 @@ const Sidebar = () => {
 
                     <li className="menu-item">
                         <Link to={'/admin/orders'} className="menu-link" onClick={closeMenu}>
-                            <i class="fa-solid fa-truck-ramp-box me-2"></i>
+                            <i class="my_width fa-solid fa-truck-ramp-box me-2"></i>
                             <div data-i18n="Tables">All Orders</div>
                         </Link> 
                     </li>
 
                     <li className="menu-item">
                         <Link to={'/admin/reasons'} className="menu-link" onClick={closeMenu}>
-                            <i class="fa-solid fa-truck-ramp-box me-2"></i>
+                        <i class="my_width fa-solid fa-headset  me-2"></i> 
                             <div data-i18n="Tables">Help queries</div>
                         </Link>
                     </li>
 
                     <li className="menu-item">
                         <Link to={'/admin/transaction'} className="menu-link"  onClick={closeMenu}>
-                            <i class="fa-solid fa-truck-ramp-box me-2"></i>
+                        <i class="my_width fa-regular fa-credit-card me-2"></i>
                             <div data-i18n="Tables">Transaction</div>
                         </Link>
                     </li>
@@ -116,7 +116,7 @@ const Sidebar = () => {
                     {/* Web Settings */}
                     <li className="menu-item">
                         <Link to={'#'} className="navbar-toggler menu-link menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#web_attributes" aria-controls="web_attributes" aria-expanded="false" aria-label="Toggle navigation">
-                            <i class="fa-solid fa-gears me-2"></i>
+                            <i class="my_width fa-solid fa-gears me-2"></i>
                             <div data-i18n="Order">Web Settings</div>
                         </Link>
                         <ul className="collapse" id="web_attributes">
@@ -141,7 +141,7 @@ const Sidebar = () => {
                     {/* Pages */}
                     <li className="menu-item">
                         <Link to={'#'} className="navbar-toggler menu-link menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#web_pages" aria-controls="web_pages" aria-expanded="false" aria-label="Toggle navigation">
-                            <i class="fa-solid fa-pager  me-2"></i>
+                            <i class="my_width fa-solid fa-pager  me-2"></i>
                             <div data-i18n="Order">Pages</div>
                         </Link>
                         <ul className="collapse" id="web_pages">
@@ -181,7 +181,7 @@ const Sidebar = () => {
 
                     <li className="menu-item">
                         <Link to={'#'} className="navbar-toggler menu-link menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#blogs" aria-controls="blogs" aria-expanded="false" aria-label="Toggle navigation">
-                            <i class="fa-solid fa-square  me-2"></i>
+                            <i class="my_width fa-solid fa-square  me-2"></i>
                             <div data-i18n="Order">Blog</div>
                         </Link>
                         <ul className="collapse" id="blogs">
@@ -200,28 +200,28 @@ const Sidebar = () => {
 
                     <li className="menu-item">
                         <Link to={'/admin/reviews/all'} className="menu-link"  onClick={closeMenu}>
-                            <i className="menu-icon tf-icons ti ti-star" />
+                            <i className="my_width tf-icons ti ti-star me-2" />
                             <div data-i18n="Tables">Reviews</div>
                         </Link>
                     </li>
 
                     <li className="menu-item">
                         <Link to={'/admin/queries'} className="menu-link" onClick={closeMenu}>
-                            <i className="menu-icon fa-solid fa-clipboard-question" />
+                            <i className="my_width  fa-solid fa-clipboard-question me-2" />
                             <div data-i18n="Tables">Queries</div>
                         </Link>
                     </li>
 
                     <li className="menu-item">
                         <Link to={'/admin/utils'} className="menu-link" onClick={closeMenu}>
-                            <i className="menu-icon fa-solid fa-magnet" />
+                        <i class=" my_width fa-solid fa-scroll me-2"></i>
                             <div data-i18n="Tables">Utility</div>
                         </Link>
                     </li>
 
                     <li className="menu-item">
                         <Link to={'#'} className="navbar-toggler menu-link menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#reports" aria-controls="reports" aria-expanded="false" aria-label="Toggle navigation">
-                            <i class="fa-solid fa-gears me-2"></i>
+                        <i class="my_width fa-solid fa-file-lines me-2"></i>
                             <div data-i18n="Order">Reports</div>
                         </Link>
                         <ul className="collapse" id="reports">
