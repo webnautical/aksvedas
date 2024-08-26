@@ -141,44 +141,44 @@ const Home = () => {
     {/* Your slides here */}
   </OwlCarousel>
 
-const heroslider = {
-  loop: true,
-  autoplayTimeout: 10000, // Autoplay interval in milliseconds
-  autoplay: true,
-  autoplaySpeed: 4000,
-  margin: 0,
-  dots: false,
-  nav: true,
-  responsiveClass: true,
-  infinite: true,
-  navText: [
-    '<i class="fa fa-chevron-left"></i>',
-    '<i class="fa fa-chevron-right"></i>',
-  ], // Custom arrow icons
-  responsive: {
-    0: {
-      items: 1,
-      nav: false,
-      autoplay: true,
-      autoplaySpeed: 4000,
-    },
-    600: {
-      items: 1,
-     
-      autoplay: true,
-      autoplaySpeed: 4000,
-      nav: false,
-    },
-    1000: {
-      items: 1,
-      margin: 10,
-    },
+  const heroslider = {
+    loop: true,
+    autoplayTimeout: 10000, // Autoplay interval in milliseconds
+    autoplay: true,
+    autoplaySpeed: 4000,
+    margin: 0,
+    dots: false,
+    nav: true,
+    responsiveClass: true,
+    infinite: true,
+    navText: [
+      '<i class="fa fa-chevron-left"></i>',
+      '<i class="fa fa-chevron-right"></i>',
+    ], // Custom arrow icons
+    responsive: {
+      0: {
+        items: 1,
+        nav: false,
+        autoplay: true,
+        autoplaySpeed: 4000,
+      },
+      600: {
+        items: 1,
 
-    1250: {
-      items: 1,
+        autoplay: true,
+        autoplaySpeed: 4000,
+        nav: false,
+      },
+      1000: {
+        items: 1,
+        margin: 10,
+      },
+
+      1250: {
+        items: 1,
+      },
     },
-  },
-};
+  };
 
   const isInWishlist = (productId) => {
     return wishlistData.some((item) => item.product_id === productId);
@@ -310,19 +310,13 @@ const heroslider = {
           {allData ? (
             allData?.mobileBanner?.map((item, i) => (
               <div className="item" key={i}>
-                <div
-                  className="slider p-0"
-                // style={{
-                //   backgroundImage: `url(${siderbg})`,
-                //   backgroundSize: "cover",
-                //   backgroundPosition: "center",
-                //   backgroundRepeat: "no-repeat",
-                // }}
-                >
-                  <img
-                    src={imgBaseURL() + item?.img}
-                    alt="slider product" className="img-fluid"
-                  />
+                <div className="slider p-0">
+                  <Link to={item?.url !== 'null' ? item?.url : '/shop/all'}>
+                    <img
+                      src={imgBaseURL() + item?.img}
+                      alt="slider product" className="img-fluid"
+                    />
+                  </Link>
                 </div>
               </div>
             ))

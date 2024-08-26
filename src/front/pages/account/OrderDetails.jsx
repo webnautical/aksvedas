@@ -276,11 +276,14 @@ const OrderDetails = () => {
                     </div>
                   </div>
                 )}
+
+                <div className="d-flex" style={{gap:'15px'}}>
                 {
                   orderDetails?.order_status === "failure" &&
                   <button className="btn btn-primary me-2" onClick={() => reTryOrder()}>Re-try Order</button>
                 }
                 <ReasonModal order_id={orderDetails?.id} />
+                </div>
               </div>
             </>
           </div>
