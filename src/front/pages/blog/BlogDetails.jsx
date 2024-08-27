@@ -226,7 +226,7 @@ const BlogDetails = () => {
 
             <div className="col-lg-4 mt-lg-0 mt-4">
               <aside className="blog-sidebar">
-                <div className="blog-widget">
+                {/* <div className="blog-widget">
                   <h4 className="widget-title">Search</h4>
                   <div className="sidebar-search">
                     <form action="#">
@@ -236,9 +236,9 @@ const BlogDetails = () => {
                       </button>
                     </form>
                   </div>
-                </div>
+                </div> */}
 
-                <div className="blog-widget">
+                {/* <div className="blog-widget">
                   <h4 className="widget-title">Categories</h4>
                   <div className="sidebar-cat-list">
                     <ul className="list-wrap">
@@ -247,14 +247,13 @@ const BlogDetails = () => {
                           <li>
                             <Link to={`#`}>
                               {item?.name}
-                              {/* <span>05</span> */}
                             </Link>
                           </li>
                         ))
                       }
                     </ul>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="blog-widget">
                   <h4 className="widget-title">Recent Posts</h4>

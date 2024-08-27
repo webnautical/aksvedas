@@ -16,6 +16,7 @@ import ProductItemButton from "../../../components/front/ProductItemButton";
 import { Rating, Skeleton, imageListClasses } from "@mui/material";
 import { APICALL } from "../../../utility/api/api";
 import FrontLoader from "../../../components/front/FrontLoader";
+import Spotlight from './../../../components/front/Spotlight';
 
 const imageUrl = [
   "https://aksvedas.com/storage/tags_img/immu.png",
@@ -210,7 +211,6 @@ const Home = () => {
       console.log(error);
     }
   };
-
   return (
     <>
       {loading && <FrontLoader />}
@@ -856,6 +856,8 @@ const Home = () => {
           </div>
         </div>
       </section>
+      
+      <Spotlight spotlight={allData?.spotlight}/>
 
       <section className="about_experince">
         <div className="container">
@@ -1033,6 +1035,7 @@ const Home = () => {
           ))}
         </OwlCarousel>
       </section>
+
     </>
   );
 };

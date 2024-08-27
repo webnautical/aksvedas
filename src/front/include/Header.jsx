@@ -567,9 +567,9 @@ const Header = () => {
                   ))}
                 </ul>
               </li>
-              {/* <li>
+              <li>
               <Link to="/blog">Blog</Link>
-            </li> */}
+            </li>
               {/* <li>
               <Link to="/blog">Consult by Doctor</Link>
             </li> */}
@@ -663,7 +663,7 @@ const Header = () => {
                 </div>
               </div>
             </li>
-            {/* <li className="nav-item">
+            <li className="nav-item">
               <Link
                 to="#"
                 onClick={() => handleMobileRedirect("/blog")}
@@ -673,7 +673,7 @@ const Header = () => {
               >
                 Blog
               </Link>
-            </li> */}
+            </li>
             <li className="nav-item">
               <Link
                 data-bs-dismiss="offcanvas"

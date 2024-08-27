@@ -3,7 +3,7 @@ import DataTable from 'react-data-table-component';
 import { APICALL } from '../../../utility/api/api';
 import Spinner from '../../../components/admin/Spinner';
 import { timeAgo } from './../../../utility/Date';
-import { generateSlug, toastifyError, toastifySuccess } from '../../../utility/Utility';
+import { generateSlug, imgBaseURL, stringToArray, toastifyError, toastifySuccess } from '../../../utility/Utility';
 import ItemImg from '../../../components/admin/ItemImg';
 import { useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -64,6 +64,7 @@ const BlogCommentList = () => {
                     </button>
                     <ul className="dropdown-menu" aria-labelledby={`dropdownMenuButton${row.id}`}>
                         <li className='m-0'><Link to={`/admin/blog/${row.slug}`} className='dropdown-item d-block p-3 w-100'>View Details </Link></li>
+                        <li className='m-0'><Link to={`/admin/blog/add`} onClick={() => setEditObj(row)} className='dropdown-item d-block p-3 w-100'>Edit </Link></li>
                         <li className='m-0'><Link to={`#`} onClick={() => changeStatus(row, 'delete')} className='dropdown-item d-block p-3 w-100'>Delete </Link></li>
                     </ul>
                 </div>
@@ -124,8 +125,7 @@ const BlogCommentList = () => {
         //     button: true,
         // },
     ];
-
-
+    const [editObj, setEditObj] = useState(null)
     const [listData, setListData] = useState([])
     const [loading, setLoading] = useState(false)
     useEffect(() => {
@@ -136,7 +136,7 @@ const BlogCommentList = () => {
 
     const getListFun = async () => {
         setLoading(true)
-        const param = page === 'all' ? { page: 'blog' } : {page}
+        const param = page === 'all' ? { page: 'blog' } : { page }
         const res = await APICALL('/get-blog', 'post', param)
         if (res?.status) {
             setListData(res?.data)
@@ -151,7 +151,7 @@ const BlogCommentList = () => {
         setLoading(true)
         const param = {
             'id': data?.id,
-            'type' : type == 'delete' ? type : type == 'comment' ? type : '',
+            'type': type == 'delete' ? type : type == 'comment' ? type : '',
             'status': data.status === 1 ? 0 : 1
         }
         const res = await APICALL('blog-change', 'post', param);
@@ -179,6 +179,29 @@ const BlogCommentList = () => {
         'cover': '',
         'images': ''
     })
+
+    console.log("editObj", editObj)
+
+    useEffect(() => {
+        if (editObj?.id) {
+            setValue({
+                ...value, 'id': editObj?.id, 'title': editObj?.title, category_id: editObj?.category_id, slug: editObj?.slug, sort_desc: editObj?.sort_desc, desc: editObj?.desc
+            })
+
+            const images = editObj?.images?.split(',');
+            const img = [];
+            images?.forEach((item) => {
+                img.push({ src: imgBaseURL() + item });
+            });
+            
+            setImgPreview({
+                ...imgPreview,
+                cover: imgBaseURL() + editObj.cover,
+                hover_img: imgBaseURL() + editObj.hover_img,
+                images: img,
+            });
+        }
+    }, [editObj])
 
     const getCategoryName = (id) => {
         const res = categories.filter((item) => item.id == id)
@@ -240,17 +263,24 @@ const BlogCommentList = () => {
     };
 
     const handlePageForm = async () => {
+        console.log("form Call")
         setLoading(true)
         try {
             const formData = new FormData();
             formData.append("title", value.title);
+            console.log("value",value)
+            if(value?.id){
+                formData.append("id", value.id);
+            }
             formData.append("slug", value.slug);
             formData.append("desc", value.desc);
             formData.append("category_id", value.category_id);
             formData.append("cover", value.cover);
-            value?.images?.forEach((file, index) => {
-                formData.append(`images[${index}]`, file);
-            });
+            if(value?.images){
+                value?.images?.forEach((file, index) => {
+                    formData.append(`images[${index}]`, file);
+                });
+            }
             const res = await APICALL(`/create-blog`, 'post', value);
             if (res?.status) {
                 setValue({
@@ -273,10 +303,10 @@ const BlogCommentList = () => {
                 setLoading(false)
             } else {
                 setLoading(false)
-
                 toastifyError(SOMETHING_ERR)
             }
         } catch (error) {
+            console.log("Catch Call", error)
             setLoading(false)
             toastifyError(SERVER_ERR)
         }

@@ -34,9 +34,9 @@ const ImagesVideo = () => {
                 ...value,
                 'id': updData.id,
                 'type': updData.type,
-                'title': updData.title == 'null' ? "": updData?.title,
-                'url': updData.url == 'null' ? "": updData?.url,
-                'desc': updData.desc == 'null' ? "": updData?.desc,
+                'title': updData.title == 'null' ? "" : updData?.title,
+                'url': updData.url == 'null' ? "" : updData?.url,
+                'desc': updData.desc == 'null' ? "" : updData?.desc,
                 'status': updData.status,
                 'img': updData.img,
             })
@@ -196,7 +196,7 @@ const ImagesVideo = () => {
                                                         <img src={imgBaseURL() + item.img} alt="" style={{ width: '100%', height: '160px', objectFit: 'top' }} />
                                                     </div>
                                                     <div className="content mt-2">
-                                                        <h4 className='m-0 p-0'>{item.title != 'null' && item.title }</h4>
+                                                        <h4 className='m-0 p-0'>{item.title != 'null' && item.title}</h4>
                                                         <p className='m-0 p-0'>{item.desc != 'null' && item?.desc}</p>
                                                     </div>
 
@@ -279,8 +279,16 @@ const ImagesVideo = () => {
                                                         <video controls style={{ height: '450px', width: '100%' }}>
                                                             <source src={imgBaseURL() + item.img} type="video/mp4" />
                                                         </video>
-                                                        <div className="button-video " style={{ position: 'absolute', top: '10px', right: '10px' }}>
-                                                            <button className='btn __danger' style={{ width: '40px', height: '40px', borderRadius: '100%' }}><i className='fa fa-trash'></i></button>
+                                                        <div className="button-video d-flex" style={{ position: 'absolute', top: '10px', right: '10px' }}>
+                                                            <div className='pt-0'>
+                                                                <div class={`spinner-grow ${item.status == 1 ? "text-success" : "text-danger"} `} role="status" style={{ height: '25px', width: '25px' }}>
+                                                                    <span class="visually-hidden">Loading...</span>
+                                                                </div>
+                                                            </div>
+                                                            <button className='icon_btn __warning mx-2' data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" onClick={() => { setUpdData(item); setValue({ ...value, 'type': 'mobile' }) }}><i className='fa fa-edit'></i></button>
+
+                                                            <button className='icon_btn __danger' onClick={() => handleDelete(item.id)}><i className='fa fa-trash'></i></button>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -344,12 +352,25 @@ const ImagesVideo = () => {
 
                         {/* Image */}
                         <div className="mb-3">
-                            <label className="form-label">Attachment (Recommended Banner Size - {value.type == 'web' ? "1920 * 678" : "800 * 500"}px)</label>
+                            {
+                                value?.type == "spotlight" ? <label>
+                                    Aspect Ratio: 9:16 - Resolution: 1080 x 1920px
+                                </label>
+                                    :
+                                    <label className="form-label">Attachment (Recommended Banner Size - {value.type == 'web' ? "1920 * 678" : "800 * 500"}px)</label>
+                            }
                             <input className="form-control" type="file" onChange={handleChange} name='file' />
                             <span className='errMsg'>{errors.img}</span>
                             {
                                 imgPreview &&
-                                <div className='mt-1'><img src={imgPreview} alt=""  style={{height: '40px', width: '40px', borderRadius: '50%', objectFit: 'contain', background: '#ddd'}}/></div>
+                                <div className='mt-1'>
+                                    {
+                                        value?.type == "spotlight" ?
+                                            <ItemImg img={imgPreview} />
+                                            :
+                                            <img src={imgPreview} alt="" style={{ height: '40px', width: '40px', borderRadius: '50%', objectFit: 'contain', background: '#ddd' }} />
+                                    }
+                                </div>
                             }
                         </div>
 

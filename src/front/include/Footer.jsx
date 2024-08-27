@@ -158,10 +158,9 @@ const Footer = () => {
                         {" "}
                         <Link to="/shop/all">Shop</Link>
                       </li>
-
-                      {/* <li>
+                      <li>
                         <Link to="/blog">Blog</Link>
-                      </li> */}
+                      </li>
                       <li>
                         <Link to="/contact-us">Contact</Link>
                       </li>

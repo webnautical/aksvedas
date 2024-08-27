@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';
@@ -10,9 +10,24 @@ import { EffectCoverflow, Pagination, Navigation } from 'swiper';
 
 import siderbg from "../../assets/img/video.mp4";
 import { Link } from 'react-router-dom';
+import { imgBaseURL } from '../../utility/Utility';
 
 
-function Spotlight() {
+function Spotlight({ spotlight }) {
+  const videoRefs = useRef([]);
+  const [playingIndex, setPlayingIndex] = useState(null);
+  const togglePlayPause = (index) => {
+    if (playingIndex === index) {
+      videoRefs.current[index].pause();
+      setPlayingIndex(null);
+    } else {
+      if (playingIndex !== null) {
+        videoRefs.current[playingIndex].pause();
+      }
+      videoRefs.current[index].play();
+      setPlayingIndex(index);
+    }
+  };
   return (
     <section className="spotlight">
       <div className="container">
@@ -38,15 +53,12 @@ function Spotlight() {
           modules={[EffectCoverflow, Pagination, Navigation]}
           className="swiper_container"
           breakpoints={{
-            // when window width is >= 480px
             480: {
               slidesPerView: 2,
             },
-            // when window width is >= 640px
             640: {
               slidesPerView: 3,
             },
-            // when window width is >= 768px
             768: {
               slidesPerView: 4,
             },
@@ -55,103 +67,26 @@ function Spotlight() {
             }
           }}
         >
-          <SwiperSlide>
-            <video controls>
-              <source src={siderbg} type="video/mp4" />
-            </video>
-            <div className="button-video">
-              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <video controls>
-              <source src={siderbg} type="video/mp4" />
-            </video>
-            <div className="button-video">
-              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <video controls>
-              <source src={siderbg} type="video/mp4" />
-            </video>
-            <div className="button-video">
-              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <video controls>
-              <source src={siderbg} type="video/mp4" />
-            </video>
-            <div className="button-video">
-              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <video controls>
-              <source src={siderbg} type="video/mp4" />
-            </video>
-            <div className="button-video">
-              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <video controls>
-              <source src={siderbg} type="video/mp4" />
-            </video>
-            <div className="button-video">
-              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <video controls>
-              <source src={siderbg} type="video/mp4" />
-            </video>
-            <div className="button-video">
-              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <video controls>
-              <source src={siderbg} type="video/mp4" />
-            </video>
-            <div className="button-video">
-              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <video controls>
-              <source src={siderbg} type="video/mp4" />
-            </video>
-            <div className="button-video">
-              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <video controls>
-              <source src={siderbg} type="video/mp4" />
-            </video>
-            <div className="button-video">
-              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <video controls>
-              <source src={siderbg} type="video/mp4" />
-            </video>
-            <div className="button-video">
-              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <video controls>
-              <source src={siderbg} type="video/mp4" />
+          {
+            spotlight?.map((item, i) => (
+              <>
+                <SwiperSlide key={i}>
+                  <div style={{ position: 'relative' }}>
+                    <video ref={(el) => (videoRefs.current[i] = el)}>
+                      <source src={imgBaseURL() + item?.img} type="video/mp4" />
+                    </video>
+                    <button onClick={() => togglePlayPause(i)} className="play-pause-btn">
+                      {playingIndex === i ? <i class="fa-solid fa-pause"></i> : <i class="fa-solid fa-play"></i>}
+                    </button>
+                  </div>
+                  <div className="button-video">
 
-            </video>
-            <div className="button-video">
-              <Link to="/shop/all" className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
-            </div>
-          </SwiperSlide>
+                    <Link to={item?.url == null ? "/shop/all" : item?.url == 'null' ? "/shop/all" : item?.url} className="shop_now btn-2 mt-3">Shop Now <i className="fa-solid fa-arrow-right"></i></Link>
+                  </div>
+                </SwiperSlide>
+              </>
+            ))
+          }
           <div className="slider-controler">
             <div className="swiper-button-prev slider-arrow">
               <i className="fa fa-chevron-left"></i>
