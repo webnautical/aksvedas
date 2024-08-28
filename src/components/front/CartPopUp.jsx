@@ -17,8 +17,9 @@ const CartPopUp = ({ item }) => {
  
   const goesgretwith = {
     // loop: true,
-    // autoplay: true,
-    // autoplaySpeed: 100,
+    autoplay: true,
+    autoplayTimeout: 4000, // Autoplay interval in milliseconds
+    autoplaySpeed: 1000,
     margin: 10,
     dots: false,
     nav: false,

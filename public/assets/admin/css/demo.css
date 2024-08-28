@@ -2956,6 +2956,8 @@ header nav .menu span {
   color: #000;
 }
 
+
+
 .swiper-slide .button-video a {
   width: 100%;
   overflow: hidden;
@@ -2964,6 +2966,9 @@ header nav .menu span {
   text-transform: uppercase;
   border-radius: 8px;
   color: #fff;
+  opacity: 1;
+  transition: 0.3s;
+
 }
 
 .swiper-slide .button-video {
@@ -5231,7 +5236,7 @@ section.review-section {
 }
 
 .blog-details-thumb img {
-  height: 420px;
+  height: 625px;
   object-fit: cover;
   width: 100%;
   border-radius: 30px;

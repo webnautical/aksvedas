@@ -24,9 +24,11 @@ const BlogCommentList = () => {
         },
         {
             name: <span className='text-capitalize'>Images</span>,
-            selector: row => <span className='text-capitalize fw-bold d-flex'><>
-                {row?.images?.split(',')?.map((img, i) => (<ItemImg img={img} />))}
-            </> </span>,
+            selector: row => <span className='text-capitalize fw-bold d-flex'>
+                <>
+                    {/* {row?.images?.split(',')?.map((img, i) => (<ItemImg img={img} />))} */}
+                    <ItemImg img={row?.cover} />
+                </> </span>,
         },
         {
             name: <span className='text-capitalize'>title</span>,
@@ -193,7 +195,7 @@ const BlogCommentList = () => {
             images?.forEach((item) => {
                 img.push({ src: imgBaseURL() + item });
             });
-            
+
             setImgPreview({
                 ...imgPreview,
                 cover: imgBaseURL() + editObj.cover,
@@ -268,15 +270,15 @@ const BlogCommentList = () => {
         try {
             const formData = new FormData();
             formData.append("title", value.title);
-            console.log("value",value)
-            if(value?.id){
+            console.log("value", value)
+            if (value?.id) {
                 formData.append("id", value.id);
             }
             formData.append("slug", value.slug);
             formData.append("desc", value.desc);
             formData.append("category_id", value.category_id);
             formData.append("cover", value.cover);
-            if(value?.images){
+            if (value?.images) {
                 value?.images?.forEach((file, index) => {
                     formData.append(`images[${index}]`, file);
                 });
@@ -360,7 +362,7 @@ const BlogCommentList = () => {
                                             <CKEditorCom ckValue={value?.desc} handleEditorChange={handleEditorChange} />
                                         </div>
                                         <div className="col-sm-6">
-                                            <label htmlFor="">Blog Cover</label>
+                                            <label htmlFor="">Blog Image</label>
                                             <div className="img-box">
                                                 <div className="file-uploader">
                                                     <label className="global_file_upload_deisgn" for="mediaone">
@@ -374,6 +376,7 @@ const BlogCommentList = () => {
 
                                                         <p className="m-0">Upload file Here</p>
                                                         <span>(Image (JPG, JPEG, PNG) and only 2mb)</span>
+                                                        <p> Image Resolution: 954 × 625</p>
                                                         <input type="file" name="cover" id="mediaone" onChange={handleChange} />
                                                     </label>
                                                     <div class="preview_upload">
@@ -381,17 +384,17 @@ const BlogCommentList = () => {
                                                             {imgPreview.cover && (
                                                                 <img src={imgPreview.cover} alt="Cover Preview" />
                                                             )}
-                                                            {imgPreview.cover && (
+                                                            {/* {imgPreview.cover && (
                                                                 <button className="icon_btn __danger" onClick={() => handleRemoveImage("cover")}>
                                                                     <i className="fa fa-trash" />
                                                                 </button>
-                                                            )}
+                                                            )} */}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-6">
+                                        {/* <div className="col-6">
                                             <label htmlFor="">Blog Images</label>
                                             <div className="img-box">
                                                 <div class="file-uploader">
@@ -425,7 +428,7 @@ const BlogCommentList = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> */}
                                         <div className="col-12 text-end">
                                             <button type='button' onClick={() => handlePageForm()} className="btn btn-primary">Save Changes</button>
                                         </div>

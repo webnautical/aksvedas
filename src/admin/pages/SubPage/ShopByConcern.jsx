@@ -38,6 +38,8 @@ const ShopByConcern = () => {
         }
     };
 
+    console.log("selectedTags",selectedTags)
+
     const selectedTagsFun = async () => {
         try {
             setLoading(true);

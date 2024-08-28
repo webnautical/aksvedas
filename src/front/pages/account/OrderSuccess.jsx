@@ -180,7 +180,7 @@ const OrderSuccess = () => {
                 <div className="main_gif_box">
                   <img src={firework} alt="" className="w-100" />
                 <div className="main_bb">
-                <span className="grneen-text" style={{ fontSize:'22px', fontWeight:'600' }}>You Won Akscoin</span>
+                <span className="grneen-text" style={{ fontSize:'22px', fontWeight:'600' }}>You Earn Akscoin</span>
                   <h1 className="youerocoin">
                  
                     {orderDetails?.earned_loyalty_discount}

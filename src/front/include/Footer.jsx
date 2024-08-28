@@ -10,13 +10,14 @@ import bgfree from "../../assets/img/bg-free.png";
 import BackToTop from "../../components/front/BackToTop";
 import { useFrontDataContext } from "../../context/FrontContextProvider";
 import { APICALL } from "../../utility/api/api";
-import { imgBaseURL, toastifyError } from "../../utility/Utility";
+import { authCustomer, imgBaseURL, toastifyError } from "../../utility/Utility";
 import { SOMETHING_ERR } from "../../utility/Constants";
 import HTMLContent from "../../components/HTMLContent";
 import icon2 from "../../assets/img/qualitys.png";
+import ReasonModal from "../pages/account/ReasonModal";
 
 const Footer = () => {
-  const { categories, getWebAttrFun, webAttr,allData } = useFrontDataContext();
+  const { categories, getWebAttrFun, webAttr, allData } = useFrontDataContext();
   const [email, setEmail] = useState('')
   const [msg, setMsg] = useState('')
 
@@ -89,7 +90,7 @@ const Footer = () => {
               <div className="free-box">
                 <img src={free1} alt="footer_logo" />
                 <h5>
-                LAB TESTED
+                  LAB TESTED
                 </h5>
               </div>
             </div>
@@ -97,15 +98,15 @@ const Footer = () => {
               <div className="free-box">
                 <img src={free2} alt="footer_logo" />
                 <h5>
-                MAKE IN INDIA
+                  MAKE IN INDIA
                 </h5>
               </div>
             </div>
             <div className="col borer-right">
               <div className="free-box">
-              <img src={icon2} alt="footer_logo" />
+                <img src={icon2} alt="footer_logo" />
                 <h5>
-                QUALITY GUARANTEE
+                  QUALITY GUARANTEE
                 </h5>
               </div>
             </div>
@@ -113,15 +114,15 @@ const Footer = () => {
               <div className="free-box">
                 <img src={crufree} alt="footer_logo" />
                 <h5>
-                CRUELTY FREE
+                  CRUELTY FREE
                 </h5>
               </div>
             </div>
             <div className="col borer-right">
               <div className="free-box">
-              <img src={free3} alt="footer_logo" />
+                <img src={free3} alt="footer_logo" />
                 <h5>
-                SECURED PAYMENT
+                  SECURED PAYMENT
                 </h5>
               </div>
             </div>
@@ -132,10 +133,10 @@ const Footer = () => {
 
       <footer>
 
-        
 
 
-        <div className="container">
+
+        <div className="container footer">
           <div className="row mb-md-5 mb-4">
             <div className="col-lg-4 col-md-6 pe-md-5 mb-lg-0 mb-4">
               <div className="footer_logo">
@@ -197,6 +198,15 @@ const Footer = () => {
                           Cancellation Policy
                         </Link>
                       </li>
+                      <li>
+                        {
+                          authCustomer()?.id ? 
+                          <ReasonModal />
+                          :
+                        <Link to="/login">Need Help ?</Link>
+
+                        }
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -204,7 +214,7 @@ const Footer = () => {
                   <div className="f_menu">
                     <h2>We Are Also Available On:</h2>
                     <div className="row">
-                    {
+                      {
                         allData?.availableOn?.map((item, i) => (
                           <div className="col-md-6  col-sm-4 col-5 mb-4"> <Link to={item.url} target="_blank"><img src={imgBaseURL() + item?.img} alt="" className="img-fluid w-100" /></Link></div>
                         ))
@@ -239,7 +249,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link to={webAttr?.twitter_url} target="_blank">
-                <i class="fa-brands fa-linkedin-in"></i>
+                  <i class="fa-brands fa-linkedin-in"></i>
                 </Link>
               </li>
               {

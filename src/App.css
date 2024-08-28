@@ -556,7 +556,7 @@ body {
     padding: 10px;
     background: #f7faff;
     margin-bottom: 20px;
-    
+
 }
 
 .main_multi .MuiInputLabel-shrink {
@@ -756,41 +756,52 @@ optgroup.divider {
 } */
 
 
- .cart_canvas .offcanvas-body::-webkit-scrollbar {
+.cart_canvas .offcanvas-body::-webkit-scrollbar {
     display: none;
-  }
-  
-  /* Hide scrollbar for IE, Edge and Firefox */
-.cart_canvas .offcanvas-body {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  }
+}
 
-  /* .suggestion{
+/* Hide scrollbar for IE, Edge and Firefox */
+.cart_canvas .offcanvas-body {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+/* .suggestion{
     position: absolute;
     top: 40px;
     right: 0px;
     transition: opacity 0.3s ease;
   } */
 
-  .suggestion ul{ display: unset;}
+.suggestion ul {
+    display: unset;
+}
 
 
-  .suggestions li{    background: #f7f7f7;
-    padding: 4px;margin-bottom: 5px; border-radius: 5px;}
+.suggestions li {
+    background: #f7f7f7;
+    padding: 4px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
 
 
-    
-  .suggestions li a{ display: block; font-size: 12px!important;
-    line-height: 16px;}
+
+.suggestions li a {
+    display: block;
+    font-size: 12px !important;
+    line-height: 16px;
+}
 
 
-    .wallet_btn.planBtn span {
-        top: -3px !important;
-    }
+.wallet_btn.planBtn span {
+    top: -3px !important;
+}
 
 
-  .cart_li span{
+.cart_li span {
     background: #E0A11C;
     position: absolute;
     top: -4px;
@@ -805,173 +816,247 @@ optgroup.divider {
     border-radius: 170px;
     width: 15px;
     height: 15px;
-        }
+}
 
 
 /* 
         @media screen and (max-width: 1200.98px) {
             .layout-menu:hover .collapse{ display: none!important;}
           } */
-          h1.youerocoin img {
-            width: 39px;
-            display: inline-block;
-        }
+h1.youerocoin img {
+    width: 39px;
+    display: inline-block;
+}
 
-        h1.youerocoin {
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .grneen-text {
-            color: green;
-        }
+h1.youerocoin {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
 
-
-        .cart_canvas .owl-nav button {
-            width: 32px;
-            height: 32px;
-            font-size: 14px !important;
-        }
+.grneen-text {
+    color: green;
+}
 
 
-
-        .mboiel-right .dropdown-menu .dropdown-item {
-        
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
+.cart_canvas .owl-nav button {
+    width: 32px;
+    height: 32px;
+    font-size: 14px !important;
+}
 
 
-        .mboiel-right .dropdown-menu .dropdown-item i{
 
-            margin-right: .25rem !important;
-            width: 17px;
-            font-size: 14px;
+.mboiel-right .dropdown-menu .dropdown-item {
 
-        }
-
-        .ak_coinss{    background-color: #E0A11C;
-            color: white;
-            font-size: 12px;
-            border-radius: 5px;
-            padding: 3px 3px;
-            margin-left: 5px;
-            font-weight: 600;
-        }
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
 
 
-        .mobile_ak{
-            width: 49px!important;
-            height: 20px!important;
-            position: unset!important;
-            font-size: 12px!important;
-            line-height: 20px!important;
-            font-weight: 700!important;
-        }
+.mboiel-right .dropdown-menu .dropdown-item i {
 
-        .coin_gap  { gap: 8px!important;}
+    margin-right: .25rem !important;
+    width: 17px;
+    font-size: 14px;
 
-        .cs_button_arrow { display: flex; gap: 10px;}
-        .cs_button_arrow button{ background-color: #ddad67; color: white; padding: 0px; width: 25px; height: 25px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
- 
-        .cs_button_arrow button i { font-size: 13px;}
- 
-        .main_gif_box{ position: relative;}
- 
-        .main_bb{ position: absolute; top: 75%;
-            left: 50%;
-            /* bring your own prefixes */
-            transform: translate(-50%, -50%);
-       
+}
+
+.ak_coinss {
+    background-color: #E0A11C;
+    color: white;
+    font-size: 12px;
+    border-radius: 5px;
+    padding: 3px 3px;
+    margin-left: 5px;
+    font-weight: 600;
+}
+
+
+.mobile_ak {
+    width: 49px !important;
+    height: 20px !important;
+    position: unset !important;
+    font-size: 12px !important;
+    line-height: 20px !important;
+    font-weight: 700 !important;
+}
+
+.coin_gap {
+    gap: 8px !important;
+}
+
+.cs_button_arrow {
+    display: flex;
+    gap: 10px;
+}
+
+.cs_button_arrow button {
+    background-color: #ddad67;
+    color: white;
+    padding: 0px;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.cs_button_arrow button i {
+    font-size: 13px;
+}
+
+.main_gif_box {
+    position: relative;
+}
+
+.main_bb {
+    position: absolute;
+    top: 75%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+
     padding: 0px 25px;
     /* border: 1px solid #000; */
     border-radius: 5px;
-    color: white;}
+    color: white;
+}
 
-    .ak_coin_sec{ background-image:url(./assets/img/leaf.jpg) ;  background-size: cover; background-repeat: no-repeat; padding: 60px 50px; border-radius: 10px;}
-.ak_coin_img{    text-align: center;
+.ak_coin_sec {
+    background-image: url(./assets/img/leaf.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 60px 50px;
+    border-radius: 10px;
+}
+
+.ak_coin_img {
+    text-align: center;
     background: rgb(0 0 0 / 30%);
     border-radius: 16px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 30px;}
-    .ak_coin_img img{ width: 100px; height: 100px; object-fit: contain; text-align: center; margin: auto;}
+    padding: 30px;
+}
+
+.ak_coin_img img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    text-align: center;
+    margin: auto;
+}
 
 
-    .ava_balance h5{ color: white;}
+.ava_balance h5 {
+    color: white;
+}
 
-    .coin_value{ color: white; font-size: 28px; font-weight: bold;}
+.coin_value {
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+}
 
-    .coin_value span{ font-size: 16px; font-weight: 500; }
-
-
-    .ak_box_inner img{ width: 80px; margin: auto;}
-
-    .ak_box_inner{ position: relative;}
-
-    
-    .ak_box_inner:after{    content: "";
-        position: absolute;
-        top: 50%;
-        right: 0;
-        transform: translate(-50%, -50%);
-        background-image: url(./assets/img/right-arrow.png);
-        width: 33px;
-        height: 33px;
-        background-size: contain;
-        background-repeat: no-repeat;}
-    .ak_box_inner h3{ color: white; margin-bottom: 0px; margin-top: 15px;}
-
-    .ak_box_inner p{ color: white;}
+.coin_value span {
+    font-size: 16px;
+    font-weight: 500;
+}
 
 
-    .support_pop{ position: relative;}
+.ak_box_inner img {
+    width: 80px;
+    margin: auto;
+}
 
-    .support_img{
-         display: inline-block;
- position: absolute;
-        top: 0px;
-        left: 50%;
-        /* bring your own prefixes */
-        transform: translate(-50%, -50%);
-        
-    }
-    .support_img img{ width: 100px; }
-    .last_b .ak_box_inner:after{ content: unset;}
+.ak_box_inner {
+    position: relative;
+}
 
 
-    .support_btn .btn-primary {
-        color: #fff;
-        background-color: #000000!important;
-        border-color: #000000!important;
-    }
+.ak_box_inner:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(-50%, -50%);
+    background-image: url(./assets/img/right-arrow.png);
+    width: 33px;
+    height: 33px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.ak_box_inner h3 {
+    color: white;
+    margin-bottom: 0px;
+    margin-top: 15px;
+}
+
+.ak_box_inner p {
+    color: white;
+}
+
+
+.support_pop {
+    position: relative;
+}
+
+.support_img {
+    display: inline-block;
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+
+}
+
+.support_img img {
+    width: 100px;
+}
+
+.last_b .ak_box_inner:after {
+    content: unset;
+}
+
+
+.support_btn .btn-primary {
+    color: #fff;
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+}
 
 
 
-    .my_select select{
+.my_select select {
 
-        background: url(./assets/img/down.png) no-repeat right center;
-        appearance: none;
-        -moz-appearance: none;
-        -webkit-appearance: none;
-        background-position: 98% 9px;
-        background-size: 20px;
-        padding-right: 20px;
-        right: 20px;
-       
-    }
+    background: url(./assets/img/down.png) no-repeat right center;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background-position: 98% 9px;
+    background-size: 20px;
+    padding-right: 20px;
+    right: 20px;
 
-    /* .my_select:after{ content: ""; position: absolute; right: 10px; top: 28px;background-image: url(./assets/img/down.png); width: 30px; height: 30px; background-repeat: no-repeat; background-size: contain; } */
+}
+
+/* .my_select:after{ content: ""; position: absolute; right: 10px; top: 28px;background-image: url(./assets/img/down.png); width: 30px; height: 30px; background-repeat: no-repeat; background-size: contain; } */
 
 
-    html:not([dir=rtl]) .modal .btn-close:hover, html:not([dir=rtl]) .modal .btn-close:focus, html:not([dir=rtl]) .modal .btn-close:active {
-        transform: translate(23px, -25px)!important;
-} 
+html:not([dir=rtl]) .modal .btn-close:hover,
+html:not([dir=rtl]) .modal .btn-close:focus,
+html:not([dir=rtl]) .modal .btn-close:active {
+    transform: translate(23px, -25px) !important;
+}
 
 
 .modal .btn-close {
@@ -980,26 +1065,78 @@ optgroup.divider {
     filter: brightness(1.5);
 }
 
-.support_btn .btn-primary:hover{ background-color: #2a2a2a!important;}
+.support_btn .btn-primary:hover {
+    background-color: #2a2a2a !important;
+}
 
 .menu-vertical .menu-inner>.menu-item .menu-link {
-    margin: 0px 20px 0px 0px!important;}
+    margin: 0px 20px 0px 0px !important;
+}
 
 
-    .my_width{ width: 20px!important;}
+.my_width {
+    width: 20px !important;
+}
 
 
-    .only_banner{height: 678px;}
+.only_banner {
+    height: 678px;
+}
 
-    .hero_section .owl-nav .owl-next{ right: 1%!important;}
- 
-    .hero_section .owl-nav .owl-prev{ left: 1%;}
+.hero_section .owl-nav .owl-next {
+    right: 1% !important;
+}
+
+.hero_section .owl-nav .owl-prev {
+    left: 1%;
+}
 
 
-    .play-pause-btn{ background-color: #ddad67;color: white; width: 50px; height: 50px; border-radius: 100%; display: flex; align-items: center; justify-content: center;top: 50%;
-        left: 50%;
-        position: absolute;
-        /* bring your own prefixes */
-        transform: translate(-50%, -50%); opacity: 0;; transition: 0.3s ease-in}
+.play-pause-btn {
+    background-color: #ddad67;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: 0.3s ease-in
+}
 
-        .swiper-slide :hover .play-pause-btn{ opacity:1; transition: 0.3s ease-in}
+.swiper-slide :hover .play-pause-btn {
+    opacity: 1;
+    transition: 0.3s ease-in
+}
+.swiper-slide:hover .button-video a {
+    opacity: 1 !important;
+    transition: 0.3s ease-in
+}
+
+footer .footer_support_btn button{
+    padding: 0px !important;
+    background-color: transparent !important;
+    border: none!important;
+    color: black!important;
+    box-shadow: none!important;
+    font-weight: 400!important;
+    margin: 0px 1px!important;
+}
+footer .footer_support_btn  .btn-primary {
+    background-color: transparent !important;
+    transition: 0.6s;
+}
+footer .footer_support_btn  .btn-primary:hover{
+    background-color: transparent !important;
+    margin-left: 5px !important;
+    transition: 0.6s;
+    color: #E0A11C !important;
+}
+
+/* .video_box:hover .button-video a{ opacity: 1!important; transition: 0.3s;} */

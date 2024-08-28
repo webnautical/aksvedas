@@ -72,38 +72,42 @@ const Blog = () => {
         <div className="container">
           <div className="row">
             {
-              listData?.length> 0 ?
-              listData?.map((item, i) => (
-                <div className="col-xl-3 col-lg-4 col-md-4 col-sm-6 mb-lg-5 mb-4">
-                  <div className="Blogs_box">
-                    <div className="blogs_img w-100">
-                      <img src={ item?.cover ?  imgBaseURL() + item?.cover : blogsimg} alt="blog_img" className="img-fluid" />
-                    </div>
-                    <div className="poster_details">
-                      <p>
-                        {getCategoryName(item?.category_id)} <span className="mx-1"> | </span> Post by{" "}
-                        <span className="highlight_txt">Admin</span>
-                      </p>
-                    </div>
-                    <h2>{item?.title}</h2>
+              listData?.length > 0 ?
+                listData?.map((item, i) => (
+                  <div className="col-xl-3 col-lg-4 col-md-4 col-sm-6 mb-lg-5 mb-4">
+                    <div className="Blogs_box">
+                      <div className="blogs_img w-100">
+                        <Link to={`/blog-details/${item?.slug}`}>
+                          <img src={item?.cover ? imgBaseURL() + item?.cover : blogsimg} alt="blog_img" className="img-fluid" />
+                        </Link>
+                      </div>
+                      <div className="poster_details">
+                        <p>
+                          {getCategoryName(item?.category_id)} <span className="mx-1"> | </span> Post by{" "}
+                          <span className="highlight_txt">Admin</span>
+                        </p>
+                      </div>
+                      <Link to={`/blog-details/${item?.slug}`}>
+                        <h2>{item?.title}</h2>
+                      </Link>
 
-                    <Link to={`/blog-details/${item?.slug}`} className="global_no_bg_btn">
-                      Read More <i className="fa-solid fa-chevron-right"></i>
-                    </Link>
+                      <Link to={`/blog-details/${item?.slug}`} className="global_no_bg_btn">
+                        Read More <i className="fa-solid fa-chevron-right"></i>
+                      </Link>
 
-                    <div className="date_tag">
-                      <div className="date">{formatDate(item?.created_at)?.day}</div>
-                      <div>{formatDate(item?.created_at)?.month}</div>
+                      <div className="date_tag">
+                        <div className="date">{formatDate(item?.created_at)?.day}</div>
+                        <div>{formatDate(item?.created_at)?.month}</div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
-              :
-              <>
-                <div className="col-12">
-                  <h5>There are no blog to display !</h5>
-                </div>
-              </>
+                ))
+                :
+                <>
+                  <div className="col-12">
+                    <h5>There are no blog to display !</h5>
+                  </div>
+                </>
             }
           </div>
 

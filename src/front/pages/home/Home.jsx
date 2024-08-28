@@ -871,10 +871,13 @@ const Home = () => {
                   />
                 </div>
                 <div className="small_second_image">
+                  {
+                    allData?.getAyurvedExperience?.img2 &&
                   <img
                     src={imgBaseURL() + allData?.getAyurvedExperience?.img2}
                     alt="img"
                   />
+                  }
                 </div>
               </div>
             </div>

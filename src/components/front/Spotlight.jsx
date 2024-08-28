@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';
@@ -28,6 +28,27 @@ function Spotlight({ spotlight }) {
       setPlayingIndex(index);
     }
   };
+
+  const handleSlideChange = (swiper) => {
+    if (playingIndex !== null) {
+      videoRefs.current[playingIndex].pause();
+      setPlayingIndex(null);
+    }
+  };
+
+  const handleScroll = () => {
+    if (playingIndex !== null) {
+      videoRefs.current[playingIndex].pause();
+      setPlayingIndex(null);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [playingIndex]);
   return (
     <section className="spotlight">
       <div className="container">
@@ -52,6 +73,7 @@ function Spotlight({ spotlight }) {
           }}
           modules={[EffectCoverflow, Pagination, Navigation]}
           className="swiper_container"
+          onSlideChange={handleSlideChange}
           breakpoints={{
             480: {
               slidesPerView: 2,
@@ -71,7 +93,7 @@ function Spotlight({ spotlight }) {
             spotlight?.map((item, i) => (
               <>
                 <SwiperSlide key={i}>
-                  <div style={{ position: 'relative' }}>
+                  <div className='video_box' style={{ position: 'relative' }}>
                     <video ref={(el) => (videoRefs.current[i] = el)}>
                       <source src={imgBaseURL() + item?.img} type="video/mp4" />
                     </video>

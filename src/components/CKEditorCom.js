@@ -14,7 +14,7 @@ const CKEditorCom = ({ handleEditorChange, ckValue }) => {
                 onChange={handleChange}
                 config={{
                     ckfinder: {
-                        uploadUrl: 'https://aksvedas.webupdatecenter.com/api/upload'
+                        uploadUrl: 'https://aksvedas.com/api/upload'
                     },
                     // toolbar: [
                     //     'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo', 'imageUpload'

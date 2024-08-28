@@ -21,14 +21,14 @@ export const AyurvedExperience = () => {
     getDataFun();
     getPopupContentFun()
   }, []);
- 
+
   const [value, setValue] = useState({
     title: "",
     desc: "",
     img1: "",
     img2: "",
   });
- 
+
   useEffect(() => {
     if (updData?.id) {
       setValue({
@@ -50,7 +50,7 @@ export const AyurvedExperience = () => {
     }
   }, [updData]);
   const [errors, setErrors] = useState({});
- 
+
   const getDataFun = async () => {
     try {
       setLoading(true);
@@ -75,7 +75,7 @@ export const AyurvedExperience = () => {
       setLoading(true);
       const res = await getDataAPI("get-ayurved-experience/home_popup");
       if (res?.status) {
-        setPopupImg({...popupImg, 'id': res?.data[0]?.id, 'img1': res?.data[0]?.img1})
+        setPopupImg({ ...popupImg, 'id': res?.data[0]?.id, 'img1': res?.data[0]?.img1 })
         setLoading(false);
       } else {
         setLoading(false);
@@ -84,13 +84,18 @@ export const AyurvedExperience = () => {
       console.log(error);
     }
   };
- 
+
   const [imgPreview, setImgPreview] = useState({
     img2: "",
   });
- 
+
+  const removeImage = () => {
+    setImgPreview({ ...imgPreview, img2: '' })
+    setValue({ ...value, img2: '' })
+  }
+
   const handleChange = (e) => {
- 
+
     if (e.target.name === "img1") {
       setValue({ ...value, img1: e.target.files[0] });
       const file = e.target.files[0]
@@ -111,7 +116,7 @@ export const AyurvedExperience = () => {
         };
         reader.readAsDataURL(file);
       }
-    }  else if (e.target.name === "popup_banner") {
+    } else if (e.target.name === "popup_banner") {
       setPopupImg((prevValues) => {
         return { ...prevValues, ["img1"]: e.target.files[0] };
       });
@@ -132,13 +137,13 @@ export const AyurvedExperience = () => {
       });
     }
   };
- 
+
   const handleEditorChange = (value) => {
     setValue((prevValues) => {
       return { ...prevValues, ["desc"]: value };
     });
   };
- 
+
   const updateDashboardOffer = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -170,7 +175,7 @@ export const AyurvedExperience = () => {
       setLoading(false);
     }
   };
- 
+
   const updateHomePopup = async () => {
     setLoading(true);
     const requiredVal = {
@@ -196,7 +201,7 @@ export const AyurvedExperience = () => {
       setLoading(false);
     }
   };
- 
+
   return (
     <div className="content-wrapper">
       <div className="flex-grow-1 container-p-y">
@@ -204,7 +209,7 @@ export const AyurvedExperience = () => {
           <span class=" fw-light">Aksvedas /</span>Homepage Content
         </h4>
         <ShopByConcern />
- 
+
         <div className="card mb-4">
           <div className="card-widget-separator-wrapper">
             <div className="card-body card-widget-separator">
@@ -212,13 +217,13 @@ export const AyurvedExperience = () => {
                 <div className="col-sm-12 col-lg-12">
                   <h5 className="d-flex justify-content-between">Popup Banner{" "}</h5>
                   <div className="justify-content-between align-items-start pe-3 pb-3 pb-sm-0 card-widget-3">
- 
+
                     <div className="row">
                       <div className="col-12 col-md-6">
                         <div class="file-uploader">
                           <label className="global_file_upload_deisgn"
                             for="popup_banner">
- 
+
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               version="1.1"
@@ -236,7 +241,7 @@ export const AyurvedExperience = () => {
                                 ></path>
                               </g>
                             </svg>
- 
+
                             <p className="m-0">Upload file Here</p>
                             <span>(Image (JPG, JPEG, PNG) and only 2mb)</span>
                             <span class="image_class">Image Resolution: 1920 ×  1080 </span>
@@ -250,14 +255,14 @@ export const AyurvedExperience = () => {
                           </label>
                           <span className="errMsg">{errors.img1}</span>
                           <div className="d-flex justify-content-between align-items-center">
-                          {popupImg?.imgPreview1 ? (
-                            <div className="mt-1"><img style={{ width: '40px' }} src={popupImg?.imgPreview1} alt="" /></div>
-                          ) : <ItemImg img={popupImg?.img1} />}
- 
-                        <button className="btn btn-primary btn-sm" onClick={()=>updateHomePopup()}>Update</button>
+                            {popupImg?.imgPreview1 ? (
+                              <div className="mt-1"><img style={{ width: '40px' }} src={popupImg?.imgPreview1} alt="" /></div>
+                            ) : <ItemImg img={popupImg?.img1} />}
+
+                            <button className="btn btn-primary btn-sm" onClick={() => updateHomePopup()}>Update</button>
                           </div>
                         </div>
- 
+
                       </div>
                     </div>
                   </div>
@@ -266,7 +271,7 @@ export const AyurvedExperience = () => {
             </div>
           </div>
         </div>
- 
+
         <div className="card mb-4">
           <div className="card-widget-separator-wrapper">
             <div className="card-body card-widget-separator">
@@ -299,19 +304,19 @@ export const AyurvedExperience = () => {
                             />
                             <span className="errMsg">{errors.title}</span>
                           </div>
- 
+
                           <div className="col-12 col-md-12 my-4">
                             <CKEditorCom
                               ckValue={value?.desc}
                               handleEditorChange={handleEditorChange}
                             />
                           </div>
- 
+
                           <div className="col-12 col-md-6">
                             <div class="file-uploader">
                               <label className="global_file_upload_deisgn"
                                 for="imagefirst">
- 
+
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
                                   version="1.1"
@@ -329,7 +334,7 @@ export const AyurvedExperience = () => {
                                     ></path>
                                   </g>
                                 </svg>
- 
+
                                 <p className="m-0">Upload file Here</p>
                                 <span>(Image (JPG, JPEG, PNG) and only 2mb)</span>
                                 <span class="image_class">Image Resolution: 636PX ×  636PX </span>
@@ -347,7 +352,7 @@ export const AyurvedExperience = () => {
                               ) : <ItemImg img={value?.img1} />}
                             </div>
                           </div>
- 
+
                           <div className="col-12 col-md-6">
                             <div class="file-uploader">
                               <label
@@ -371,11 +376,11 @@ export const AyurvedExperience = () => {
                                     ></path>
                                   </g>
                                 </svg>
- 
+
                                 <p className="m-0">Upload file Here</p>
                                 <span>(Image (JPG, JPEG, PNG) and only 2mb)</span>
                                 <span class="image_class">Image Resolution: 308PX ×  308PX </span>
- 
+
                                 <input
                                   className="form-control d-none"
                                   type="file"
@@ -385,13 +390,24 @@ export const AyurvedExperience = () => {
                                 />
                               </label>
                               <span className="errMsg">{errors.img2}</span>
-                              {imgPreview?.img2 ? (
-                                <div className="mt-1"><img style={{ width: '40px' }} src={imgPreview?.img2} alt="" /></div>
-                              ) : <ItemImg img={value?.img2} />}
+                              <div className="">
+
+                                {imgPreview?.img2 ? (
+                                  <div className="mt-1 d-flex align-items-center">
+                                    <img style={{ width: '40px' }} src={imgPreview?.img2} alt="" />
+                                    <button className="icon_btn __danger mx-2" type="button"
+                                      onClick={() => removeImage()}
+                                    ><i className="fa fa-trash" />
+                                    </button>
+                                  </div>
+                                ) : <ItemImg img={value?.img2} />}
+
+                              </div>
+
                             </div>
                           </div>
                         </div>
- 
+
                         <div className="btn-box mt-2 text-end">
                           <button
                             type="button"
@@ -425,11 +441,14 @@ export const AyurvedExperience = () => {
                                   alt=""
                                   className="w-100"
                                 />
+                                {
+                                  updData?.img2 &&
                                 <img
                                   src={imgBaseURL() + updData?.img2}
                                   alt=""
                                   className="w-100"
                                 />
+                                }
                               </div>
                             </div>
                           </div>
@@ -442,15 +461,14 @@ export const AyurvedExperience = () => {
             </div>
           </div>
         </div>
- 
+
         <ProductKnowledgeBase />
 
         <ProductKBMobile />
- 
+
       </div>
       <div className="content-backdrop fade" />
       <Spinner sppiner={loading} />
     </div>
   );
 };
- 

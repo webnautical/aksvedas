@@ -27,6 +27,7 @@ import { APICALL, postDataAPI } from "../../../utility/api/api";
 import { SERVER_ERR } from "../../../utility/Constants";
 import { addToCartRepeater } from "./../../../utility/api/RepeaterAPI";
 import FrontLoader from "../../../components/front/FrontLoader";
+import Enquiries from "./Enquiries";
  
 const Account = () => {
   // const [loading, setLoading] = useState(false)
@@ -246,6 +247,23 @@ const Account = () => {
                       >
                         <i className="fa fa-bag-shopping align-middle me-1"></i>{" "}
                         Order
+                      </Link>
+                    </li>
+
+                    <li className="nav-item" role="presentation">
+                      <Link
+                        className={`nav-link fs-15 justify-content-start ${
+                          page === "enquiries" && "active"
+                        }`}
+                        data-bs-toggle="tab"
+                        to="#custom-v-pills-enquiries"
+                        role="tab"
+                        aria-selected={page === "enquiries" && true}
+                        tabIndex="-1"
+                        onClick={() => navigate("/account/enquiries")}
+                      >
+                        <i class="fa-solid fa-headset align-middle me-1"></i>
+                        Enquiries
                       </Link>
                     </li>
  
@@ -506,12 +524,6 @@ const Account = () => {
                         </div>
                       </div>
                      
- 
-                  
- 
-                
- 
-                  
                     </div>
                   </div>
                 </div>
@@ -780,6 +792,9 @@ const Account = () => {
                     </div>
                   </div>
                 </div>
+
+                 {/*enquiries*/}
+                  <Enquiries page={page}/>
               </div>
             </div>
           </div>{" "}
