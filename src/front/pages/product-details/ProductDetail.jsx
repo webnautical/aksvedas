@@ -685,7 +685,7 @@ const ProductDetail = () => {
                                 // disabled={disabledBtn}
 
                               >
-                                Buy Now 1
+                                Buy Now
                               </button>
                             </div>
                           ) : (

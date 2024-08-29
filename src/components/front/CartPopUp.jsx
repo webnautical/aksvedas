@@ -103,6 +103,8 @@ const CartPopUp = ({ item }) => {
   const goToNext = () => {
     owlRef.current.next();
   };
+
+  // console.log("cartList",cartList)
  
   return (
     <div
@@ -142,7 +144,7 @@ const CartPopUp = ({ item }) => {
                     </div>
                     <div className="col-8">
                       <div className="add_cart_product_details">
-                        <h2>{item?.name}</h2>
+                        <h2> {item?.name} </h2>
                         <p>
                           SKU:{" "}
                           <span style={{ color: "#E0A11C" }}>{item?.sku}</span>
