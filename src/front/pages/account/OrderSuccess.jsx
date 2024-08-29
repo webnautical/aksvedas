@@ -158,14 +158,14 @@ const OrderSuccess = () => {
       </section>
       {open && (
         <div
-          class="modal fade show cointmodalshow"
+          class=" order_succes modal fade show cointmodalshow"
           id="exampleModal"
           tabindex="-1"
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
           style={{ display: "block" }}
         >
-          <div class="modal-dialog modal-dialog-centered  modal-xl">
+          <div class=" modal-dialog modal-dialog-centered  modal-xl">
             <div class="modal-content">
               <div class="modal-header p-0">
                 <button

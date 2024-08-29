@@ -66,16 +66,16 @@ const Sidebar = () => {
                                     <div>All Category</div>
                                 </Link>
                             </li>
-                            <li className="menu-item">
+                            {/* <li className="menu-item">
                                 <Link to={'/admin/brand'} className="menu-link"  onClick={closeMenu}>
                                     <div>All Brand</div>
                                 </Link>
-                            </li>
-                            <li className="menu-item">
+                            </li> */}
+                            {/* <li className="menu-item">
                                 <Link to={'/admin/attributes'} className="menu-link"  onClick={closeMenu}>
                                     <div>All Attributes</div>
                                 </Link>
-                            </li>
+                            </li> */}
                         </ul>
                     </li>
 

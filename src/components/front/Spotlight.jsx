@@ -49,6 +49,8 @@ function Spotlight({ spotlight }) {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [playingIndex]);
+
+  console.log("playingIndex",playingIndex)
   return (
     <section className="spotlight">
       <div className="container">
@@ -92,8 +94,8 @@ function Spotlight({ spotlight }) {
           {
             spotlight?.map((item, i) => (
               <>
-                <SwiperSlide key={i}>
-                  <div className='video_box' style={{ position: 'relative' }}>
+                <SwiperSlide key={i} className={`${playingIndex === i && "new_video_box"}`}>
+                  <div className={`video_box`} style={{ position: 'relative' }}>
                     <video ref={(el) => (videoRefs.current[i] = el)}>
                       <source src={imgBaseURL() + item?.img} type="video/mp4" />
                     </video>

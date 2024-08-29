@@ -3,7 +3,7 @@ import { APICALL } from '../../../utility/api/api';
 import Spinner from '../../../components/admin/Spinner';
 import { timeAgo } from './../../../utility/Date';
 import { Link, useParams } from 'react-router-dom';
-import { getStatusColor, imgBaseURL, stringToArray } from '../../../utility/Utility';
+import { defaultUserIMG, getStatusColor, imgBaseURL, stringToArray } from '../../../utility/Utility';
 import { useFrontDataContext } from '../../../context/FrontContextProvider';
 
 const OrderDetails = () => {
@@ -281,7 +281,7 @@ const OrderDetails = () => {
                                     <div className="card-body">
                                         <div className="d-flex justify-content-start align-items-center mb-4">
                                             <div className="avatar me-2">
-                                                <img src="../../assets/img/avatars/1.png" alt="Avatar" className="rounded-circle" />
+                                                <img src={defaultUserIMG} alt="Avatar" className="rounded-circle" />
                                             </div>
                                             <div className="d-flex flex-column">
                                                 <Link to={`/admin/customer-details/${orderDetails?.customer?.id}`} className="text-body text-nowrap">

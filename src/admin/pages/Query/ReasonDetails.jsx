@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { timeAgo } from '../../../utility/Date'
-import { imgBaseURL } from '../../../utility/Utility'
+import { defaultUserIMG, imgBaseURL } from '../../../utility/Utility'
 import { APICALL } from '../../../utility/api/api'
 
 const ReasonDetails = ({ reasonDetails,setDetails,getListFun }) => {
@@ -64,7 +64,7 @@ const ReasonDetails = ({ reasonDetails,setDetails,getListFun }) => {
                                     <div className="card-body">
                                         <div className="d-flex justify-content-start align-items-center mb-4">
                                             <div className="avatar me-2">
-                                                <img src="../../assets/img/avatars/1.png" alt="Avatar" className="rounded-circle" />
+                                                <img src={defaultUserIMG} alt="Avatar" className="rounded-circle" />
                                             </div>
                                             <div className="d-flex flex-column">
                                                 <Link to={`/admin/customer-details/${reasonDetails?.customer?.id}`} className="text-body text-nowrap">

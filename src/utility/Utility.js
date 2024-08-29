@@ -1,4 +1,4 @@
-import img1 from '../assets/img/1.png'
+import img1 from '../assets/img/revie-user.png'
 import dfIMG from '../assets/img/defaultImg.png'
 import { toast } from 'react-toastify';
 import logoimg from '../assets/img/logosite.png'

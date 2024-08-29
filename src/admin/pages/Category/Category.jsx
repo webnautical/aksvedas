@@ -288,7 +288,7 @@ const Category = () => {
                         {/* Category List Table */}
                      <div className='d-flex justify-content-between align-items-center'>
                      <h4 class="py-3 mb-2"><span class="fw-light">Aksvedas /</span> Category List</h4>
-                        <Link className="btn btn-primary text-capitalize" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"><i class="fa-solid fa-plus"></i>Add Products </Link>
+                        <Link className="btn btn-primary text-capitalize" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"><i class="fa-solid fa-plus"></i>Add Category </Link>
                      </div>
                         <div className="card">
                             <div className="p-3">

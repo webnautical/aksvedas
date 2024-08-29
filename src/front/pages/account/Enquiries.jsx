@@ -177,9 +177,13 @@ const Enquiries = ({ page }) => {
                             <div class="modal-body">
                                 {
                                     reasonDetails?.status == "processing" ? 
-                                    <h5 className='text-center d-block mb-4 text-capitalize'>{reasonDetails?.status}</h5>
+                                    <h6 className='text-center d-block mb-4'>
+                                        Thank you for reaching out to us! Your query has been received and is currently under processing. Our team is working on it, and we'll get back to you as soon as possible.
+                                    </h6>
                                     :
-                                    <h5 className='text-center d-block mb-4 text-capitalize'>{reasonDetails?.status}</h5>
+                                    <h6 className='text-center d-block mb-4'>
+                                        Good news! Your query has been resolved. If you have any further questions or need additional assistance, please don't hesitate to reach out to us. We're here to help!
+                                    </h6>
                                 }
                                 <div className="row">
                                     <div className="col-12">

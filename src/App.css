@@ -1106,17 +1106,20 @@ html:not([dir=rtl]) .modal .btn-close:active {
     position: absolute;
     /* bring your own prefixes */
     transform: translate(-50%, -50%);
-    opacity: 0;
-    transition: 0.3s ease-in
-}
-
-.swiper-slide :hover .play-pause-btn {
     opacity: 1;
     transition: 0.3s ease-in
 }
-.swiper-slide:hover .button-video a {
+
+/* .swiper-slide :hover .play-pause-btn {
+    opacity: 1;
+    transition: 0.3s ease-in
+} */
+/* .swiper-slide:hover .button-video a {
     opacity: 1 !important;
     transition: 0.3s ease-in
+} */
+ .new_video_box .shop_now {
+    opacity: 1 !important;
 }
 
 footer .footer_support_btn button{
@@ -1139,4 +1142,14 @@ footer .footer_support_btn  .btn-primary:hover{
     color: #E0A11C !important;
 }
 
+
+.order_succes {
+
+    background: rgb(61 61 61 / 30%) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+
+}
 /* .video_box:hover .button-video a{ opacity: 1!important; transition: 0.3s;} */
