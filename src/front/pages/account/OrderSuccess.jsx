@@ -158,7 +158,7 @@ const OrderSuccess = () => {
       </section>
       {open && (
         <div
-          class=" order_succes modal fade show cointmodalshow"
+          class="  modal fade show cointmodalshow"
           id="exampleModal"
           tabindex="-1"
           aria-labelledby="exampleModalLabel"
@@ -166,7 +166,7 @@ const OrderSuccess = () => {
           style={{ display: "block" }}
         >
           <div class=" modal-dialog modal-dialog-centered  modal-xl">
-            <div class="modal-content">
+            <div class="order_succes modal-content">
               <div class="modal-header p-0">
                 <button
                   type="button"
@@ -180,7 +180,7 @@ const OrderSuccess = () => {
                 <div className="main_gif_box">
                   <img src={firework} alt="" className="w-100" />
                 <div className="main_bb">
-                <span className="grneen-text" style={{ fontSize:'22px', fontWeight:'600' }}>You Earn Akscoin</span>
+                <span className="grneen-text" style={{ fontSize:'22px', fontWeight:'600' }}>Earned Akscoin</span>
                   <h1 className="youerocoin">
                  
                     {orderDetails?.earned_loyalty_discount}
