@@ -197,7 +197,12 @@ const Sidebar = () => {
                             </li>
                         </ul>
                     </li>
-
+                    <li className="menu-item">
+                        <Link to={'/admin/subscribers'} className="menu-link"  onClick={closeMenu}>
+                            <i class="my_width fa-solid fa-truck-ramp-box me-2"></i>
+                            <div data-i18n="Tables">Subscribers</div>
+                        </Link>
+                    </li>
                     <li className="menu-item">
                         <Link to={'/admin/reviews/all'} className="menu-link"  onClick={closeMenu}>
                             <i className="my_width tf-icons ti ti-star me-2" />
@@ -237,6 +242,13 @@ const Sidebar = () => {
                                 </Link>
                             </li>
                         </ul>
+                    </li>
+
+                    <li className="menu-item">
+                        <Link to={'/admin/meta-list/all'} className="menu-link" onClick={closeMenu}>
+                        <i class=" my_width fa-solid fa-scroll me-2"></i>
+                            <div data-i18n="Tables">Meta </div>
+                        </Link>
                     </li>
                 </ul>
             </aside>

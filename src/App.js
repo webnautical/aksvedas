@@ -55,12 +55,14 @@ import OrderFailure from './front/pages/account/OrderFailure';
 import Transaction from './admin/pages/Orders/Transaction';
 import OrderProducts from './admin/pages/Reports/OrderProducts';
 import ReasonList from './admin/pages/Query/ReasonList';
+import SubscribersList from './admin/pages/Query/SubscribersList';
+import MetaList from './admin/pages/Meta/MetaList';
 function App() {
-  const path = useLocation().pathname
-  useEffect(() => {
-    document.title = path === '/' ? "Aksveda" : `Aksveda` + path.replace('/admin/', ' - ');
-    return () => { document.title = "Aksveda" };
-  }, [path]);
+  // const path = useLocation().pathname
+  // useEffect(() => {
+  //   document.title = path === '/' ? "Aksveda" : `Aksveda` + path.replace('/admin/', ' - ');
+  //   return () => { document.title = "Aksveda" };
+  // }, [path]);
   return (
     <>
       <ScrollToTop />
@@ -119,8 +121,10 @@ function App() {
         <Route exact path="/admin/blog/:page" element={<AdminAuth cmp={BlogCommentList} />} />
         <Route exact path="/admin/reviews/:page" element={<AdminAuth cmp={FixedReviews} />} />
         <Route exact path="/admin/queries" element={<AdminAuth cmp={QueryList} />} />
+        <Route exact path="/admin/subscribers" element={<AdminAuth cmp={SubscribersList} />} />
         <Route exact path="/admin/utils" element={<AdminAuth cmp={Utils} />} />
         <Route exact path="/admin/reasons" element={<AdminAuth cmp={ReasonList} />} />
+        <Route exact path="/admin/meta-list/:page" element={<AdminAuth cmp={MetaList} />} />
 
 
         <Route exact path="/admin/reports/customer" element={<AdminAuth cmp={CustomerReports} />} />

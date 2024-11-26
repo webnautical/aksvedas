@@ -4,6 +4,8 @@ import Footer from '../front/include/Footer';
 import { authCustomer, imgBaseURL } from '../utility/Utility';
 import { useLocation, useNavigate } from 'react-router';
 import { useFrontDataContext } from '../context/FrontContextProvider';
+import { Helmet } from 'react-helmet';
+import { APICALL } from '../utility/api/api';
 
 const FrontWeb = ({ cmp }) => {
   const Component = cmp;
@@ -33,8 +35,34 @@ const FrontWeb = ({ cmp }) => {
     setModal(false);
     localStorage.setItem('modalCloseTime', new Date().getTime());
   };
+
+  useEffect(() =>{
+    getListFun()
+  },[pathname])
+
+  const [metaDetails, setMetaDetails] = useState(null)
+  const location = useLocation()
+  const path = location.pathname.startsWith("/") ? location.pathname.slice(1): location.pathname;
+  const lastSegment = path.split('/').pop();
+  const getListFun = async () => {
+    const res = await APICALL(`/metas/${pathname == "/" ? "home" : lastSegment}`)
+    if (res?.status) {
+      setMetaDetails(res?.data)
+    } else {
+      setMetaDetails({
+        "meta_title" : "Aksvedas",
+        "meta_desc" : "Aksvedas",
+      })
+    }
+  }
+
   return (
     <>
+      <Helmet>
+        <title>{metaDetails?.meta_title}</title>
+        <meta name="description" content={metaDetails?.meta_desc} />
+      </Helmet>
+
       <Header />
       <Component />
       <Footer />
