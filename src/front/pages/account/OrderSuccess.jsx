@@ -5,16 +5,16 @@ import firework from "../../../assets/img/youwon.gif";
 import akscoins from "../../../assets/img/akscoin.png";
 import { APICALL } from "../../../utility/api/api";
 import { formatdedDate } from "../../../utility/Utility";
- 
+
 const OrderSuccess = () => {
   const { order_id } = useParams();
   const [orderDetails, setOrderDetails] = useState(null);
   const [open, setOpen] = React.useState(false);
- 
+
   useEffect(() => {
     getOrderDetailsFun();
   }, [order_id]);
- 
+
   const getOrderDetailsFun = async () => {
     try {
       const res = await APICALL(`/v1/get-order-details/${order_id}`);
@@ -28,7 +28,7 @@ const OrderSuccess = () => {
       setOrderDetails(null);
     }
   };
- 
+
   useEffect(() => {
     if (open) {
       const timer = setTimeout(() => {
@@ -37,7 +37,44 @@ const OrderSuccess = () => {
       return () => clearTimeout(timer);
     }
   }, [open]);
- 
+
+
+  useEffect(() => {
+    // Google Analytics script add karna ensure karo
+    if (!window.gtag) {
+      const gtagScript = document.createElement("script");
+      gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=AW-16785777896";
+      gtagScript.async = true;
+      document.head.appendChild(gtagScript);
+
+      const gtagConfig = document.createElement("script");
+      gtagConfig.innerHTML = `
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'AW-16785777896');
+      `;
+      document.head.appendChild(gtagConfig);
+    }
+
+    if (orderDetails) {
+      const script = document.createElement("script");
+      script.innerHTML = `
+        gtag('event', 'conversion', {
+          'send_to': 'AW-16785777896/l9U-CIS7gZcaEOjJisQ-',
+          'value': ${orderDetails?.total_amount || 1.0},
+          'currency': 'INR',
+          'transaction_id': '${order_id || ""}'
+        });
+      `;
+      document.head.appendChild(script);
+
+      return () => {
+        document.head.removeChild(script);
+      };
+    }
+  }, [order_id, orderDetails]);
+
   return (
     <>
       <section className="cart-section">
@@ -118,7 +155,7 @@ const OrderSuccess = () => {
                         : `₹${orderDetails?.loyalty_discounts}`}{" "}
                     </p>
                   </div>
- 
+
                   <div className="d-flex justify-content-between">
                     <p className="mb-0">Shipping</p>
                     <p className="mb-0">
@@ -135,13 +172,13 @@ const OrderSuccess = () => {
                         : `₹${orderDetails?.discounts}`}
                     </p>
                   </div>
- 
+
                   <div className="d-flex justify-content-between">
                     <p className="fw-bold">Total</p>
                     <p className="fw-bold">₹{orderDetails?.total_amount}</p>
                   </div>
                 </div>
- 
+
                 <div className="text-center">
                   <h6>
                     Need assistance with your order?{" "}
@@ -179,13 +216,13 @@ const OrderSuccess = () => {
               <div class="modal-body text-center p-0">
                 <div className="main_gif_box">
                   <img src={firework} alt="" className="w-100" />
-                <div className="main_bb">
-                <span className="grneen-text" style={{ fontSize:'22px', fontWeight:'600' }}>Earned Akscoin</span>
-                  <h1 className="youerocoin">
-                 
-                    {orderDetails?.earned_loyalty_discount}
-                  </h1>
-                </div>
+                  <div className="main_bb">
+                    <span className="grneen-text" style={{ fontSize: '22px', fontWeight: '600' }}>Earned Akscoin</span>
+                    <h1 className="youerocoin">
+
+                      {orderDetails?.earned_loyalty_discount}
+                    </h1>
+                  </div>
                 </div>
                 <div></div>
               </div>
@@ -196,5 +233,5 @@ const OrderSuccess = () => {
     </>
   );
 };
- 
+
 export default OrderSuccess;
