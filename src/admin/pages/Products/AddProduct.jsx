@@ -70,6 +70,8 @@ const AddProduct = () => {
   ]);
   const [value, setValue] = useState({
     title: "",
+    meta_title: "",
+    meta_desc: "",
     sku: "",
     slug: "",
     hsn: "",
@@ -109,6 +111,10 @@ const AddProduct = () => {
         ...value,
         id: productDetails?.id,
         title: productDetails?.name,
+        meta_title: productDetails?.meta_title,
+        meta_desc: productDetails?.meta_desc,
+        meta_keyword: productDetails?.meta_keyword,
+        h_one: productDetails?.h_one,
         sku: productDetails?.sku,
         hsn: productDetails?.hsn,
         gst_rate: productDetails?.gst_rate,
@@ -145,6 +151,10 @@ const AddProduct = () => {
       setValue({
         ...value,
         title: "",
+        meta_title: "",
+        meta_desc: "",
+        meta_keyword: "",
+        h_one: "",
         sku: "",
         slug: "",
         hsn: "",
@@ -272,6 +282,10 @@ const AddProduct = () => {
       const formData = new FormData();
       formData.append("product_type", value.product_type);
       formData.append("title", value.title);
+      formData.append("meta_title", value.meta_title);
+      formData.append("meta_desc", value.meta_desc);
+      formData.append("meta_keyword", value.meta_keyword);
+      formData.append("h_one", value.h_one);
       formData.append("slug", value.slug);
       formData.append("sku", value.sku);
       formData.append("hsn", value.hsn);
@@ -344,6 +358,10 @@ const AddProduct = () => {
       formData.append("id", value.id);
       formData.append("product_type", value.product_type);
       formData.append("title", value.title);
+      formData.append("meta_title", value.meta_title);
+      formData.append("meta_desc", value.meta_desc);
+      formData.append("meta_keyword", value.meta_keyword);
+      formData.append("h_one", value.h_one);
       formData.append("slug", value.slug);
       formData.append("hsn", value.hsn);
       formData.append("gst_rate", value.gst_rate);
@@ -951,7 +969,7 @@ const AddProduct = () => {
                     </div>
                   </div>
                 )}
-                
+
                 {/* HSN AND GST RATE */}
                 <div className="card mb-4">
                   <div className="card-header">
@@ -1125,7 +1143,6 @@ const AddProduct = () => {
                           onChange={(e) => setInputValue(e.target.value)}
                           placeholder="Enter a tag and Press Enter"
                         />
-                        {/* <button type="submit">Add Tag</button> */}
                       </form>
                     </div>
                     <div className="tag-box">
@@ -1138,6 +1155,41 @@ const AddProduct = () => {
                           </p>
                         </>
                       ))}
+                    </div>
+
+                    <div className="row mt-3">
+                      <div className="col-12">
+                        <label className="form-label">Meta title</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Meta title"
+                          name="meta_title"
+                          value={value.meta_title}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      <div className="col-12 mt-2">
+                        <label className="form-label">Meta Desc</label>
+                        <textarea className="form-control" name="meta_desc" onChange={handleChange} value={value.meta_desc}></textarea>
+                      </div>
+
+                      <div className="col-12 mt-2">
+                        <label className="form-label">Meta Keyword</label>
+                        <textarea className="form-control" name="meta_keyword" onChange={handleChange} value={value.meta_keyword}></textarea>
+                      </div>
+
+                      <div className="col-12 mt-2">
+                        <label className="form-label">H1 Text</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="H1 Text"
+                          name="h_one"
+                          value={value.h_one}
+                          onChange={handleChange}
+                        />
+                      </div>
                     </div>
 
                   </div>

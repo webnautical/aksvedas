@@ -112,12 +112,29 @@ export const FrontContextProvider = ({ children }) => {
 
     const getWishlistFun = async () => {
         try {
-            const param = { customer_id: authCustomer()?.id }
-            const res = await postDataAPI('/v1/get-wishlist', param)
-            if (res?.status) {
-                setWishlistData(res?.data)
+            const allProducts = await getProducts();
+            if (authCustomer()?.id) {
+                const param = { customer_id: authCustomer()?.id }
+                const res = await postDataAPI('/v1/get-wishlist', param)
+                if (res?.status) {
+                    setWishlistData(res?.data)
+                } else {
+                    setWishlistData([])
+                }
             } else {
-                setWishlistData([])
+                const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+                const matchedProducts = allProducts.filter(product =>
+                    wishlist.some(item => item.id === product.id)
+                );
+                const wishlistFormatted = matchedProducts.map(product => {
+                    return {
+                        product_id: product.id,
+                        product: {
+                            ...product,
+                        }
+                    };
+                });
+                setWishlistData(wishlistFormatted);
             }
         } catch (error) {
             setWishlistData([])
@@ -126,15 +143,44 @@ export const FrontContextProvider = ({ children }) => {
 
     const getCartFun = async (type) => {
         try {
-            const param = { customer_id: authCustomer()?.id }
-            const res = await postDataAPI('/v1/get-cart', param)
-            if (res?.status) {
-                setCartData(res?.data)
-                if (type === 1) {
-                    setOffcanvas(true)
+            const allProducts = await getProducts();
+
+            if (authCustomer()?.id) {
+                const param = { customer_id: authCustomer()?.id }
+                const res = await postDataAPI('/v1/get-cart', param)
+                if (res?.status) {
+                    setCartData(res?.data)
+                    if (type === 1) {
+                        setOffcanvas(true)
+                    }
+                } else {
+                    setCartData([])
                 }
             } else {
-                setCartData([])
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const matchedProducts = allProducts.filter(product =>
+                    cart.some(item => item.product_id === product.id)
+                );
+                const cartFormatted = matchedProducts.map(product => {
+                    const cartItem = cart.find(item => item.product_id === product.id) || {};
+                    return {
+                        product_id: product?.id,
+                        qnt: cartItem?.qnt || "1",
+                        product_items_id: cartItem?.product_items_id || null,
+                        name: product?.name || "Unknown Product",
+                        category_id: product?.category_id || "0",
+                        cover: product?.cover || "default_cover.png",
+                        sku: product?.sku || "N/A",
+                        price: product?.price || "0",
+                        sale_price: product?.sale_price || product?.price || "0",
+                        subscription_price: cartItem?.subscription_price || null,
+                        subscription_sale_price: cartItem?.subscription_sale_price || null,
+                        subscription_days: cartItem?.subscription_days || null,
+                        subscription_discount: cartItem?.subscription_discount || null,
+                        subscription_id: cartItem?.subscription_id || null
+                    };
+                });
+                setCartData(cartFormatted)
             }
         } catch (error) {
             setCartData([])
@@ -177,13 +223,27 @@ export const FrontContextProvider = ({ children }) => {
 
     const addProductInWishlistFun = async (id) => {
         try {
-            const param = { customer_id: authCustomer()?.id, product_id: id }
-            const res = await postDataAPI('/v1/add-wishlist', param)
-            if (res?.status) {
-                getWishlistFun()
-                toastifySuccess(res?.msg)
+            const customer = authCustomer();
+            if (customer?.id) {
+                const param = { customer_id: authCustomer()?.id, product_id: id }
+                const res = await postDataAPI('/v1/add-wishlist', param)
+                if (res?.status) {
+                    getWishlistFun()
+                    toastifySuccess(res?.msg)
+                } else {
+                    toastifyError('Product can not be added in wishlist')
+                }
             } else {
-                toastifyError('Product can not be added in wishlist')
+                let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+                const productIndex = wishlist.findIndex(product => product.id === id);
+                if (productIndex === -1) {
+                    wishlist.push({ id });
+                    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                } else {
+                    wishlist.splice(productIndex, 1);
+                    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                }
+                getWishlistFun();
             }
         } catch (error) {
             toastifyError('Server error')
@@ -192,18 +252,28 @@ export const FrontContextProvider = ({ children }) => {
 
     const removeCartItemFun = async (id) => {
         try {
-            const res = await deleteDataAPI(`v1/remove-cart/${id}`)
-            if (res?.status) {
-                toastifySuccess(res.msg)
-                getCartFun()
+            if (authCustomer()?.id) {
+                const res = await deleteDataAPI(`v1/remove-cart/${id}`)
+                if (res?.status) {
+                    toastifySuccess(res.msg)
+                    getCartFun()
+                } else {
+                    toastifyError('Something Went Wrong')
+                }
             } else {
-                toastifyError('Something Went Wrong')
+                if(id === "clear"){
+                    localStorage.removeItem('cart');
+                }else{
+                    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+                    cart = cart.filter(item => item.product_id !== id);
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                }
+                getCartFun()
             }
         } catch (error) {
             toastifyError('Something Went Wrong')
         }
     }
-
 
     return (
         <>

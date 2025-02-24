@@ -23,11 +23,11 @@ const CheckOut = () => {
   } = useFrontDataContext();
 
 
-  useEffect(() => {
-    if (!authCustomer()?.token) {
-      navigate('/login')
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (!authCustomer()?.token) {
+  //     navigate('/login')
+  //   }
+  // }, [])
 
 
   const [cartList, setCartList] = useState([]);
@@ -46,6 +46,7 @@ const CheckOut = () => {
   }, [cartData]);
   const [loadingPlusId, setLoadingPlusId] = useState(null);
   const [loadingMinusId, setLoadingMinusId] = useState(null);
+  console.log("cartList",cartList)
   const handleQntChange = async (qntType, itemId) => {
     if (qntType === 'plus') {
       setLoadingPlusId(itemId);
@@ -53,7 +54,7 @@ const CheckOut = () => {
       setLoadingMinusId(itemId);
     }
     const updatedCartItems = cartList.map((item) => {
-      if (item.id === itemId) {
+      if (item.product_id === itemId) {
         let newQuantity;
         if (qntType === "minus") {
           newQuantity = Math.max(1, parseInt(item.qnt) - 1);
@@ -97,9 +98,12 @@ const CheckOut = () => {
           <div class="d-flex align-items-center justify-content-end">
             {cartData?.length > 0 && (
               <div class="flex-shrink-0 mb-3">
-                <button type="button" className="btn-normals w-xs" onClick={() => removeCartItemFun(`C_${authCustomer()?.id}`)} >
-                  Clear Cart
-                </button>
+                {
+                  authCustomer()?.id ?
+                    <button type="button" className="btn-normals w-xs" onClick={() => removeCartItemFun(`C_${authCustomer()?.id}`)} >Clear Cart</button>
+                    :
+                    <button type="button" className="btn-normals w-xs" onClick={() => removeCartItemFun(`clear`)} >Clear Cart</button>
+                }
               </div>
             )}
           </div>
@@ -150,7 +154,7 @@ const CheckOut = () => {
                               <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             </button>
                           ) : (
-                            <button type="button" className="minus" onClick={() => handleQntChange("minus", item.id)}>-</button>
+                            <button type="button" className="minus" onClick={() => handleQntChange("minus", item.product_id)}>-</button>
                           )}
                           <input type="text" className="product-quantity1" value={item?.qnt} readOnly />
                           {loadingPlusId === item.id ? (
@@ -158,7 +162,7 @@ const CheckOut = () => {
                               <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             </button>
                           ) : (
-                            <button type="button" className="plus" onClick={() => handleQntChange("plus", item.id)}>+</button>
+                            <button type="button" className="plus" onClick={() => handleQntChange("plus", item.product_id)}>+</button>
                           )}
 
                         </div>

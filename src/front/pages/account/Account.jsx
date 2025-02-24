@@ -9,7 +9,7 @@ import akcoin from "../../../assets/img/akscoin.png";
 import coinpic from '../../../assets/img/coins.png'
 import usepic from '../../../assets/img/click.png'
 import shopbag from '../../../assets/img/shopping-cart.png'
- 
+
 import {
   authCustomer,
   checkItem,
@@ -28,7 +28,7 @@ import { SERVER_ERR } from "../../../utility/Constants";
 import { addToCartRepeater } from "./../../../utility/api/RepeaterAPI";
 import FrontLoader from "../../../components/front/FrontLoader";
 import Enquiries from "./Enquiries";
- 
+
 const Account = () => {
   // const [loading, setLoading] = useState(false)
   const [subLoading, setSubLoading] = useState(false);
@@ -43,43 +43,30 @@ const Account = () => {
     getCartFun,
     getCustomerDetails,
     loading,
+    addProductInWishlistFun
   } = useFrontDataContext();
+
   const { page } = useParams();
- 
-  useEffect(() => {
-    if (!authCustomer()?.token) {
-      navigate("/login");
-    }
-  }, []);
- 
+
+  // useEffect(() => {
+  //   if (!authCustomer()?.token) {
+  //     navigate("/login");
+  //   }
+  // }, []);
+
   useEffect(() => {
     getWishlistFun();
     getOrderListFun();
     getCustomerDetails();
   }, []);
- 
-  const addWishlist = async (id) => {
-    try {
-      const param = { customer_id: authCustomer()?.id, product_id: id };
-      const res = await postDataAPI("/v1/add-wishlist", param);
-      if (res?.status) {
-        getWishlistFun();
-        toastifySuccess(res?.msg);
-      } else {
-        toastifyError("Product can not be added in wishlist");
-      }
-    } catch (error) {
-      toastifyError(SERVER_ERR);
-    }
-  };
- 
+
   const [value, setValue] = useState({
     name: customerDetails?.name,
     email: customerDetails?.email,
     phone: customerDetails?.phone,
     id: customerDetails?.id,
   });
- 
+
   const openEdit = () => {
     setProfileUpdate(true);
     setValue({
@@ -97,10 +84,10 @@ const Account = () => {
     name: "",
     email: "",
   });
- 
+
   const handleUpdateProfile = async () => {
     setSubLoading(true);
- 
+
     const newErrors = {};
     if (!value.name) {
       newErrors.name = "Name is required";
@@ -110,7 +97,7 @@ const Account = () => {
     } else if (!validateEmail(value.email)) {
       newErrors.email = "Invalid email address";
     }
- 
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       setSubLoading(false);
@@ -130,7 +117,7 @@ const Account = () => {
       setSubLoading(false);
     }
   };
- 
+
   const handleLogout = async () => {
     navigate("/");
     localStorage.clear();
@@ -140,19 +127,19 @@ const Account = () => {
   const addToCartFun = (item) => {
     const itemId = item.product?.id;
     const currentCount = cartCounts[itemId] || 0;
- 
+
     if (currentCount >= 5) {
       toastifyError("You cannot add more than 5 of this item.");
       return false;
     } else {
       const newCount = currentCount + 1;
       setCartCounts({ ...cartCounts, [itemId]: newCount });
- 
+
       const param = { product_id: item.product?.id, qnt: 1 };
       addToCartRepeater(param, getWishlistFun, getCartFun, 0);
     }
   };
- 
+
   return (
     <>
       {loading && <FrontLoader />}
@@ -174,7 +161,7 @@ const Account = () => {
           <h1>{textFormated(page)}</h1>
         </div>
       </div>
- 
+
       <section className="cart-section">
         <div className="container">
           <div className="row">
@@ -185,43 +172,46 @@ const Account = () => {
                     className="nav nav-pills flex-column gap-3"
                     role="tablist"
                   >
+
+                    {
+                      authCustomer()?.id &&
+                      <>
+                        <li className="nav-item" role="presentation">
+                          <Link
+                            className={`nav-link fs-15 justify-content-start ${page === "account-info" && "active"
+                              }`}
+                            data-bs-toggle="tab"
+                            to="#custom-v-pills-profile"
+                            role="tab"
+                            aria-selected={page === "account-info" && true}
+                            onClick={() => navigate("/account/account-info")}
+                          >
+                            <i className="fa fa-user align-middle me-1"></i> Account
+                            Info
+                          </Link>
+                        </li>
+
+                        <li className="nav-item" role="presentation">
+                          <Link
+                            className={`nav-link fs-15 justify-content-start ${page === "my-loyalty-points" && "active"
+                              }`}
+                            data-bs-toggle="tab"
+                            to="#custom-v-pills-loyalty"
+                            role="tab"
+                            aria-selected={page === "my-loyalty-points" && true}
+                            onClick={() => navigate("/account/my-loyalty-points")}
+                          >
+                            <i className="fa fa-inr align-middle me-1"></i> My
+                            AksCoins
+                          </Link>
+                        </li>
+                      </>
+                    }
+
                     <li className="nav-item" role="presentation">
                       <Link
-                        className={`nav-link fs-15 justify-content-start ${
-                          page === "account-info" && "active"
-                        }`}
-                        data-bs-toggle="tab"
-                        to="#custom-v-pills-profile"
-                        role="tab"
-                        aria-selected={page === "account-info" && true}
-                        onClick={() => navigate("/account/account-info")}
-                      >
-                        <i className="fa fa-user align-middle me-1"></i> Account
-                        Info
-                      </Link>
-                    </li>
- 
-                    <li className="nav-item" role="presentation">
-                      <Link
-                        className={`nav-link fs-15 justify-content-start ${
-                          page === "my-loyalty-points" && "active"
-                        }`}
-                        data-bs-toggle="tab"
-                        to="#custom-v-pills-loyalty"
-                        role="tab"
-                        aria-selected={page === "my-loyalty-points" && true}
-                        onClick={() => navigate("/account/my-loyalty-points")}
-                      >
-                        <i className="fa fa-inr align-middle me-1"></i> My
-                        AksCoins
-                      </Link>
-                    </li>
- 
-                    <li className="nav-item" role="presentation">
-                      <Link
-                        className={`nav-link fs-15 justify-content-start ${
-                          page === "wishlist" && "active"
-                        }`}
+                        className={`nav-link fs-15 justify-content-start ${page === "wishlist" && "active"
+                          }`}
                         data-bs-toggle="tab"
                         to="#custom-v-pills-list"
                         role="tab"
@@ -233,65 +223,70 @@ const Account = () => {
                         Wishlist
                       </Link>
                     </li>
-                    <li className="nav-item" role="presentation">
-                      <Link
-                        className={`nav-link fs-15 justify-content-start ${
-                          page === "orders" && "active"
-                        }`}
-                        data-bs-toggle="tab"
-                        to="#custom-v-pills-order"
-                        role="tab"
-                        aria-selected={page === "orders" && true}
-                        tabIndex="-1"
-                        onClick={() => navigate("/account/orders")}
-                      >
-                        <i className="fa fa-bag-shopping align-middle me-1"></i>{" "}
-                        Order
-                      </Link>
-                    </li>
 
-                    <li className="nav-item" role="presentation">
-                      <Link
-                        className={`nav-link fs-15 justify-content-start ${
-                          page === "enquiries" && "active"
-                        }`}
-                        data-bs-toggle="tab"
-                        to="#custom-v-pills-enquiries"
-                        role="tab"
-                        aria-selected={page === "enquiries" && true}
-                        tabIndex="-1"
-                        onClick={() => navigate("/account/enquiries")}
-                      >
-                        <i class="fa-solid fa-headset align-middle me-1"></i>
-                        Enquiries
-                      </Link>
-                    </li>
- 
-                    <li className="nav-item" role="presentation">
-                      <Link
-                        className="nav-link fs-15 justify-content-start"
-                        to="/"
-                        onClick={() => handleLogout()}
-                        aria-selected="false"
-                        tabIndex="-1"
-                        role="tab"
-                      >
-                        <i className="fa-solid fa-right-from-bracket align-middle me-1"></i>{" "}
-                        Logout
-                      </Link>
-                    </li>
+                    {authCustomer()?.id &&
+                      <>
+                        <li className="nav-item" role="presentation">
+                          <Link
+                            className={`nav-link fs-15 justify-content-start ${page === "orders" && "active"
+                              }`}
+                            data-bs-toggle="tab"
+                            to="#custom-v-pills-order"
+                            role="tab"
+                            aria-selected={page === "orders" && true}
+                            tabIndex="-1"
+                            onClick={() => navigate("/account/orders")}
+                          >
+                            <i className="fa fa-bag-shopping align-middle me-1"></i>{" "}
+                            Order
+                          </Link>
+                        </li>
+
+                        <li className="nav-item" role="presentation">
+                          <Link
+                            className={`nav-link fs-15 justify-content-start ${page === "enquiries" && "active"
+                              }`}
+                            data-bs-toggle="tab"
+                            to="#custom-v-pills-enquiries"
+                            role="tab"
+                            aria-selected={page === "enquiries" && true}
+                            tabIndex="-1"
+                            onClick={() => navigate("/account/enquiries")}
+                          >
+                            <i class="fa-solid fa-headset align-middle me-1"></i>
+                            Enquiries
+                          </Link>
+                        </li>
+
+                        <li className="nav-item" role="presentation">
+                          <Link
+                            className="nav-link fs-15 justify-content-start"
+                            to="/"
+                            onClick={() => handleLogout()}
+                            aria-selected="false"
+                            tabIndex="-1"
+                            role="tab"
+                          >
+                            <i className="fa-solid fa-right-from-bracket align-middle me-1"></i>{" "}
+                            Logout
+                          </Link>
+                        </li>
+                      </>
+                    }
+
+
+
                   </ul>
                 </div>
               </div>
             </div>
- 
+
             <div className="col-md-9">
               <div className="tab-content p-0">
                 {/* Personal Info */}
                 <div
-                  className={`tab-pane fade ${
-                    page === "account-info" && "active show"
-                  }`}
+                  className={`tab-pane fade ${page === "account-info" && "active show"
+                    }`}
                   id="custom-v-pills-profile"
                   role="tabpanel"
                 >
@@ -406,7 +401,7 @@ const Account = () => {
                               />
                             </div>
                           </div>
- 
+
                           <div className="col-12 text-end">
                             <button
                               type="button"
@@ -415,7 +410,7 @@ const Account = () => {
                             >
                               Cancel
                             </button>
- 
+
                             {subLoading ? (
                               <button class="btn btn-primary" type="button">
                                 <span
@@ -437,7 +432,7 @@ const Account = () => {
                           </div>
                         </div>
                       )}
- 
+
                       <div className="mt-3">
                         <h6 className="fs-15 mb-0">Addresses</h6>
                       </div>
@@ -470,12 +465,11 @@ const Account = () => {
                     </div>
                   </div>
                 </div>
- 
+
                 {/* My Loyalty Coins */}
                 <div
-                  className={`tab-pane fade ${
-                    page === "my-loyalty-points" && "active show"
-                  }`}
+                  className={`tab-pane fade ${page === "my-loyalty-points" && "active show"
+                    }`}
                   id="custom-v-pills-loyalty"
                   role="tabpanel"
                 >
@@ -483,15 +477,15 @@ const Account = () => {
                     <div className="card-body">
                       <div className="ak_coin_sec">
                         <div className="ak_coin_img">
-                         <div className="d-flex align-items-center justify-content-center" style={{ gap:'20px'}}>
-                         <div>
-                          <img src={akcoin} alt="aks-coin" />
+                          <div className="d-flex align-items-center justify-content-center" style={{ gap: '20px' }}>
+                            <div>
+                              <img src={akcoin} alt="aks-coin" />
+                            </div>
+                            <div className="ava_balance text-start">
+                              <h5 className="mb-0">Available balance</h5>
+                              <div className="coin_value">   {customerDetails?.loyalty} <span>Aks Coin</span></div>
+                            </div>
                           </div>
-                          <div className="ava_balance text-start">
-                            <h5 className="mb-0">Available balance</h5>
-                            <div className="coin_value">   {customerDetails?.loyalty} <span>Aks Coin</span></div>
-                          </div>
-                         </div>
                         </div>
 
 
@@ -499,7 +493,7 @@ const Account = () => {
                           <div className="row">
                             <div className="col-md-4 mb-md-0 mb-4">
                               <div className="ak_box_inner text-center">
-                                <img src={shopbag } />
+                                <img src={shopbag} />
                                 <h3>Buy Products</h3>
                                 <p className="mb-0">To Earn Coins</p>
                               </div>
@@ -523,16 +517,15 @@ const Account = () => {
                           </div>
                         </div>
                       </div>
-                     
+
                     </div>
                   </div>
                 </div>
- 
+
                 {/*WishList*/}
                 <div
-                  className={`tab-pane fade ${
-                    page === "wishlist" && "active show"
-                  }`}
+                  className={`tab-pane fade ${page === "wishlist" && "active show"
+                    }`}
                   id="custom-v-pills-list"
                   role="tabpanel"
                 >
@@ -550,7 +543,7 @@ const Account = () => {
                                   <th scope="col">Action</th>
                                 </tr>
                               </thead>
- 
+
                               <tbody>
                                 {wishlistData?.map((item, i) => (
                                   <tr>
@@ -573,10 +566,7 @@ const Account = () => {
                                             to={`/product-detail/${item.product?.slug}`}
                                           >
                                             <h6 className="fs-16">
-                                              {textSlice(
-                                                item?.product?.name,
-                                                50
-                                              )}
+                                              {textSlice(item?.product?.name,50)}
                                             </h6>
                                           </Link>
                                           <p className="mb-0 text-capitalize fs-13">
@@ -611,9 +601,7 @@ const Account = () => {
                                         </li>
                                         <li>
                                           <button
-                                            onClick={() =>
-                                              addWishlist(item?.product?.id)
-                                            }
+                                            onClick={() => addProductInWishlistFun(item?.product?.id)}
                                             className="btn btn-soft-danger btn-icon btn-sm"
                                           >
                                             <i className="fa-solid fa-xmark  fs-13"></i>
@@ -664,12 +652,11 @@ const Account = () => {
                     </div>
                   </div>
                 </div>
- 
+
                 {/*Order List*/}
                 <div
-                  className={`tab-pane fade ${
-                    page === "orders" && "active show"
-                  }`}
+                  className={`tab-pane fade ${page === "orders" && "active show"
+                    }`}
                   id="custom-v-pills-order"
                   role="tabpanel"
                 >
@@ -772,7 +759,7 @@ const Account = () => {
                                 </td>
                               </tr>
                             )}
- 
+
                             {/* Add more rows as needed */}
                           </tbody>
                         </table>
@@ -793,8 +780,8 @@ const Account = () => {
                   </div>
                 </div>
 
-                 {/*enquiries*/}
-                  <Enquiries page={page}/>
+                {/*enquiries*/}
+                <Enquiries page={page} />
               </div>
             </div>
           </div>{" "}
@@ -803,5 +790,5 @@ const Account = () => {
     </>
   );
 };
- 
+
 export default Account;

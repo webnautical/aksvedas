@@ -41,6 +41,7 @@ import { timeAgo } from "../../../utility/Date";
 import { SOMETHING_ERR } from './../../../utility/Constants';
 import axios from "axios";
 import ProductItemButton from "../../../components/front/ProductItemButton";
+import { Helmet } from "react-helmet";
 const ProductDetail = () => {
   const { getWishlistFun, getCartFun, addProductInWishlistFun, wishlistData, customerDetails, cartData } =
     useFrontDataContext();
@@ -93,10 +94,10 @@ const ProductDetail = () => {
 
       if (cartItem && (cartItem.qnt > 4 || quantity > 4)) {
         setClickCount(clickCount + 1)
-        if(clickCount === 0){
+        if (clickCount === 0) {
           toastifyError('You cannot add more than 5 of this item.');
           return false
-        }else{
+        } else {
           return false
         }
       } else {
@@ -206,12 +207,12 @@ const ProductDetail = () => {
         setSelectedPlan(res?.data?.details?.product_subscription[0])
         setLoading(false);
       } else {
-        navigate("/shop/all");
+        navigate("/not-found");
         setProductDetails(null);
         setLoading(false);
       }
     } catch (error) {
-      navigate("/shop/all");
+      navigate("/not-found");
       setProductDetails(null);
       setLoading(false);
     }
@@ -256,14 +257,14 @@ const ProductDetail = () => {
     const cartQnt = cartItem?.qnt ? cartItem?.qnt : 0;
     setClickCount(clickCount + 1)
 
-    if(cartQnt == 5){
+    if (cartQnt == 5) {
       if (type == "buy") {
         navigate("/checkout");
       }
-      if(clickCount === 0){
+      if (clickCount === 0) {
         toastifyError('You cannot add more than 5 of this item.');
         return false
-      }else{
+      } else {
         return false
       }
     }
@@ -470,6 +471,32 @@ const ProductDetail = () => {
   };
   const fullFileCheck = currentImage.endsWith('.mp4') || currentImage.endsWith('.mov');
 
+
+  useEffect(() => {
+    if (!productDetails || Object.keys(productDetails).length === 0) return;
+    if (document.title !== productDetails.meta_title) {
+      document.title = productDetails.meta_title || "Aksvedas";
+    }
+  
+    const updateMetaTag = (name, content) => {
+      let metaTag = document.querySelector(`meta[name='${name}']`);
+      if (metaTag && metaTag.getAttribute("content") !== content) {
+        metaTag.setAttribute("content", content);
+      } else if (!metaTag) {
+        metaTag = document.createElement("meta");
+        metaTag.name = name;
+        metaTag.content = content;
+        document.head.appendChild(metaTag);
+      }
+    };
+  
+    updateMetaTag("description", productDetails.meta_desc || "Aksvedas");
+    updateMetaTag("keywords", productDetails.meta_keyword || "default, keywords");
+  
+  }, [productDetails]);
+  
+  
+
   return (
     <>
       {loading ? (
@@ -480,9 +507,11 @@ const ProductDetail = () => {
         <>
           <div className="product-details">
             <div className="container">
+              {productDetails?.h_one &&
+                <h1 className="m-0 mt-3 mb-2" style={{ fontSize: '20px' }}>{productDetails?.h_one}</h1>}
               <Breadcrumbs
                 aria-label="breadcrumb"
-                className="breacrumb-custom py-md-3 py-2"
+                className="breacrumb-custom py-2 pt-0"
                 separator={<NavigateNextIcon fontSize="small" />}
               >
                 <Link to={"/"} underline="hover">
@@ -682,7 +711,7 @@ const ProductDetail = () => {
                               <button
                                 className="btn-2 buy-btn"
                                 onClick={() => addToCartFun("buy")}
-                                // disabled={disabledBtn}
+                              // disabled={disabledBtn}
 
                               >
                                 Buy Now

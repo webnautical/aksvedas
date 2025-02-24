@@ -114,7 +114,7 @@ const Index = () => {
 
     useEffect(() => {
         if (customerDetails?.address?.length > 0) {
-            const lastAddressID = customerDetails.address[customerDetails.address.length - 1].id;
+            const lastAddressID = customerDetails?.address[customerDetails?.address?.length - 1].id;
             setAddressID(lastAddressID);
         }
     }, [customerDetails]);
@@ -131,11 +131,11 @@ const Index = () => {
         type: "",
     });
 
-    useEffect(() => {
-        if (!authCustomer()?.token) {
-            navigate('/login')
-        }
-    }, [])
+    // useEffect(() => {
+    //     if (!authCustomer()?.token) {
+    //         navigate('/login')
+    //     }
+    // }, [])
 
     useEffect(() => {
         if (updAddress?.id) {
@@ -386,19 +386,20 @@ const Index = () => {
                                                     <div className="flex-grow-1">
                                                         <h5 className="mb-0">Address</h5>
                                                     </div>
-                                                    {customerDetails?.address?.length < 5 && (
+                                                    {
+                                                    (!customerDetails || customerDetails?.address?.length < 5) && (
                                                         <div className="flex-shrink-0">
                                                             <Link to="#" onClick={() => addAddress()} className="add_address btn-normals fs-14">
                                                                 Add Address
                                                             </Link>
                                                         </div>
-                                                    )}
+                                                    )
+                                                    }
                                                 </div>
                                                 <>
                                                     <div className='row g-3'>
-
                                                         {
-                                                            customerDetails.address?.length > 0 &&
+                                                            customerDetails?.address?.length > 0 &&
                                                             customerDetails?.address?.map((item, i) => (
                                                                 <div className="col-lg-6 col-12">
                                                                     <div className="form-check card-radio">
@@ -440,11 +441,8 @@ const Index = () => {
                                                                     </div>
                                                                 </div>
                                                             ))
-
                                                         }
-
                                                     </div>
-
                                                 </>
                                                 {
                                                     addressModal &&
@@ -453,7 +451,7 @@ const Index = () => {
                                                             <input
                                                                 type="text"
                                                                 name="name"
-                                                                value={addressVal.name}
+                                                                value={addressVal?.name}
                                                                 onChange={handleChange}
                                                                 placeholder="Name"
                                                                 className="form-control"
@@ -464,18 +462,18 @@ const Index = () => {
                                                             <input
                                                                 type="text"
                                                                 name="email"
-                                                                value={addressVal.email}
+                                                                value={addressVal?.email}
                                                                 onChange={handleChange}
                                                                 placeholder="Email"
                                                                 className="form-control"
-                                                                disabled={customerDetails.email ? true : false}
+                                                                disabled={customerDetails?.email ? true : false}
                                                             />
                                                             <span className="errMsg">{errors.email}</span>
                                                         </div>
                                                         <div className="col-md-6">
                                                             <select
                                                                 name="state"
-                                                                value={addressVal.state}
+                                                                value={addressVal?.state}
                                                                 onChange={handleChange}
                                                                 placeholder="State"
                                                                 className="form-control"
@@ -516,7 +514,7 @@ const Index = () => {
                                                             <input
                                                                 type="text"
                                                                 name="city"
-                                                                value={addressVal.city}
+                                                                value={addressVal?.city}
                                                                 onChange={handleChange}
                                                                 placeholder="City"
                                                                 className="form-control"
@@ -527,7 +525,7 @@ const Index = () => {
                                                             <input
                                                                 type="text"
                                                                 name="zip"
-                                                                value={addressVal.zip}
+                                                                value={addressVal?.zip}
                                                                 onChange={handleChange}
                                                                 placeholder="Zip Code"
                                                                 className="form-control"
@@ -538,7 +536,7 @@ const Index = () => {
                                                             <input
                                                                 type="text"
                                                                 name="phone"
-                                                                value={addressVal.phone}
+                                                                value={addressVal?.phone}
                                                                 onChange={handleChange}
                                                                 placeholder="Phone"
                                                                 className="form-control"
@@ -549,14 +547,14 @@ const Index = () => {
                                                             <textarea
                                                                 type="text"
                                                                 name="address"
-                                                                value={addressVal.address}
+                                                                value={addressVal?.address}
                                                                 onChange={handleChange}
                                                                 className="form-control"
                                                                 placeholder="Address"
                                                             >
                                                                 {" "}
                                                             </textarea>
-                                                            <span className="errMsg">{errors.address}</span>
+                                                            <span className="errMsg">{errors?.address}</span>
                                                         </div>
                                                         <div className="col-md-12">
                                                             <div className="pop_btn d-flex gap-2 text-center w-100">
@@ -574,21 +572,26 @@ const Index = () => {
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 }
 
                                                 {
-                                                    !addressModal && customerDetails.address?.length == 0 &&
+                                                    (!addressModal && customerDetails?.address?.length == 0) ?
                                                     <>
                                                         <div className='text-center mt-2'>
                                                             <h6>Please Add Your Delivery Address</h6>
-
-                                                            {/* <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur vero hic est accusantium quis. Eligendi sequi veniam assumenda ad hic iusto obcaecati quasi, aperiam adipisci, corrupti explicabo sit et, consectetur distinctio similique debitis est! Nostrum </p> */}
                                                         </div>
                                                     </>
+                                                    :
+                                                    (!addressModal && !customerDetails) ?
+                                                    <>
+                                                      <div className='text-center mt-2'>
+                                                            <h6>Please Add Your Delivery Address</h6>
+                                                        </div>
+                                                    </>
+                                                    :
+                                                    <> </>
+                                                    
                                                 }
-
-
                                             </>
                                         }
 
@@ -597,11 +600,11 @@ const Index = () => {
                                     </div>
 
                                     {cartData?.length < 1 && (
-        <div class="product-item-inner">
-          <img src={emptycart} alt="" />
-          <h4>There are no product added on your cart.</h4>
-        </div>
-      )}
+                                        <div class="product-item-inner">
+                                            <img src={emptycart} alt="" />
+                                            <h4>There are no product added on your cart.</h4>
+                                        </div>
+                                    )}
 
 
                                     {

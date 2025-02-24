@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef  } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import emptycart from "../../assets/img/empty-cart.png";
 import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
@@ -8,13 +8,13 @@ import { getPercentageOff, imgBaseURL } from "../../utility/Utility";
 import { Link, useNavigate } from "react-router-dom";
 import { cartQntChange } from "../../utility/api/RepeaterAPI";
 import { Rating } from "@mui/material";
- 
+
 const CartPopUp = ({ item }) => {
   const navigate = useNavigate();
   const { cartData, allData, removeCartItemFun, offcanvas, setOffcanvas } =
     useFrontDataContext();
   const [cartList, setCartList] = useState([]);
- 
+
   const goesgretwith = {
     // loop: true,
     autoplay: true,
@@ -30,7 +30,7 @@ const CartPopUp = ({ item }) => {
       '<i class="fa fa-chevron-left"></i>',
       '<i class="fa fa-chevron-right"></i>',
     ], // Custom arrow icons
- 
+
     responsive: {
       0: {
         items: 2,
@@ -42,18 +42,18 @@ const CartPopUp = ({ item }) => {
       },
       1000: {
         items: 2,
- 
+
         loop: false,
       },
- 
+
       1500: {
         items: 2,
- 
+
         loop: true,
       },
     },
   };
- 
+
   const getSubTotalFunc = () => {
     const subtotal = cartList.reduce(
       (total, item) =>
@@ -62,21 +62,21 @@ const CartPopUp = ({ item }) => {
     );
     return subtotal;
   };
- 
+
   const goToCheckOut = () => {
     navigate("/checkout");
     setOffcanvas(false);
   };
- 
+
   useEffect(() => {
     if (cartData.length > 0) {
       setCartList(cartData);
     }
   }, [cartData]);
- 
+
   const handleQntChange = (qntType, itemId) => {
     const updatedCartItems = cartList.map((item) => {
-      if (item.id === itemId) {
+      if (item.product_id === itemId) {
         let newQuantity;
         if (qntType === "minus") {
           newQuantity = Math.max(1, parseInt(item.qnt) - 1);
@@ -93,19 +93,17 @@ const CartPopUp = ({ item }) => {
     });
     setCartList(updatedCartItems);
   };
- 
+
   const owlRef = useRef(null);
- 
+
   const goToPrev = () => {
     owlRef.current.prev();
   };
- 
+
   const goToNext = () => {
     owlRef.current.next();
   };
 
-  // console.log("cartList",cartList)
- 
   return (
     <div
       className={`cart_canvas offcanvas offcanvas-end ${offcanvas && "show"}`}
@@ -150,27 +148,24 @@ const CartPopUp = ({ item }) => {
                           <span style={{ color: "#E0A11C" }}>{item?.sku}</span>
                         </p>
                         <p>₹{item?.sale_price}</p>
- 
+
                         <div className="d-flex justify-content-between align-items-center">
                           <div className="quantity_select">
                             <button
-                              onClick={() => handleQntChange("minus", item.id)}
+                              onClick={() => handleQntChange("minus", item.product_id)}
                             >
                               <i className="fa-solid fa-minus"></i>
                             </button>
                             <span>{item?.qnt}</span>
                             <button
-                              onClick={() => handleQntChange("plus", item.id)}
+                              onClick={() => handleQntChange("plus", item.product_id)}
                             >
                               <i className="fa-solid fa-plus"></i>
                             </button>
                           </div>
- 
+
                           <div>
-                            <button
-                              className="icon_btn __danger mx-1"
-                              onClick={() => removeCartItemFun(item.id)}
-                            >
+                            <button className="icon_btn __danger mx-1" onClick={() => removeCartItemFun(item.id || item?.product_id)}>
                               <i class="fa-solid fa-trash"></i>
                             </button>
                           </div>
@@ -204,16 +199,16 @@ const CartPopUp = ({ item }) => {
               </>
             )}
           </div>
- 
+
           <div className="goes_great_with mt-3">
-         <div className="mb-3 d-flex justify-content-between align-items-center">
-         <p className="mb-0">Goes great with</p> <div>
-          <div className="cs_button_arrow">
-          <button onClick={goToPrev}><i class="fa-solid fa-chevron-left"></i></button>
-        <button onClick={goToNext}><i class="fa-solid fa-chevron-right"></i></button>
-          </div>
-         </div>
-         </div>
+            <div className="mb-3 d-flex justify-content-between align-items-center">
+              <p className="mb-0">Goes great with</p> <div>
+                <div className="cs_button_arrow">
+                  <button onClick={goToPrev}><i class="fa-solid fa-chevron-left"></i></button>
+                  <button onClick={goToNext}><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+              </div>
+            </div>
             <div className=" mt-1">
               <OwlCarousel className="owl-theme" {...goesgretwith} ref={owlRef}>
                 {allData?.products?.map((item, i) => (
@@ -240,7 +235,7 @@ const CartPopUp = ({ item }) => {
                           ₹{item.sale_price}{" "}
                           <span className="high_price">{item.price}</span>
                         </div>
- 
+
                         <div className="off_price_badge">
                           {parseInt(
                             getPercentageOff(item.price, item.sale_price)
@@ -255,7 +250,7 @@ const CartPopUp = ({ item }) => {
             </div>
           </div>
         </div>
- 
+
         <div className="subtotal_checkout">
           {cartData?.length > 0 && (
             <>
@@ -280,5 +275,5 @@ const CartPopUp = ({ item }) => {
     </div>
   );
 };
- 
+
 export default CartPopUp;

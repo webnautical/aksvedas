@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import siderbg from "../../../assets/img/shopimg.jpg";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Breadcrumbs } from "@mui/material";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import AllProducts from "../../../components/front/AllProdutcs";
 import Filters from "../../../components/front/Filters";
 const Shop = () => {
   const { category } = useParams()
-
+  const navigate = useNavigate()
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [isFilterApplied, setIsFilterApplied] = useState(false);
   const toggleFilterOverlay = () => {
@@ -17,6 +17,12 @@ const Shop = () => {
   const closeFilterOverlay = () => {
     setIsFilterVisible(false);
   };
+
+  useEffect(()=>{
+    if(category === "mens-health" || category === "womens-health"){
+      navigate('/not-found')
+    }
+  },[category])
 
   const [filterVal, setFilterVal] = useState({
     sort : '',
@@ -42,6 +48,7 @@ const Shop = () => {
   };
   const categoriesArray = category.split('+');
   const transformedCategories = transformCategories(categoriesArray);
+
 
   return (
     <div className="collection-page pb-5">
@@ -85,6 +92,9 @@ const Shop = () => {
               </div>
             </div>
             <div className="col-lg-9">
+              <div className="dy_heading">
+                <h1 style={{fontSize:'20px'}}> {category === "mens-health-supplement" ? "Men's Health Supplement" : category === "womens-health-suppliment" ? "Supplements for Women" : ""} </h1>
+              </div>
               <div className="shop-lisitng">
                 <div className="d-flex align-items-center justify-content-between gap-2 mb-4">
                   <div className="d-md-none d-block filtermobile cursor-pointer text-black"

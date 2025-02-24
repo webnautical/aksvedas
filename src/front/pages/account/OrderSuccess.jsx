@@ -40,13 +40,13 @@ const OrderSuccess = () => {
 
 
   useEffect(() => {
-    // Google Analytics script add karna ensure karo
+    // Add Google Analytics script if not already added
     if (!window.gtag) {
       const gtagScript = document.createElement("script");
       gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=AW-16785777896";
       gtagScript.async = true;
       document.head.appendChild(gtagScript);
-
+  
       const gtagConfig = document.createElement("script");
       gtagConfig.innerHTML = `
         window.dataLayer = window.dataLayer || [];
@@ -56,10 +56,11 @@ const OrderSuccess = () => {
       `;
       document.head.appendChild(gtagConfig);
     }
-
+  
     if (orderDetails) {
-      const script = document.createElement("script");
-      script.innerHTML = `
+      // Add gtag conversion event
+      const gtagScript = document.createElement("script");
+      gtagScript.innerHTML = `
         gtag('event', 'conversion', {
           'send_to': 'AW-16785777896/l9U-CIS7gZcaEOjJisQ-',
           'value': ${orderDetails?.total_amount || 1.0},
@@ -67,13 +68,37 @@ const OrderSuccess = () => {
           'transaction_id': '${order_id || ""}'
         });
       `;
-      document.head.appendChild(script);
-
+      document.head.appendChild(gtagScript);
+  
+      // Add dataLayer event for purchase
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        'event': 'purchase',
+        'ecommerce': {
+          'customer_email': orderDetails?.customer?.email,
+          'transaction_id': order_id || "", // Unique order ID
+          'value': orderDetails?.total_amount || 1.0, // Order total
+          'currency': 'INR',
+          'items_category': orderDetails?.order_products?.[0]?.product_category || "",
+          'items': 
+            orderDetails?.order_products?.map(item => ({
+              item_name: item.product_name,
+              item_category: item.product_category || "Combo",
+              item_variant: item.product_variant || "Default",
+              price: item.product_price,
+              quantity: item.qnt,
+            }))
+        }
+      });
+  
       return () => {
-        document.head.removeChild(script);
+        document.head.removeChild(gtagScript);
       };
     }
   }, [order_id, orderDetails]);
+
+
+  // console.log("orderDetails",orderDetails)
 
   return (
     <>

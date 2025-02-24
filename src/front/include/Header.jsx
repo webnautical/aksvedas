@@ -86,7 +86,6 @@ const Header = () => {
   }, []);
  
   const redirectPage = (tab) => {
-    // const data = { tab: tab };
     navigate(`/account/${tab}`);
   };
  
@@ -94,9 +93,6 @@ const Header = () => {
     navigate("/");
     localStorage.clear();
     sessionStorage.clear();
-    // const res = await axiosInstance.post('/logout')
-    // if(res?.data.status){
-    // }
   };
  
   const handleMobileRedirect = (page) => {
@@ -131,7 +127,7 @@ const Header = () => {
   return (
     <>
       <CartPopUp />
-      <TopHeader></TopHeader>
+      <TopHeader />
       <div
         className={`mbile-heaader d-md-none d-block ${isScrolled ? "scrolled" : ""
           }`}
@@ -191,48 +187,6 @@ const Header = () => {
                     </Link>{" "}
                   </li>
                 )}
- 
-                {/* {authCustomer()?.id && (
-                  <li class="ak_coin" style={{ position: "relative" }}>
-                    <button
-                      className="text-dark wallet_btn planBtn p-0"
-                      onClick={() => redirectPage("my-loyalty-points")}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        version="1.1"
-                        xmlnsXlink="http://www.w3.org/1999/xlink"
-                        width="512"
-                        height="512"
-                        x="0"
-                        y="0"
-                        viewBox="0 0 24 24"
-                        style={{ enableBackground: "new 0 0 512 512" }}
-                        xmlSpace="preserve"
-                      >
-                        <g>
-                          <g fill="#000" fillRule="evenodd" clipRule="evenodd">
-                            <path
-                              d="M6.25 9A.75.75 0 0 1 7 8.25h6a.75.75 0 0 1 0 1.5H7A.75.75 0 0 1 6.25 9zM18.92 10.7c-.359 0-.675.14-.902.373l-.014.014c-.266.26-.415.63-.377 1.022v.009c.054.635.664 1.182 1.413 1.182h1.943a.276.276 0 0 0 .267-.27v-2.06a.276.276 0 0 0-.267-.27zm-1.97-.68a2.743 2.743 0 0 1 1.97-.82h2.107a1.777 1.777 0 0 1 1.723 1.77v2.06A1.777 1.777 0 0 1 21 14.8h-1.96c-1.41 0-2.777-1.03-2.907-2.553a2.759 2.759 0 0 1 .816-2.227z"
-                              fill="#333330"
-                              opacity="1"
-                              data-original="#000000"
-                            ></path>
-                            <path
-                              d="M7 4.25c-.244 0-.476.017-.696.051l-.02.003c-1.108.14-1.978.613-2.574 1.313-.598.7-.96 1.676-.96 2.883v7c0 1.33.44 2.38 1.155 3.095S5.67 19.75 7 19.75h9c1.33 0 2.38-.44 3.095-1.155S20.25 16.83 20.25 15.5v-.7h-1.21c-1.41 0-2.778-1.03-2.907-2.553a2.758 2.758 0 0 1 .816-2.227 2.743 2.743 0 0 1 1.971-.82h1.33v-.7c0-1.215-.368-2.197-.975-2.9-.606-.702-1.49-1.175-2.612-1.305A3.849 3.849 0 0 0 16 4.25zm-.914-1.433c.297-.045.602-.067.914-.067h9c.27 0 .56.01.855.057 1.45.173 2.685.804 3.555 1.813.873 1.012 1.34 2.355 1.34 3.88v1.45a.75.75 0 0 1-.75.75h-2.08c-.36 0-.675.14-.903.373l-.013.014c-.266.26-.415.63-.377 1.022v.009c.053.635.664 1.182 1.413 1.182H21a.75.75 0 0 1 .75.75v1.45c0 1.67-.56 3.12-1.595 4.155S17.67 21.25 16 21.25H7c-1.67 0-3.12-.56-4.155-1.595S1.25 17.17 1.25 15.5v-7c0-1.513.458-2.848 1.318-3.857.86-1.008 2.08-1.643 3.518-1.826z"
-                              fill="#333330"
-                              opacity="1"
-                              data-original="#000000"
-                            ></path>
-                          </g>
-                        </g>
-                      </svg>
-                      {customerDetails?.loyalty !== undefined && customerDetails?.loyalty !== 0 && (
-                        <span>{customerDetails.loyalty}</span>
-                      )}
-                    </button>
-                  </li>
-                )} */}
  
                 {authCustomer()?.id && (
                   <li
@@ -408,49 +362,7 @@ const Header = () => {
                     </li>
                   )}
  
-                  {/* {authCustomer()?.id && (
-                    <li>
-                      <button
-                        className="text-dark planBtn"
-                        onClick={() => redirectPage("my-loyalty-points")}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          version="1.1"
-                          xmlnsXlink="http://www.w3.org/1999/xlink"
-                          width="512"
-                          height="512"
-                          x="0"
-                          y="0"
-                          viewBox="0 0 24 24"
-                          style={{ enableBackground: "new 0 0 512 512" }}
-                          xmlSpace="preserve"
-                        >
-                          <g>
-                            <g fill="#000" fillRule="evenodd" clipRule="evenodd">
-                              <path
-                                d="M6.25 9A.75.75 0 0 1 7 8.25h6a.75.75 0 0 1 0 1.5H7A.75.75 0 0 1 6.25 9zM18.92 10.7c-.359 0-.675.14-.902.373l-.014.014c-.266.26-.415.63-.377 1.022v.009c.054.635.664 1.182 1.413 1.182h1.943a.276.276 0 0 0 .267-.27v-2.06a.276.276 0 0 0-.267-.27zm-1.97-.68a2.743 2.743 0 0 1 1.97-.82h2.107a1.777 1.777 0 0 1 1.723 1.77v2.06A1.777 1.777 0 0 1 21 14.8h-1.96c-1.41 0-2.777-1.03-2.907-2.553a2.759 2.759 0 0 1 .816-2.227z"
-                                fill="#333330"
-                                opacity="1"
-                                data-original="#000000"
-                              ></path>
-                              <path
-                                d="M7 4.25c-.244 0-.476.017-.696.051l-.02.003c-1.108.14-1.978.613-2.574 1.313-.598.7-.96 1.676-.96 2.883v7c0 1.33.44 2.38 1.155 3.095S5.67 19.75 7 19.75h9c1.33 0 2.38-.44 3.095-1.155S20.25 16.83 20.25 15.5v-.7h-1.21c-1.41 0-2.778-1.03-2.907-2.553a2.758 2.758 0 0 1 .816-2.227 2.743 2.743 0 0 1 1.971-.82h1.33v-.7c0-1.215-.368-2.197-.975-2.9-.606-.702-1.49-1.175-2.612-1.305A3.849 3.849 0 0 0 16 4.25zm-.914-1.433c.297-.045.602-.067.914-.067h9c.27 0 .56.01.855.057 1.45.173 2.685.804 3.555 1.813.873 1.012 1.34 2.355 1.34 3.88v1.45a.75.75 0 0 1-.75.75h-2.08c-.36 0-.675.14-.903.373l-.013.014c-.266.26-.415.63-.377 1.022v.009c.053.635.664 1.182 1.413 1.182H21a.75.75 0 0 1 .75.75v1.45c0 1.67-.56 3.12-1.595 4.155S17.67 21.25 16 21.25H7c-1.67 0-3.12-.56-4.155-1.595S1.25 17.17 1.25 15.5v-7c0-1.513.458-2.848 1.318-3.857.86-1.008 2.08-1.643 3.518-1.826z"
-                                fill="#333330"
-                                opacity="1"
-                                data-original="#000000"
-                              ></path>
-                            </g>
-                          </g>
-                        </svg>
-                        {customerDetails?.loyalty !== undefined && customerDetails?.loyalty !== 0 && (
-                        <span>{customerDetails.loyalty}</span>
-                      )}
-                      </button>
-                    </li>
-                  )} */}
- 
-                  {authCustomer()?.id && (
+                  {authCustomer()?.id && ( 
                     <li>
                       <button
                         className="text-dark planBtn"
@@ -536,7 +448,6 @@ const Header = () => {
                           </g>
                         </svg>
                         {cartData?.length != 0 && <span>{cartData?.length}</span>}
-                        {/* <span> {cartData?.length != 0 && cartData?.length}</span> */}
                       </Link>
                     </li>
                   )}
@@ -570,11 +481,8 @@ const Header = () => {
               <li>
               <Link to="/blog">Blog</Link>
             </li>
-              {/* <li>
-              <Link to="/blog">Consult by Doctor</Link>
-            </li> */}
               <li>
-                <Link to="/contact-us">Contact</Link>
+                <Link to="/contact-us">Contact </Link>
               </li>
             </ul>
           </nav>

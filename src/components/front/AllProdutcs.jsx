@@ -121,10 +121,7 @@ const AllProducts = ({ filterVal }) => {
             <div className="col-xl-4 col-lg-6 col-md-4 col-sm-6 mb-4">
               <div className="product_box_main">
                 <div className="quick-access-btns">
-                  <button
-                    className="btn1"
-                    onClick={() => addProductInWishlistFun(item.id)}
-                  >
+                  <button className="btn1" onClick={() => addProductInWishlistFun(item.id)}>
                     {isInWishlist(item.id) ? (
                       <i
                         class="fa-solid fa-heart"

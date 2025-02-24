@@ -57,6 +57,7 @@ import OrderProducts from './admin/pages/Reports/OrderProducts';
 import ReasonList from './admin/pages/Query/ReasonList';
 import SubscribersList from './admin/pages/Query/SubscribersList';
 import MetaList from './admin/pages/Meta/MetaList';
+import PageNotFound from './ErrorPage/PageNotFound';
 function App() {
   // const path = useLocation().pathname
   // useEffect(() => {
@@ -106,7 +107,6 @@ function App() {
         <Route exact path="/admin/order-details/:order_id" element={<AdminAuth cmp={AdminOrderDetails} />} />
         <Route exact path="/admin/shipping-now/:order_id" element={<AdminAuth cmp={ShippingNow} />} />
 
-
         <Route exact path="/admin/add-products" element={<AdminAuth cmp={AddProduct} />} />
         <Route exact path="/admin/my-profile" element={<AdminAuth cmp={MyProfile} />} />
         <Route exact path="/admin/customer" element={<AdminAuth cmp={Customer} />} />
@@ -126,14 +126,13 @@ function App() {
         <Route exact path="/admin/reasons" element={<AdminAuth cmp={ReasonList} />} />
         <Route exact path="/admin/meta-list/:page" element={<AdminAuth cmp={MetaList} />} />
 
-
         <Route exact path="/admin/reports/customer" element={<AdminAuth cmp={CustomerReports} />} />
         <Route exact path="/admin/reports/order-products" element={<AdminAuth cmp={OrderProducts} />} />
 
-
-
         {/* Redirect Page */}
         <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
       <ToastContainer />
     </>

@@ -72,13 +72,14 @@ const MetaList = () => {
         'meta_title': '',
         'url': '',
         'meta_desc': '',
+        'meta_keyword': '',
     })
 
 
     useEffect(() => {
         if (editObj?.id) {
             setValue({
-                ...value, 'id': editObj?.id, 'meta_title': editObj?.meta_title, meta_desc: editObj?.meta_desc, url: editObj?.url
+                ...value, 'id': editObj?.id, 'meta_title': editObj?.meta_title, meta_desc: editObj?.meta_desc, url: editObj?.url,meta_keyword: editObj?.meta_keyword
             })
         }
     }, [editObj])
@@ -108,6 +109,7 @@ const MetaList = () => {
             }
             formData.append("url", value.url);
             formData.append("meta_desc", value.meta_desc);
+            formData.append("meta_keyword", value.meta_keyword);
             const res = await APICALL(`/metas`, 'post', value);
             if (res?.status) {
                 toastifySuccess('Meta Tags Added Successfully')
@@ -128,7 +130,7 @@ const MetaList = () => {
     const handleCanel = () => {
         navigate('/admin/meta-list/all')
         setValue({
-            ...value, 'id': '', 'meta_title': '', meta_desc: '', url: ''
+            ...value, 'id': '', 'meta_title': '', meta_desc: '', url: '', meta_keyword : ""
         })
     }
 
@@ -176,6 +178,12 @@ const MetaList = () => {
                                         <div className="col-sm-12">
                                             <label htmlFor="">Meta Description</label>
                                             <textarea name="meta_desc" className='form-control' cols="30" rows="4" onChange={handleChange} value={value.meta_desc}>
+                                            </textarea>
+                                        </div>
+
+                                        <div className="col-sm-12">
+                                            <label htmlFor="">Meta Keyword</label>
+                                            <textarea name="meta_keyword" className='form-control' cols="30" rows="4" onChange={handleChange} value={value.meta_keyword}>
                                             </textarea>
                                         </div>
 

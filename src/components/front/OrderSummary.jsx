@@ -147,12 +147,17 @@ const OrderSummary = (props) => {
     const [total50, setTotal50] = useState()
     const maxLoyaltyUsage = 100;
     const submitLoyaltyDiscount = (isChecked) => {
-        const loyaltyAmnt = customerDetails?.loyalty;
+        const loyaltyAmnt = customerDetails?.loyalty || 0;
         const total = getSubTotalAmnt() / 2;
         setTotal50(total);
         if (isChecked) {
-            const usableLoyalty = loyaltyAmnt > maxLoyaltyUsage ? maxLoyaltyUsage : loyaltyAmnt;
-            setLoyaltyDiscount(usableLoyalty)
+            if(authCustomer()?.id){
+                const usableLoyalty = loyaltyAmnt > maxLoyaltyUsage ? maxLoyaltyUsage : loyaltyAmnt;
+                setLoyaltyDiscount(usableLoyalty)
+            }else{
+                setLoyaltyDiscount(0);
+                setTotal50(getSubTotalAmnt());
+            }
             // if (total >= loyaltyAmnt) {
             //     setLoyaltyDiscount(loyaltyAmnt);
             // } else {
@@ -191,7 +196,7 @@ const OrderSummary = (props) => {
                     <div className='mt-3'>
                         <p className="px-1" style={{fontSize: '14px', background: 'rgb(237 237 237)'}}>You can use 100 Coins max in one time shopping</p>
 
-                        <span>Use AksCoins ₹{customerDetails?.loyalty} </span>
+                        <span>Use AksCoins ₹{customerDetails?.loyalty || 0} </span>
 
                         <>
                             <label className="switch switch-primary switch-sm ms-2 pe-2">

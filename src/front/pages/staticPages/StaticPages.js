@@ -23,8 +23,6 @@ const StaticPagesFront = () => {
         setLaoding(false)
       }
     }
-
-    console.log("pageData",pageData)
     return (
         <>
         {loading && <FrontLoader />}
