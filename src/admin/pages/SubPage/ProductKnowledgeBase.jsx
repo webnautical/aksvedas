@@ -32,6 +32,7 @@ const ProductKnowledgeBase = () => {
                 ...value,
                 id: updData.id,
                 title: updData.title,
+                product_url: updData.product_url,
                 desc: updData.desc,
                 img1: updData.img1,
             });
@@ -39,6 +40,7 @@ const ProductKnowledgeBase = () => {
             setValue({
                 ...value,
                 title: "",
+                product_url: "",
                 desc: "",
                 img1: "",
             });
@@ -95,6 +97,7 @@ const ProductKnowledgeBase = () => {
         setLoading(true);
         const requiredVal = {
             title: value.title,
+            product_url: value.product_url,
             img1: value.img1,
             desc: value.desc,
         };
@@ -107,6 +110,7 @@ const ProductKnowledgeBase = () => {
                 formData.append("id", value.id);
             }
             formData.append("title", value.title);
+            formData.append("product_url", value.product_url);
             formData.append("desc", value.desc);
             formData.append("img1", value.img1);
             const res = await postDataAPI("product-knowledge-base", formData);
@@ -140,7 +144,7 @@ const ProductKnowledgeBase = () => {
     const handleCancel = () => {
         setPage(null)
         setValue({
-            ...value, id: "", title: "", desc: "", img1: "",
+            ...value, id: "", title: "",product_url: "", desc: "", img1: "",
         });
     }
  
@@ -177,6 +181,18 @@ const ProductKnowledgeBase = () => {
                                                         placeholder="Title"
                                                     />
                                                     <span className="errMsg">{errors.title}</span>
+                                                </div>
+
+                                                <div className="col-12 col-md-12 mt-2">
+                                                    <label className="form-label">URL</label>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        onChange={handleChange}
+                                                        name="product_url"
+                                                        value={value.product_url}
+                                                        placeholder="URL"
+                                                    />
                                                 </div>
  
                                                 <div className="col-12 col-md-12 my-4">

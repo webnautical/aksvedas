@@ -21,6 +21,7 @@ export const OfferList = () => {
 
     const [value, setValue] = useState({
         'dashboardOfferVal': '',
+        'checkout_offer_coupon': '',
         'coupon_code': '',
         'customer_use_limit': '',
         'expire_in': '',
@@ -34,11 +35,23 @@ export const OfferList = () => {
         try {
             setLoading(true)
             const res = await getDataAPI('get-offers')
+            console.log("res", res)
             if (res?.status) {
-                setDashboardOffer(res?.data[0])
-                setValue({
-                    ...value, dashboardOfferVal: res?.data[0]?.offer
-                })
+                const dashboardOffer = res?.data.find(item => item.type === "dashboard_offer");
+                const checkoutOffer = res?.data.find(item => item.type === "checkout_offer");
+                if (dashboardOffer) {
+                    setDashboardOffer(dashboardOffer);
+                    setValue(prev => ({
+                        ...prev,
+                        dashboardOfferVal: dashboardOffer.offer
+                    }));
+                }
+                if (checkoutOffer) {
+                    setValue(prev => ({
+                        ...prev,
+                        checkout_offer_coupon: checkoutOffer.offer
+                    }));
+                }
                 setLoading(false)
             } else {
                 setLoading(false)
@@ -47,6 +60,7 @@ export const OfferList = () => {
             console.log(error)
         }
     }
+
     const getCouponsFun = async () => {
         try {
             setLoading(true)
@@ -67,18 +81,28 @@ export const OfferList = () => {
         })
     }
 
-    const updateDashboardOffer = async () => {
+    const updateDashboardOffer = async (type, key) => {
         setLoading(true)
         const param = {
-            'type': dashboardOffer?.type,
-            'offer': value?.dashboardOfferVal,
+            'type': type,
+            'offer': key,
         }
         const res = await postDataAPI('update-dashboard-offer', param)
         if (res.status) {
-            toastifySuccess(`Offer chnaged successfully`)
+            toastifySuccess("Your changes have been saved successfully!")
             setLoading(false)
             setPage(null)
-            setValue({ ...value, dashboardOfferVal: res?.data?.offer })
+            if (res?.data?.type === "dashboard_offer") {
+                setValue(prev => ({
+                    ...prev,
+                    dashboardOfferVal: res?.data?.offer
+                }));
+            } else {
+                setValue(prev => ({
+                    ...prev,
+                    checkout_offer_coupon: res?.data?.offer
+                }));
+            }
         } else {
             toastifyError('Something Went Wrong')
             setLoading(false)
@@ -104,7 +128,7 @@ export const OfferList = () => {
         },
         {
             name: <span className='text-uppercase'>Allow </span>,
-            selector: row => <span className='text-uppercase fw-bold'>{ getCategoryName(row.allow)}</span>,
+            selector: row => <span className='text-uppercase fw-bold'>{getCategoryName(row.allow)}</span>,
         },
         {
             name: <span className='text-uppercase'>Coupon (Uses/Total) </span>,
@@ -121,6 +145,24 @@ export const OfferList = () => {
         {
             name: <span className='text-uppercase'>Created at</span>,
             selector: row => timeAgo(row.created_at),
+        },
+        {
+            name: <span className='text-uppercase'>Checkout Visible</span>,
+            selector: row => (<>
+                <label className="switch switch-primary switch-sm me-4 pe-2">
+                    <input
+                        type="checkbox"
+                        className="switch-input"
+                        defaultChecked={row.is_visible}
+                        onClick={() => handleAction('is_visible', row)}
+                    />
+                    <span className="switch-toggle-slider">
+                        <span className="switch-on">
+                            <span className="switch-off" />
+                        </span>
+                    </span>
+                </label>
+            </>),
         },
         {
             name: <span className='text-uppercase'>Actions</span>,
@@ -148,6 +190,7 @@ export const OfferList = () => {
             button: true,
         },
     ];
+
     useEffect(() => {
         handleCoupon()
         if (updData?.id) {
@@ -179,7 +222,7 @@ export const OfferList = () => {
 
 
     const createCoupon = async () => {
-        
+
         const isUpdating = value.id !== undefined;
         const skuExists = couponList.some(item => {
             if (isUpdating) {
@@ -210,6 +253,8 @@ export const OfferList = () => {
         setLoading(true)
         if (type == 'delete') {
             var param = { id: data?.id, type: 'delete' };
+        } else if(type == "is_visible"){
+            var param = { id: data?.id, is_visible: data.is_visible === 1 ? 0 : 1 };
         } else {
             var param = { id: data?.id, status: data.status === 1 ? 0 : 1 };
         }
@@ -251,7 +296,7 @@ export const OfferList = () => {
                 if (type == 'submit') {
                     toastifySuccess('Success')
                 }
-                setShippingVal({ ...shippingVal, 'shipping_charge': res?.data?.shipping_charge, 'total_amnt': res?.data?.total_amnt,'loyalty_discounts': res?.data?.loyalty_discounts })
+                setShippingVal({ ...shippingVal, 'shipping_charge': res?.data?.shipping_charge, 'total_amnt': res?.data?.total_amnt, 'loyalty_discounts': res?.data?.loyalty_discounts })
             }
         } catch (error) {
             console.log(error)
@@ -269,15 +314,21 @@ export const OfferList = () => {
         }
     }
 
-    const getCategoryName = (id) =>{
-        if(id === 'all'){
+    const getCategoryName = (id) => {
+        if (id === 'all') {
             return id
-        }else{
+        } else {
             const res = categories.filter((item) => item.id == id)
             return res[0]?.name
         }
     }
 
+
+    const setCheckoutCouponFun = (e) => {
+        const coupon = e.target.value
+        setValue({ ...value, checkout_offer_coupon: coupon })
+        updateDashboardOffer("checkout_offer", coupon)
+    }
 
     return (
         <div className="content-wrapper">
@@ -291,7 +342,7 @@ export const OfferList = () => {
                     <div className="card-widget-separator-wrapper">
                         <div className="card-body card-widget-separator">
                             <div className="row gy-4 gy-sm-1 p-2">
-                                <div className="col-sm-6 col-lg-6">
+                                <div className="col-sm-6 col-lg-12">
                                     <h5><i class="fa-solid fa-trophy"></i> Offer</h5>
                                     <div className="justify-content-between align-items-start pe-3 pb-3 pb-sm-0 card-widget-3">
                                         {
@@ -308,7 +359,7 @@ export const OfferList = () => {
 
                                                     <div className="btn-box mt-2 text-end">
                                                         <button type="button" className="btn btn-primary me-sm-3 me-1" onClick={() => { setPage(null); setValue({ ...value, dashboardOfferVal: dashboardOffer?.offer }) }}>Cancel</button>
-                                                        <button type="button" className="btn btn-primary" onClick={updateDashboardOffer}>Update</button>
+                                                        <button type="button" className="btn btn-primary" onClick={() => updateDashboardOffer("dashboard_offer", value.dashboardOfferVal)}>Update</button>
                                                     </div>
                                                 </div>
                                                 :
@@ -319,6 +370,29 @@ export const OfferList = () => {
                                                     </h5>
                                                 </>
                                         }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Offer title for dashboard */}
+                <div className="card mb-4">
+                    <div className="card-widget-separator-wrapper">
+                        <div className="card-body card-widget-separator">
+                            <div className="row gy-4 gy-sm-1 p-2">
+                                <div className="col-12 col-md-12">
+                                    <h5><i class="fa-solid fa-ticket"></i> Exclusive Offer: First-Time Customers Enjoy an Automatic Discount at Checkout!</h5>
+                                    <div className="row">
+                                        <div className="col-12 col-md-5">
+                                            <select name='checkout_offer_coupon' value={value.checkout_offer_coupon} onChange={setCheckoutCouponFun} className='form-control'>
+                                                <option value="">Select Type</option>
+                                                {couponList?.map((item, i) => (
+                                                    <option value={item?.coupon_code}>{item?.coupon_code}</option>
+                                                ))}
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

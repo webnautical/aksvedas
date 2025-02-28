@@ -9,6 +9,7 @@ const ProductItemButton = ({ row }) => {
   const [cartLoading, setCartLoading] = useState(false)
   const navigate = useNavigate()
   const [clickCount, setClickCount] = useState(0)
+
   const addToCartFun = async (type, item) => {
     setClickCount(clickCount + 1)
     const cartItem = cartData.find(cartItem => cartItem.product_id == item.id);
@@ -22,7 +23,7 @@ const ProductItemButton = ({ row }) => {
     }
 
     const param = { product_id: item.id, qnt: 1 };
-    if (authCustomer()?.id) {
+    // if (authCustomer()?.id) {
       if (item.quantity > 0 && item.product_type !== 4) {
         setCartLoading(true)
         const canvas = type == "buy" ? 0 : 1
@@ -34,10 +35,10 @@ const ProductItemButton = ({ row }) => {
       } else {
         navigate(`/product-detail/${item.slug}`);
       }
-    } else {
-      sessionStorage.setItem('cart', JSON.stringify(param))
-      navigate("/login", {state : {data: type}});
-    }
+    // } else {
+    //   sessionStorage.setItem('cart', JSON.stringify(param))
+    //   navigate("/login", {state : {data: type}});
+    // }
   };
   return (
     <>

@@ -80,6 +80,7 @@ const AddProduct = () => {
     description: "",
     cover: "",
     hover_img: "",
+    video: "",
     product_img: [],
     price: "",
     sale_price: "",
@@ -96,6 +97,7 @@ const AddProduct = () => {
 
   const [imgPreview, setImgPreview] = useState({
     cover: null,
+    video: null,
     hover_img: null,
     images: [],
   });
@@ -123,6 +125,7 @@ const AddProduct = () => {
         description: productDetails?.description,
         cover: productDetails?.cover,
         hover_img: productDetails?.hover_img,
+        video: productDetails?.video,
         product_img: productDetails?.product_images,
         price: productDetails?.price,
         sale_price: productDetails?.sale_price,
@@ -144,6 +147,7 @@ const AddProduct = () => {
         ...imgPreview,
         cover: imgBaseURL() + productDetails.cover,
         hover_img: imgBaseURL() + productDetails.hover_img,
+        video: imgBaseURL() + productDetails.video,
         images: img,
       });
       setSubscriptionVal(productDetails?.product_subscription)
@@ -163,6 +167,7 @@ const AddProduct = () => {
         description: "",
         cover: "",
         hover_img: "",
+        video: "",
         product_img: [],
         price: "",
         sale_price: "",
@@ -183,6 +188,10 @@ const AddProduct = () => {
       setValue({ ...value, hover_img: e.target.files[0] });
       const imageUrl = URL.createObjectURL(e.target.files[0]);
       setImgPreview({ ...imgPreview, hover_img: imageUrl });
+    } else if (e.target.name === "video") {
+      setValue({ ...value, video: e.target.files[0] });
+      const imageUrl = URL.createObjectURL(e.target.files[0]);
+      setImgPreview({ ...imgPreview, video: imageUrl });
     } else if (e.target.name === "title") {
       setValue({
         ...value,
@@ -226,6 +235,9 @@ const AddProduct = () => {
     } else if (type === "hover_img") {
       setValue({ ...value, hover_img: "" });
       setImgPreview({ ...imgPreview, hover_img: null });
+    }else if (type === "video") {
+      setValue({ ...value, video: "" });
+      setImgPreview({ ...imgPreview, video: null });
     } else if (type === "images") {
       const updatedImages = imgPreview.images.filter(
         (imageUrl, i) => i !== index
@@ -302,6 +314,7 @@ const AddProduct = () => {
       formData.append("subscriptionVal", JSON.stringify(subscriptionVal));
       formData.append("cover", value.cover);
       formData.append("hover_img", value.hover_img);
+      formData.append("video", value.video);
       value?.product_img?.forEach((file, index) => {
         formData.append(`product_img[${index}]`, file);
       });
@@ -378,6 +391,7 @@ const AddProduct = () => {
       formData.append("subscriptionVal", JSON.stringify(subscriptionVal));
       formData.append("cover", value.cover);
       formData.append("hover_img", value.hover_img);
+      formData.append("video", value.video);
       value?.product_img?.forEach((file, index) => {
         formData.append(`product_img[${index}]`, file);
       });
@@ -927,6 +941,61 @@ const AddProduct = () => {
                         </div>
                       </div>
                     </div>
+
+
+                    <div className="img-box mt-4">
+                      <div class="file-uploader">
+                        <label
+                          className="global_file_upload_deisgn"
+                          for="video1"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            version="1.1"
+                            xmlnsXlink="http://www.w3.org/1999/xlink"
+                            width="32"
+                            height="32"
+                            viewBox="0 0 32 32"
+                            style={{ enableBackground: "new 0 0 512 512" }}
+                            xmlSpace="preserve"
+                          >
+                            <g>
+                              <path
+                                d="M30 22h-4v4H6v-4H2v8h28zM18 22V8.302l4.867 3.346 2.266-3.296L16 2.072l-9.133 6.28 2.266 3.296L14 8.302V22z"
+                                fill="#a5a3ae"
+                              ></path>
+                            </g>
+                          </svg>
+
+                          <p className="m-0">Upload Video Here</p>
+                          <span>(Video  -  Size: 10MB)</span>
+                          <span className="image_class" style={{ fontWeight: '400!important', fontSize: '14px!important' }}>1:1 Aspect ratio</span>
+                          <input type="file" id="video1" name="video"  accept="video/*"  onChange={handleChange} />
+                        </label>
+                        <div class="preview_upload">
+                          <h4>Video Preview</h4>
+                          <div
+                            className="d-flex align-items-center"
+                            style={{ gap: "10px" }}
+                          >
+                            {imgPreview.video && (
+                              <video style={{height: "60px", width: "100px"}}  controls>
+                                <source src={imgPreview.video} type="video/mp4" />
+                                Your browser does not support the video tag.
+                              </video>
+                            )}
+                            {/* {imgPreview.video && (
+                              <button className="icon_btn __danger" onClick={() => handleRemoveImage("video")}>
+                                <i className="fa fa-trash" />
+                              </button>
+                            )} */}
+                          </div>
+                        </div>
+
+
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </div>

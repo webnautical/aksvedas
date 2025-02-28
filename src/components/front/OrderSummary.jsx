@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { APICALL } from '../../utility/api/api'
 import { authCustomer } from '../../utility/Utility'
 import { useFrontDataContext } from '../../context/FrontContextProvider'
-
+import applycoupan from "../../assets/img/coupan-apply.gif";
 const OrderSummary = (props) => {
     const { shippingDetails, cartData, customerDetails, categories } = useFrontDataContext()
 
@@ -17,9 +17,13 @@ const OrderSummary = (props) => {
         saving: 0,
     })
 
-    const applyCoupon = async () => {
+    const applyCoupon = async (coupon) => {
         try {
             const params = { coupon, customer_id: authCustomer()?.id }
+            if (coupon == "") {
+                setResponse({ ...response, 'error': false, 'msg': "Enter coupon code" })
+                return false
+            }
             const res = await APICALL('/use-coupon', 'post', params)
             if (res?.status) {
                 if (res?.data?.allow === 'all') {
@@ -91,7 +95,7 @@ const OrderSummary = (props) => {
 
     const calculateSavings = (coupon, cartData) => {
         let totalSavings = 0;
-    
+
         cartData.forEach(product => {
             let productSavings = 0;
             if (coupon.coupon_type === 'fixed') {
@@ -101,7 +105,7 @@ const OrderSummary = (props) => {
             }
             totalSavings += productSavings;
         });
-    
+
         return parseFloat(totalSavings.toFixed(2));
     };
 
@@ -129,7 +133,7 @@ const OrderSummary = (props) => {
         } else if (coupon.coupon_type === 'percentage') {
             productSavings = (coupon.offer / 100) * parseInt(itemTotal);
         }
-    
+
         return parseFloat(productSavings);
     };
 
@@ -151,10 +155,10 @@ const OrderSummary = (props) => {
         const total = getSubTotalAmnt() / 2;
         setTotal50(total);
         if (isChecked) {
-            if(authCustomer()?.id){
+            if (authCustomer()?.id) {
                 const usableLoyalty = loyaltyAmnt > maxLoyaltyUsage ? maxLoyaltyUsage : loyaltyAmnt;
                 setLoyaltyDiscount(usableLoyalty)
-            }else{
+            } else {
                 setLoyaltyDiscount(0);
                 setTotal50(getSubTotalAmnt());
             }
@@ -169,7 +173,37 @@ const OrderSummary = (props) => {
         }
     };
 
+    useEffect(() => {
+        getCouponsFun()
+    }, [])
+
     const shippingChargeVar = getFreeDeliveryText()
+    const [showModal, setShowModal] = useState(false);
+
+    const [couponList, setCouponList] = useState([])
+    const getCouponsFun = async () => {
+        try {
+            const res = await APICALL('get-coupons?type=visible');
+            if (res?.status) {
+                if (res?.applied_coupon) {
+                    if (res?.is_first_order) {
+                        setShowModal(true)
+                        setTimeout(() => {
+                            setShowModal(false);
+                        }, 3000);
+                        setCoupon(res?.applied_coupon);
+                        applyCoupon(res?.applied_coupon)
+                    }
+                }
+                setCouponList(res?.data)
+            } else {
+                setCouponList([])
+            }
+        } catch (error) {
+            console.log(error)
+            setCouponList([])
+        }
+    }
 
     return (
         <>
@@ -189,12 +223,26 @@ const OrderSummary = (props) => {
                             onChange={(e) => setCoupon(e.target.value)}
                             aria-label="Add Promo Code here..."
                         />
-                        <button type="button" className="btn-normals w-xs" onClick={() => applyCoupon()}>Apply</button>
+                        <button type="button" className="btn-normals w-xs" onClick={() => applyCoupon(coupon)}>Apply</button>
                     </div>
                     <span className={response.error ? 'text-success' : 'text-danger'}>{response?.msg}</span>
 
+                    <div className='mt-2'>
+                    {couponList?.length > 0 &&
+                        couponList?.map((item, i) => (
+                            <div class="vouchercard mb-2">
+                                <div class="">
+                                    <div class="content d-flex justify-content-between">
+                                        <h2 className="m-0">{item?.coupon_code}</h2>
+                                        <button className="border-0 p-0" style={{ color: '#B46B00' }} onClick={() => { setCoupon(item?.coupon_code); applyCoupon(item?.coupon_code) }}>Apply</button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
                     <div className='mt-3'>
-                        <p className="px-1" style={{fontSize: '14px', background: 'rgb(237 237 237)'}}>You can use 100 Coins max in one time shopping</p>
+                        <p className="px-1" style={{ fontSize: '14px', background: 'rgb(237 237 237)' }}>You can use 100 Coins max in one time shopping</p>
 
                         <span>Use AksCoins ₹{customerDetails?.loyalty || 0} </span>
 
@@ -213,8 +261,11 @@ const OrderSummary = (props) => {
                             </label>
                         </>
                     </div>
+
                 </div>
             </div>
+
+
             <div className="card overflow-hidden mt-4">
                 <div className="card-header border-bottom-dashed">
                     <h5 className="card-title mb-0 fs-15">Order Summary</h5>
@@ -243,7 +294,7 @@ const OrderSummary = (props) => {
                                             </>
                                         }
                                     </td>
-                                    <td className="text-end cart-tax">{loyaltyDiscount > 0 ? `- ₹${loyaltyDiscount}` : `₹${loyaltyDiscount}` }</td>
+                                    <td className="text-end cart-tax">{loyaltyDiscount > 0 ? `- ₹${loyaltyDiscount}` : `₹${loyaltyDiscount}`}</td>
                                 </tr>
                                 <tr>
                                     <td>Shipping Charge :</td>
@@ -259,6 +310,25 @@ const OrderSummary = (props) => {
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+
+            <div className={`modal fade ${showModal ? "show d-block" : ""}`} id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden={!showModal}>
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="text-center">
+                                <img className="m-auto" width={"250px"} src={applycoupan} alt="icon-gif" />
+                                <h2 className="mb-0 mt-3" style={{ fontSize: "24px", margin: "0px" }}>
+                                    Coupon Applied
+                                </h2>
+                                <p className='mt-2'>Congratulations! You've saved <strong>₹{savingAmnt()}</strong> on your first order.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

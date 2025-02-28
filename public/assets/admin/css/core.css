@@ -6582,7 +6582,7 @@ textarea.form-control-lg {
     background-color: var(--bs-offcanvas-bg);
     background-clip: padding-box;
     outline: 0;
-    transition: var(--bs-offcanvas-transition)
+    transition: 0.9s;
 }
 
 @media(prefers-reduced-motion: reduce) {

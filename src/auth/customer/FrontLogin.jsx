@@ -12,7 +12,6 @@ const FrontLogin = () => {
 
   const useLocationData = useLocation()?.state
   const pageToRedirect = useLocationData ? useLocationData?.data : null 
-  console.log("pageToRedirect",pageToRedirect)
 
   const { getWishlistFun } = useFrontDataContext();
 
@@ -237,7 +236,7 @@ const FrontLogin = () => {
                               type="tel"
                               value={mobileNumber}
                               onChange={(e) => {
-                                const input = e.target.value.replace(/\D/g, ""); // Remove non-numeric characters
+                                const input = e.target.value.replace(/\D/g, ""); 
                                 if (input.length <= 10) {
                                   setMobileNumber(input);
                                 }

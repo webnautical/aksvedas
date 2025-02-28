@@ -22,6 +22,7 @@ const ProductKBMobile = () => {
     const [value, setValue] = useState({
         id: "",
         img1: "",
+        product_url: "",
     });
     useEffect(() => {
         if (updData?.id) {
@@ -29,11 +30,13 @@ const ProductKBMobile = () => {
                 ...value,
                 id: updData.id,
                 img1: updData.img1,
+                product_url: updData.product_url,
             });
         } else {
             setValue({
                 ...value,
                 img1: "",
+                product_url: "",
             });
         }
     }, [updData]);
@@ -89,6 +92,7 @@ const ProductKBMobile = () => {
             const formData = new FormData();
             formData.append("type", 'product-knowledge-base-mobile');
             formData.append("id", value.id);
+            formData.append("product_url", value.product_url);
             formData.append("title", 'mobile-banner');
             formData.append("img1", value.img1);
             const res = await postDataAPI("product-knowledge-base", formData);
@@ -134,7 +138,7 @@ const ProductKBMobile = () => {
                         <div className="row gy-4 gy-sm-1">
                             <div className="col-sm-12 col-lg-12">
                                 <h5 className="d-flex justify-content-between">
-                                 <div>   Product Knowledge Base Mobile <span style={{fontSize:'12px'}}>(Banner Size 	800 * 500 px)</span></div>
+                                    <div>   Product Knowledge Base Mobile <span style={{ fontSize: '12px' }}>(Banner Size 	800 * 500 px)</span></div>
                                     <button
                                         className="btn btn-primary text-capitalize"
                                         type="button"
@@ -147,7 +151,18 @@ const ProductKBMobile = () => {
                                     {page == "updateDashboard" ? (
                                         <div className="upd-box">
                                             <div className="row">
-                                                <div className="col-12 col-md-6">
+                                                <div className="col-12 col-md-7 mt-2">
+                                                    <label className="form-label">URL</label>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        onChange={handleChange}
+                                                        name="product_url"
+                                                        value={value.product_url}
+                                                        placeholder="URL"
+                                                    />
+                                                </div>
+                                                <div className="col-12 col-md-7 mt-3">
                                                     <div class="file-uploader">
                                                         <label
                                                             className="global_file_upload_deisgn"
@@ -216,7 +231,7 @@ const ProductKBMobile = () => {
                                                         list?.map((item, i) => (
                                                             <div className="col-sm-6">
                                                                 <div className="">
-                                                                    <img src={imgBaseURL() + item?.img1} alt="" style={{width : '100%'}} />
+                                                                    <img src={imgBaseURL() + item?.img1} alt="" style={{ width: '100%' }} />
                                                                 </div>
                                                                 <div>
                                                                     <button className="icon_btn __warning mx-2" type="button" onClick={() => { setPage("updateDashboard"); setUpdData(item) }}

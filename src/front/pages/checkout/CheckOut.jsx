@@ -46,7 +46,6 @@ const CheckOut = () => {
   }, [cartData]);
   const [loadingPlusId, setLoadingPlusId] = useState(null);
   const [loadingMinusId, setLoadingMinusId] = useState(null);
-  console.log("cartList",cartList)
   const handleQntChange = async (qntType, itemId) => {
     if (qntType === 'plus') {
       setLoadingPlusId(itemId);
@@ -186,22 +185,11 @@ const CheckOut = () => {
                           <Link
                             className="d-block colorRedcolor"
                             to={"#"}
-                            onClick={() => removeCartItemFun(item?.id)}
+                            onClick={() => removeCartItemFun(item?.id || item?.product_id)}
                           >
                             <i class="fa fa-trash  me-1"></i> Remove
                           </Link>
                         </div>
-                        {/* <div>
-                          <Link
-                            className="d-block"
-                            to={"#"}
-                            onClick={() =>
-                              addProductInWishlistFun(item?.product_id)
-                            }
-                          >
-                            <i class="fa fa-heart  me-1"></i> Add Wishlist
-                          </Link>
-                        </div> */}
                       </div>
                     </div>
                     <div class="col-sm-auto">

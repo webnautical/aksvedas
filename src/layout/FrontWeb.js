@@ -17,13 +17,16 @@ const FrontWeb = ({ cmp }) => {
     const lastCloseTime = localStorage.getItem('modalCloseTime');
     const currentTime = new Date().getTime();
 
-    if (!lastCloseTime || currentTime - lastCloseTime > 24 * 60 * 60 * 1000) {
-      const timer = setTimeout(() => {
-        setModal(true);
-      }, 10000);
+    // if (!lastCloseTime || currentTime - lastCloseTime > 24 * 60 * 60 * 1000) {
+    //   const timer = setTimeout(() => {
+    //     setModal(true);
+    //   }, 10000);
 
-      return () => clearTimeout(timer);
-    }
+    //   return () => clearTimeout(timer);
+    // }
+
+    setModal(true);
+    
   }, []);
 
   const handleRedirect = () => {

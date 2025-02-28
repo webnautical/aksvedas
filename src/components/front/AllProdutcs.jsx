@@ -110,6 +110,7 @@ const AllProducts = ({ filterVal }) => {
     }
   }, [filterVal, filterVal.sort, filterVal.searchText, stateData]);
 
+
   return (
 
     <>
@@ -157,7 +158,7 @@ const AllProducts = ({ filterVal }) => {
                 </div>
                 <div className="rating_box mt-3">
                   <ul>
-                    <Rating name="read-only" value={item?.review_average} readOnly />
+                    <Rating name="read-only" value={item?.review_average} readOnly /> {item?.review_count > 0 && <span>({item?.review_count})</span>} 
                   </ul>
                 </div>
                 <div className="product_name">

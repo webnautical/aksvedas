@@ -100,8 +100,9 @@ export const FrontContextProvider = ({ children }) => {
     }
 
 
-    const getCustomerDetails = async () => {
-        const res = await getDataAPI(`/v1/customer-details/${authCustomer()?.id}`)
+    const getCustomerDetails = async (id) => {
+        const customer_id = authCustomer()?.id ? authCustomer()?.id : id
+        const res = await getDataAPI(`/v1/customer-details/${customer_id}`)
         if (res?.status) {
             setCustomerDetails(res?.data?.data)
             setShippingDetails(res?.data?.shippingDetails)
@@ -181,6 +182,9 @@ export const FrontContextProvider = ({ children }) => {
                     };
                 });
                 setCartData(cartFormatted)
+                if (type === 1) {
+                    setOffcanvas(true)
+                }
             }
         } catch (error) {
             setCartData([])

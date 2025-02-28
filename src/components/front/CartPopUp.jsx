@@ -228,6 +228,7 @@ const CartPopUp = ({ item }) => {
                               value={item?.review_average}
                               readOnly
                             />
+                             {item?.review_count > 0 && <span>({item?.review_count})</span>} 
                           </ul>
                         </div>
                         <div className="product_name">{item.name}</div>

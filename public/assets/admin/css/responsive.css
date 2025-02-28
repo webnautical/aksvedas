@@ -209,6 +209,22 @@
 @media (max-width: 767.98px) {
 
 
+  .thumb-slider-pro .product-images-slider-thumbs-wrapper img{ object-fit: contain!important; height: 60px!important;}
+
+  .sticky-bottom-bar .doble_btn-pro{ width: 100%!important;}
+
+
+ 
+.sticky-bottom-bar {     transform: translateY(0)!important;}
+
+  .all_product_additional_details .MuiTabs-scroller .MuiTabs-flexContainer{
+
+    overflow: scroll;
+    justify-content: start;
+  
+  }
+
+
 
 
   .ak_coin_sec {
@@ -254,8 +270,8 @@
   }
 
   .mbile-heaader {
-    padding: 15px 0px;
-  }
+    padding: 0px 0px 15px;
+}
 
   .userrevie-info img {
     width: 50px;
@@ -383,11 +399,52 @@
   div#root {
     overflow-x: hidden;
   }
-
+/* .main_header  {
+  margin-top: 170px;
+} */
   
 }
 
 @media (max-width: 575.98px) {
+
+
+
+
+  .my_sticky_bar {
+
+    gap: 5px;}
+
+
+  .my_sticky_bar .input-step input {
+    padding: 10px 10px;}
+
+  .my_sticky_bar .doble_btn-pro button{  font-size: 16px;}
+
+  .my_sticky_bar .input-step {
+    display: flex
+;
+    gap: 5px;
+
+    align-items: center;
+}
+  
+
+
+  .my_sticky_bar .input-step button {
+    width: 32px;
+    height: 41px;
+    padding: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+  .my_sticky_bar .input-step input {
+    width: 45px;
+ 
+}
+
 
   h1.youerocoin{ font-size: 20px!important;}
 
@@ -440,6 +497,10 @@
 
   .new_arrivals_box {
     flex-wrap: wrap;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
 
   .product_cnt, .product_box_new {

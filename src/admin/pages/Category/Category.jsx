@@ -18,7 +18,7 @@ const Category = () => {
     const [submitLoading, setsubmitLoading] = useState(false)
     const [updData, setUpdData] = useState(null)
     const [selectedID, setSelectedID] = useState([])
- 
+
     const columns = [
         {
             name: 'Cover',
@@ -60,21 +60,27 @@ const Category = () => {
             </>,
         },
     ];
- 
+
+    const [imgPreview, setImgPreview] = useState({
+        banner: null,
+        mobile_banner: null,
+    });
+
     const [value, setValue] = useState({
         'name': '',
         'slug': '',
         'description': '',
         'parent_id': '',
         'cover': '',
+        'mobile_banner': '',
         'status': 0,
     });
     const [errors, setErrors] = useState({});
- 
+
     const [filterVal, setFilterVal] = useState({
         'parent_category_id': ''
     })
- 
+
     useEffect(() => {
         if (updData?.name) {
             setValue({
@@ -84,6 +90,8 @@ const Category = () => {
                 'description': updData.description,
                 'status': updData.status,
                 'cover': updData.cover,
+                'banner': updData.banner,
+                'mobile_banner': updData.mobile_banner,
                 'parent_id': updData.parent_id,
             })
         } else {
@@ -97,7 +105,7 @@ const Category = () => {
             })
         }
     }, [updData])
- 
+
     const handleFilterChange = (e) => {
         const name = e.target.name
         const value = e.target.value
@@ -112,7 +120,7 @@ const Category = () => {
         getCategory()
         getParentCategory()
     }, [])
- 
+
     const getCategory = async (parent_category_id) => {
         setLoading(true)
         const param = {
@@ -128,8 +136,8 @@ const Category = () => {
             setLoading(false)
         }
     }
- 
-   
+
+
     const getParentCategory = async () => {
         const param = { type: 'parent-categories' }
         const res = await postDataAPI('/get-categories', param)
@@ -139,10 +147,18 @@ const Category = () => {
             setParentCategory([])
         }
     }
- 
+
     const handleChange = (e) => {
         if (e.target.name === 'file') {
             setValue({ ...value, 'cover': e.target.files[0] })
+        } else if (e.target.name === 'banner') {
+            setValue({ ...value, 'banner': e.target.files[0] })
+            const imageUrl = URL.createObjectURL(e.target.files[0]);
+            setImgPreview({ ...imgPreview, banner: imageUrl });
+        } else if (e.target.name === 'mobile_banner') {
+            setValue({ ...value, 'mobile_banner': e.target.files[0] })
+            const imageUrl = URL.createObjectURL(e.target.files[0]);
+            setImgPreview({ ...imgPreview, mobile_banner: imageUrl });
         } else if (e.target.name === 'name') {
             setValue({ ...value, 'name': e.target.value, 'slug': generateSlug(e.target.value) })
         } else {
@@ -152,7 +168,7 @@ const Category = () => {
             })
         }
     }
- 
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         setsubmitLoading(true)
@@ -167,6 +183,9 @@ const Category = () => {
             formData.append('parent_id', value.parent_id);
             formData.append('status', value.status);
             formData.append('cover', value.cover);
+            formData.append('banner', value.banner);
+            formData.append('mobile_banner', value.mobile_banner);
+
             const res = await postDataAPI('category', formData)
             if (res.status) {
                 handleCancel()
@@ -200,6 +219,8 @@ const Category = () => {
             formData.append('parent_id', value.parent_id);
             formData.append('status', value.status);
             formData.append('cover', value.cover);
+            formData.append('banner', value.banner);
+            formData.append('mobile_banner', value.mobile_banner);
             const res = await postDataAPI('update-categories', formData)
             if (res.status) {
                 handleCancel()
@@ -218,7 +239,7 @@ const Category = () => {
             setsubmitLoading(false)
         }
     }
- 
+
     const changeStatus = async (data) => {
         setLoading(true)
         const param = {
@@ -240,19 +261,19 @@ const Category = () => {
             setLoading(false)
         }
     }
- 
+
     const handleEditorChange = (value) => {
         setValue((prevValues) => {
             return { ...prevValues, ['description']: value };
         });
     }
- 
+
     const handleCancel = () => {
         setErrors({})
-        setValue({ ...value, 'cover': '', 'description': '', 'name': '', 'parent_id': '', 'slug': '', 'status': 0 })
+        setValue({ ...value, 'cover': '', 'banner': '', 'mobile_banner': '', 'description': '', 'name': '', 'parent_id': '', 'slug': '', 'status': 0 })
         setUpdData(null)
     }
- 
+
     const handleDelete = async () => {
         setLoading(true)
         const param = {
@@ -271,13 +292,13 @@ const Category = () => {
             setLoading(false)
         }
     }
- 
+
     const handleRowSelected = (state) => {
         const selectedIDs = state.selectedRows.map(row => row.id);
         setSelectedID(selectedIDs);
     };
- 
- 
+
+
     return (
         <>
             <div className="content-wrapper">
@@ -286,19 +307,18 @@ const Category = () => {
                     {/* <PageHeaderCom pageTitle={"Category"} modalBtn='Category' modalBtnName='Add Category' /> */}
                     <div className="app-ecommerce-category">
                         {/* Category List Table */}
-                     <div className='d-flex justify-content-between align-items-center'>
-                     <h4 class="py-3 mb-2"><span class="fw-light">Aksvedas /</span> Category List</h4>
-                        <Link className="btn btn-primary text-capitalize" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"><i class="fa-solid fa-plus"></i>Add Category </Link>
-                     </div>
+                        <div className='d-flex justify-content-between align-items-center'>
+                            <h4 class="py-3 mb-2"><span class="fw-light">Aksvedas /</span> Category List</h4>
+                            <Link className="btn btn-primary text-capitalize" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"><i class="fa-solid fa-plus"></i>Add Category </Link>
+                        </div>
                         <div className="card">
                             <div className="p-3">
                                 <div className='row justify-content-between'>
                                     <div className='col-md-6'>
-                                    {/* <div className="d-flex justify-content-between align-items-center">
-            <h6 style={{ fontSize:'20px' }} class=" border-0  mb-0">Category</h6></div> */}
+
                                     </div>
                                     <div className='col-md-4 text-end'>
-                                   
+
                                         <div className="ecommerce-select2-dropdown d-flex">
                                             <select id="ecommerce-category-parent-category" name='parent_category_id' onChange={handleFilterChange} className="select2 form-select text-capitalize" data-placeholder="Select parent category">
                                                 <option value>Filter</option>
@@ -307,18 +327,18 @@ const Category = () => {
                                                 ))}
                                             </select>
                                             <button type="button" className="btn btn-primary text-capitalize mx-2" onClick={() => getCategory()}>Reset</button>
- 
+
                                             <span>
-                                        {
-                                            selectedID?.length > 1 &&
-                                            <button type="button" className="btn btn-label-danger delete-customer" onClick={() => handleDelete()}><i class="fa-solid fa-trash-can"></i> </button>
-                                        }
-                                        </span>
+                                                {
+                                                    selectedID?.length > 1 &&
+                                                    <button type="button" className="btn btn-label-danger delete-customer" onClick={() => handleDelete()}><i class="fa-solid fa-trash-can"></i> </button>
+                                                }
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
- 
+
                             <div className="card-datatable table-responsive">
                                 <DataTable className='cs_table_inerr'
                                     columns={columns}
@@ -336,8 +356,8 @@ const Category = () => {
                 </div>
                 <div className="content-backdrop fade" />
             </div>
- 
- 
+
+
             <div className="offcanvas offcanvas-end" tabIndex={-1} id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
                 <div className="offcanvas-header">
                     <h5 className="offcanvas-title" id="offcanvasExampleLabel">{updData ? 'Update' : 'Add'} Category</h5>
@@ -356,6 +376,30 @@ const Category = () => {
                             <label className="form-label">Slug</label>
                             <input type="text" onChange={handleChange} name="slug" value={value.slug} className="form-control" placeholder="Enter slug" aria-label="slug" />
                             <span className='errMsg'>{errors.slug}</span>
+                        </div>
+                        {/* Banner */}
+                        <div className="mb-3">
+                            <label className="form-label">Banner</label>
+                            <input className="form-control" type="file" onChange={handleChange} name='banner' />
+                            {
+                                  imgPreview.banner ?
+                                  <img src={imgPreview.banner} alt={'img'} style={{ height: '40px', width: '40px', borderRadius: '50%', objectFit: 'contain', background: '#ddd' }} />
+                                  :
+                                updData?.banner &&
+                                <div className='mt-1'><ItemImg img={value?.banner} /></div>
+                            }
+                        </div>
+
+                        {/* Banner */}
+                        <div className="mb-3">
+                            <label className="form-label">Mobile Banner</label>
+                            <input className="form-control" type="file" onChange={handleChange} name='mobile_banner' />
+                            {
+                                imgPreview.mobile_banner ?
+                                    <img src={imgPreview.mobile_banner} alt={'img'} style={{ height: '40px', width: '40px', borderRadius: '50%', objectFit: 'contain', background: '#ddd' }} />
+                                    : updData?.mobile_banner &&
+                                    <div className='mt-1'><ItemImg img={value?.mobile_banner} /></div>
+                            }
                         </div>
                         {/* Image */}
                         <div className="mb-3">
@@ -377,14 +421,14 @@ const Category = () => {
                                 ))}
                             </select>
                         </div>
- 
+
                         {/* Description */}
                         <div className="col-12 mb-4">
                             <label className="form-label">Description</label>
                             <CKEditorCom ckValue={updData ? updData?.description : value?.description} handleEditorChange={handleEditorChange} />
                             <span className='errMsg'>{errors.description}</span>
                         </div>
- 
+
                         {/* Status */}
                         <div className="mb-4 ecommerce-select2-dropdown">
                             <label className="form-label">Select category status</label>
@@ -408,13 +452,13 @@ const Category = () => {
                     </form>
                 </div>
             </div>
- 
+
             <DeleteModal id={'deleteCategory'} handleFunc={handleDelete} loading={loading} />
- 
+
             <Spinner sppiner={loading} />
- 
+
         </>
     )
 }
- 
+
 export default Category

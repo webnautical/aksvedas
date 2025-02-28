@@ -12,14 +12,14 @@ const TopHeader = () => {
           role="alert"
         >
           {allData?.offer.offer}
-          <button
+          {/* <button
             type="button"
             className="btn-close"
             data-bs-dismiss="alert"
             aria-label="Close"
           >
             <i className="fa-solid fa-xmark"></i>
-          </button>
+          </button> */}
         </div>
       </div>
     </>

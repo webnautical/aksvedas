@@ -5,7 +5,18 @@ import { Breadcrumbs } from "@mui/material";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import AllProducts from "../../../components/front/AllProdutcs";
 import Filters from "../../../components/front/Filters";
+import mensbanner from '../../../assets/img/mens-banner.webp'
+import womensbanner from '../../../assets/img/womens-banner.webp'
+import combobanner from '../../../assets/img/combo-banner.webp'
+import mobilewomenbaner from '../../../assets/img/mobile-women.webp'
+import mobilemenbaner from '../../../assets/img/mobile-men.webp'
+import mobilecombobaner from '../../../assets/img/mobile-combo.webp'
+import { useFrontDataContext } from "../../../context/FrontContextProvider";
+import { imgBaseURL } from "../../../utility/Utility";
+
+
 const Shop = () => {
+    const {categories} = useFrontDataContext();
   const { category } = useParams()
   const navigate = useNavigate()
   const [isFilterVisible, setIsFilterVisible] = useState(false);
@@ -18,22 +29,22 @@ const Shop = () => {
     setIsFilterVisible(false);
   };
 
-  useEffect(()=>{
-    if(category === "mens-health" || category === "womens-health"){
+  useEffect(() => {
+    if (category === "mens-health" || category === "womens-health") {
       navigate('/not-found')
     }
-  },[category])
+  }, [category])
 
   const [filterVal, setFilterVal] = useState({
-    sort : '',
+    sort: '',
     searchText: ''
   })
-  const handleFilter = (e) =>{
-    if(e.target.name === 'sort'){
-      setFilterVal({...filterVal, 'sort' : e.target.value})
+  const handleFilter = (e) => {
+    if (e.target.name === 'sort') {
+      setFilterVal({ ...filterVal, 'sort': e.target.value })
     }
-    if(e.target.name === 'searchText'){
-      setFilterVal({...filterVal, 'searchText' : e.target.value})
+    if (e.target.name === 'searchText') {
+      setFilterVal({ ...filterVal, 'searchText': e.target.value })
     }
   }
 
@@ -49,14 +60,25 @@ const Shop = () => {
   const categoriesArray = category.split('+');
   const transformedCategories = transformCategories(categoriesArray);
 
+  
+  const getCategoryImage = () => {
+    const catBanner = categories.find(cat => cat.slug === category);
+    return catBanner ?  catBanner.banner ? imgBaseURL() + catBanner.banner : siderbg : siderbg;
+  };
+
+
+  const getCategoryImageMobile = () => {
+    const catBanner = categories.find(cat => cat.slug === category);
+    return catBanner ?  catBanner?.mobile_banner ? imgBaseURL() + catBanner?.mobile_banner : siderbg : siderbg;
+  };
 
   return (
     <div className="collection-page pb-5">
       <div className="banner-img">
-        <img src={siderbg} alt="" />
+        <img className="for_desktop_banner d-md-block d-none" src={getCategoryImage()} alt="Category Banner" />
+        <img className="for_movile_banner d-md-none d-block" src={getCategoryImageMobile()} alt="Category Banner" />
       </div>
       <div className="container">
-
         <Breadcrumbs
           aria-label="breadcrumb"
           className="breacrumb-custom py-md-3 py-2"
@@ -69,9 +91,8 @@ const Shop = () => {
 
         <div className="all-shopitems mt-3">
           <div
-            className={`filter-overlay ${
-              isFilterVisible ? "overlaymobile" : ""
-            }`}
+            className={`filter-overlay ${isFilterVisible ? "overlaymobile" : ""
+              }`}
             onClick={toggleFilterOverlay}
           >
             {/* Filter content goes here */}
@@ -79,29 +100,28 @@ const Shop = () => {
           <div className="row">
             <div className="col-lg-3">
               <div
-                className={`filter-outer ${
-                  isFilterVisible ? "mobile-view" : ""
-                }`}
+                className={`filter-outer ${isFilterVisible ? "mobile-view" : ""
+                  }`}
               >
-               <div className="d-md-none d-block addtitlefilter"> <h2>Filter</h2>
-                <button className="close-button" onClick={closeFilterOverlay}>
-                  <i className="fa fa-times"></i>
-                </button>
-                </div> 
+                <div className="d-md-none d-block addtitlefilter"> <h2>Filter</h2>
+                  <button className="close-button" onClick={closeFilterOverlay}>
+                    <i className="fa fa-times"></i>
+                  </button>
+                </div>
                 <Filters></Filters>
               </div>
             </div>
             <div className="col-lg-9">
               <div className="dy_heading">
-                <h1 style={{fontSize:'20px'}}> {category === "mens-health-supplement" ? "Men's Health Supplement" : category === "womens-health-suppliment" ? "Supplements for Women" : ""} </h1>
+                <h1 style={{ fontSize: '20px' }}> {category === "mens-health-supplement" ? "Men's Health Supplement" : category === "womens-health-suppliment" ? "Supplements for Women" : ""} </h1>
               </div>
               <div className="shop-lisitng">
                 <div className="d-flex align-items-center justify-content-between gap-2 mb-4">
                   <div className="d-md-none d-block filtermobile cursor-pointer text-black"
-                      onClick={toggleFilterOverlay}
-                    >
-                      <i className="fa fa-filter pe-1"></i>
-                      Filter
+                    onClick={toggleFilterOverlay}
+                  >
+                    <i className="fa fa-filter pe-1"></i>
+                    Filter
                   </div>
                   <div className="search-box-filter d-md-block d-none">
                     <input
@@ -133,7 +153,7 @@ const Shop = () => {
                     </div>
                   </div>
                 </div>
-                <AllProducts filterVal={filterVal}/>
+                <AllProducts filterVal={filterVal} />
               </div>
             </div>
           </div>

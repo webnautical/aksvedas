@@ -130,12 +130,7 @@ const Footer = () => {
         </div>
       </section>
 
-
       <footer>
-
-
-
-
         <div className="container footer">
           <div className="row mb-md-5 mb-4">
             <div className="col-lg-4 col-md-6 pe-md-5 mb-lg-0 mb-4">

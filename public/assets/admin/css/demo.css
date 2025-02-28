@@ -198,8 +198,8 @@ a {
 }
 
 .main_box_alert {
-  background-color: #FAE8CD;
-  color: #B46B00;
+  background-color: #ddad67;
+  color: #ffffff;
   margin: 0px;
   border-radius: 0px;
   padding: 6px 0px;
@@ -377,6 +377,7 @@ video {
 /* mobileheader */
 .mbile-heaader {
   padding: 10px 0px;
+  
 }
 
 .mobile-menu-inner {
@@ -1545,11 +1546,11 @@ button, a.btn-2 {
 }
 
 .product_cnt {
-  width: 55%;
+  width: 65%;
 }
 
 .product_box_new {
-  width: 45%;
+  width: 35%;
 }
 
 .new_arrivals_box button i {
@@ -2782,7 +2783,7 @@ button.planBtn {
 }
 
 header nav ul li a {
-  color: #000;
+  color: #3a3a3a;
   padding: 12px 12px;
   display: block;
   white-space: nowrap;
@@ -2790,7 +2791,12 @@ header nav ul li a {
   font-weight: 400;
   font-size: 16px;
   text-transform: uppercase;
+  font-weight: 500;
 }
+
+
+header nav ul li a.active-tab{ border-bottom: 3px solid #ddad67; color: #ddad67!important;}
+
 
 header nav ul li a:not(.active):hover, .dropdown-item:not(.disabled).active, .dropdown-item:not(.disabled):active, .dropdown-item:hover, .dropdown-item:focus {
   background-color: #fff8ee;
@@ -3620,8 +3626,8 @@ span.input-range__label.input-range__label--max, span.input-range__label.input-r
   -moz-border-radius: 100%;
   -ms-border-radius: 100%;
   display: inline-block;
-  right: 20px;
-  bottom: 20px;
+  right: 15px;
+  bottom: 66px;
   position: fixed;
   z-index: 9999;
 }
@@ -4835,11 +4841,7 @@ thead th, tbody td {
   padding: 0px !important;
 }
 
-.thumb-slider-pro .product-images-slider-thumbs-wrapper img {
-  min-height: 80px;
-  object-fit: cover;
-
-}
+.thumb-slider-pro .product-images-slider-thumbs-wrapper img { height: 123px; object-fit: cover; width: 123px; }
 
 .rating-list .rating-list-center {
   width: 100%;
@@ -4952,11 +4954,14 @@ thead th, tbody td {
 
 .revie-feddback {
   border-bottom: 1px solid #e5e5e5;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
   padding-bottom: 20px;
+  padding-left: 15px;
+    padding-right: 15px;
   display: grid;
   grid-template-columns: 14% 85%;
   gap: 1%;
+  align-items: center;
 }
 
 .userrevie-info {
@@ -6085,3 +6090,153 @@ ol.bundle-pro-check {
   align-items: center;
   justify-content: center;
 }
+
+
+.sticky-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: white;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  border-top: 2px solid #ddd;
+  
+  transform: translateY(100%); /* Pehle hidden rahega */
+  transition: transform 0.3s ease-in-out;
+}
+
+.sticky-bottom-bar.show {
+  transform: translateY(0); /* Neeche se slide hoke aayega */
+}
+
+
+
+.my_sticky_bar{ display: flex; justify-content: center; gap: 15px; align-items: center;}
+
+.my_sticky_bar .input-step button {
+
+width: 50px;
+color: black;
+font-size: 20px;
+padding: 8px;
+
+}
+
+.my_sticky_bar .input-step button:hover {
+
+  background-color: #ddad67;
+  color: white;
+
+}
+
+.my_sticky_bar .input-step{
+
+  display: flex
+  ;
+      gap: 10px;
+
+}
+
+
+.my_sticky_bar .input-step input{
+
+  background: #efefef;
+  border: none;
+  padding: 14px 10px;
+  width: 110px;
+  text-align: center;
+}
+
+.product-details .swiper-button-next, .swiper-button-prev{
+
+  background: #ffffff!important;
+}
+
+
+.product-details .swiper-button-next:after, .swiper-rtl .swiper-button-prev:after{
+
+  color: black;
+  font-size: 14px !important;
+  font-weight: bold;
+
+}
+
+
+.product-details .swiper-button-prev:after, .swiper-rtl .swiper-button-next:after{
+
+  color: black;
+  font-size: 14px !important;
+  font-weight: bold;
+}
+
+
+.product-slider-container{ position: relative;}
+
+.mbile-heaader .top_alert{ display: block!important; margin-bottom: 15px;}
+
+.dropdown-menu-list a.active-tab {
+  border-left: 3px solid #ddad67!important;
+  color: #ddad67 !important;
+  border-bottom: none!important;
+}
+
+
+.section-inner-des .image img{
+
+  margin: auto;
+
+}
+
+
+.all_product_additional_details .MuiTabs-scroller button.Mui-selected{
+
+  color: #ddad67!important;
+
+}
+.all_product_additional_details .MuiTabs-scroller button{ color: black!important;}
+
+.all_product_additional_details .MuiTabs-scroller .MuiTabs-indicator{
+
+  background-color: #ddad67!important;
+}
+
+
+.admin_reply{ 
+
+  background-color: #ddad6738;
+  padding: 15px;
+  border-left: 4px solid #ddad67;
+}
+
+.review_outer { background-color: white;}
+
+.admin_reply .text-gray{ font-size: 12px;}
+
+.product-images-slider-thumbs-wrapper video{
+ 
+  object-fit: cover;
+ 
+  width: 400px!important;
+ 
+}
+ 
+.video_main_box{ position: relative;
+}
+ 
+ 
+.play_pause_btn{ opacity: 0; background-color: #ddad67!important;}
+ 
+.video_main_box:hover .play_pause_btn{ opacity: 1;}
+ 
+.rating_box .fs-15{ display: flex; gap: 3px;}
+
+
+
+ 
+
+

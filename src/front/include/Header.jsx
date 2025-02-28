@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/img/logosite.svg";
 import TopHeader from "../../components/front/TopHeader";
 import CartPopUp from "../../components/front/CartPopUp";
 import { useFrontDataContext } from "../../context/FrontContextProvider";
 import { authCustomer, imgBaseURL } from "../../utility/Utility";
- 
+
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
- 
+  const location = useLocation();
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -18,9 +19,9 @@ const Header = () => {
         setIsScrolled(false);
       }
     };
- 
+
     window.addEventListener("scroll", handleScroll);
- 
+
     // Clean up the event listener on component unmount
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -38,7 +39,7 @@ const Header = () => {
   const navigate = useNavigate();
   const [isOpen, setDropdownOpen] = useState(false);
   const [headerSearchVal, setHeaderSearchVal] = useState();
- 
+
   useEffect(() => {
     const handleBodyClick = (event) => {
       if (!event.target.closest(".dropdown") && isOpen) {
@@ -50,28 +51,28 @@ const Header = () => {
       document.body.removeEventListener("click", handleBodyClick);
     };
   }, [isOpen]);
- 
+
   const toggleDropdown = () => {
     setDropdownOpen((prevState) => !prevState);
   };
- 
+
   const handleLinkClick = () => {
     // setIsOpen(false);
   };
- 
+
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const searchRef = useRef(null);
- 
+
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
   };
- 
+
   const closeSearch = () => {
     setIsSearchOpen(false);
     setHeaderSearchVal();
-    setSuggestions([])
+    setSuggestions([]);
   };
- 
+
   useEffect(() => {
     getFuxedReviewList();
     const handleOutsideClick = (event) => {
@@ -84,54 +85,58 @@ const Header = () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
- 
+
   const redirectPage = (tab) => {
     navigate(`/account/${tab}`);
   };
- 
+
   const handleLogout = async () => {
     navigate("/");
     localStorage.clear();
     sessionStorage.clear();
   };
- 
+
   const handleMobileRedirect = (page) => {
     navigate(page);
   };
- 
+
   const handleSearch = (e) => {
     e.preventDefault();
     navigate("/shop/all", { state: { searchVal: headerSearchVal } });
   };
- 
+
   const [suggestions, setSuggestions] = useState([]);
   const handleChange = (e) => {
     const value = e.target.value;
     setHeaderSearchVal(value);
- 
+
     if (value) {
-      const filteredSuggestions = products?.filter((product) =>
-        product.name.toLowerCase().includes(value.toLowerCase())
-      ).slice(0, 5);
+      const filteredSuggestions = products
+        ?.filter((product) =>
+          product.name.toLowerCase().includes(value.toLowerCase())
+        )
+        .slice(0, 5);
       setSuggestions(filteredSuggestions);
     } else {
       setSuggestions([]);
     }
   };
- 
+
   const handleSuggestionClick = () => {
-    setHeaderSearchVal('');
-    setIsSearchOpen(false)
+    setHeaderSearchVal("");
+    setIsSearchOpen(false);
     setSuggestions([]);
   };
   return (
     <>
       <CartPopUp />
-      <TopHeader />
+
       <div
-        className={`mbile-heaader d-md-none d-block ${isScrolled ? "scrolled" : ""
-          }`}
+        className={`mbile-heaader d-md-none d-block ${
+          isScrolled ? "scrolled" : ""
+        }`}
       >
+        <TopHeader />
         <div className="container">
           <div className="mobile-menu-inner">
             <div className="moble-logo">
@@ -152,22 +157,35 @@ const Header = () => {
                         <h6 className="dropdown-header">
                           Welcome {authCustomer()?.name?.split(" ")[0]}
                         </h6>
-                        <Link className="dropdown-item" to={`/account/account-info`} onClick={() => setDropdownOpen(false)}>
+                        <Link
+                          className="dropdown-item"
+                          to={`/account/account-info`}
+                          onClick={() => setDropdownOpen(false)}
+                        >
                           <i className="fa fa-user me-1"></i>My Account
                         </Link>
- 
-                        <Link className="dropdown-item coin_gap " to={"/account/my-loyalty-points"}>
-                          <i className="fa fa-wallet me-1"></i>  My Akscoins
-                            {customerDetails?.loyalty !== undefined && customerDetails?.loyalty !== 0 && (
-                              <span class="mobile_ak ak_coinss">{customerDetails.loyalty}</span>
+
+                        <Link
+                          className="dropdown-item coin_gap "
+                          to={"/account/my-loyalty-points"}
+                        >
+                          <i className="fa fa-wallet me-1"></i> My Akscoins
+                          {customerDetails?.loyalty !== undefined &&
+                            customerDetails?.loyalty !== 0 && (
+                              <span class="mobile_ak ak_coinss">
+                                {customerDetails.loyalty}
+                              </span>
                             )}
- 
                         </Link>
- 
-                        <Link className="dropdown-item" to={"/account/orders"} onClick={() => setDropdownOpen(false)}>
+
+                        <Link
+                          className="dropdown-item"
+                          to={"/account/orders"}
+                          onClick={() => setDropdownOpen(false)}
+                        >
                           <i className="fa fa-cart-plus me-1"></i>My Orders
                         </Link>
- 
+
                         <div className="dropdown-divider"></div>
                         <Link
                           to={"/"}
@@ -187,8 +205,8 @@ const Header = () => {
                     </Link>{" "}
                   </li>
                 )}
- 
-                {authCustomer()?.id && (
+
+                {/* {authCustomer()?.id && ( */}
                   <li
                     className="wish_phone_btn"
                     style={{ position: "relative" }}
@@ -221,9 +239,9 @@ const Header = () => {
                       )}
                     </button>
                   </li>
-                )}
- 
-                {authCustomer()?.id && (
+                {/* )} */}
+
+                {/* {authCustomer()?.id && ( */}
                   <li className="cart_li">
                     <Link
                       data-bs-toggle="offcanvas"
@@ -254,7 +272,7 @@ const Header = () => {
                       {cartData?.length != 0 && <span>{cartData?.length}</span>}
                     </Link>
                   </li>
-                )}
+                {/* // )} */}
                 <li className="toggle_mobile">
                   <button
                     className="navbar-toggler"
@@ -279,13 +297,16 @@ const Header = () => {
             <button onClick={(e) => handleSearch(e)}>
               <i className="fa fa-search"></i>
             </button>
- 
+
             <div className="suggestion">
               {suggestions.length > 0 && (
                 <ul className="suggestions">
                   {suggestions.map((product) => (
-                    <li key={product.id} >
-                      <Link to={`/product-detail/${product?.slug}`} onClick={() => handleSuggestionClick()}>
+                    <li key={product.id}>
+                      <Link
+                        to={`/product-detail/${product?.slug}`}
+                        onClick={() => handleSuggestionClick()}
+                      >
                         {product.name}
                       </Link>
                     </li>
@@ -294,11 +315,11 @@ const Header = () => {
               )}
             </div>
           </div>
- 
         </div>
       </div>
- 
+
       <div className={`main_header ${isScrolled ? "scrolled" : ""}`}>
+        <TopHeader />
         <section className="header d-md-block d-none">
           <div className="container">
             <div className="main_inner_header">
@@ -312,7 +333,7 @@ const Header = () => {
                   />
                 </Link>
               </div>
- 
+
               <div className="right_option_bar">
                 <ul>
                   {authCustomer()?.id ? (
@@ -329,20 +350,28 @@ const Header = () => {
                         <h6 className="dropdown-header">
                           Welcome {authCustomer()?.name}
                         </h6>
-                        <Link className="dropdown-item" to={`/account/account-info`}>
+                        <Link
+                          className="dropdown-item"
+                          to={`/account/account-info`}
+                        >
                           <i className="fa fa-user me-1"></i>My Account
                         </Link>
-                        <Link className="dropdown-item" to={"/account/my-loyalty-points"}>
+                        <Link
+                          className="dropdown-item"
+                          to={"/account/my-loyalty-points"}
+                        >
                           <i className="fa fa-wallet me-1"></i>My Akscoins
-                            {customerDetails?.loyalty !== undefined && customerDetails?.loyalty !== 0 && (
-                              <span class="ak_coinss">{customerDetails.loyalty}</span>
+                          {customerDetails?.loyalty !== undefined &&
+                            customerDetails?.loyalty !== 0 && (
+                              <span class="ak_coinss">
+                                {customerDetails.loyalty}
+                              </span>
                             )}
                         </Link>
                         <Link className="dropdown-item" to={"/account/orders"}>
                           <i className="fa fa-cart-plus"></i>My Orders
                         </Link>
- 
- 
+
                         <div className="dropdown-divider"></div>
                         <Link
                           to={"/"}
@@ -361,8 +390,8 @@ const Header = () => {
                       </Link>{" "}
                     </li>
                   )}
- 
-                  {authCustomer()?.id && ( 
+
+                  {/* {authCustomer()?.id && ( */}
                     <li>
                       <button
                         className="text-dark planBtn"
@@ -374,8 +403,8 @@ const Header = () => {
                         )}
                       </button>
                     </li>
-                  )}
- 
+                  {/* )} */}
+
                   <li>
                     <Link>
                       <div className="search-icon" onClick={toggleSearch}>
@@ -384,7 +413,7 @@ const Header = () => {
                       {isSearchOpen && (
                         <>
                           <form action="" onSubmit={handleSearch}>
-                            <div >
+                            <div>
                               <div className="search-bar" ref={searchRef}>
                                 <input
                                   type="text"
@@ -395,13 +424,18 @@ const Header = () => {
                                 <button type="button" onClick={closeSearch}>
                                   <i className="fa-solid fa-xmark"></i>
                                 </button>
- 
+
                                 <div className="suggestion">
                                   {suggestions.length > 0 && (
                                     <ul className="suggestions">
                                       {suggestions.map((product) => (
-                                        <li key={product.id} >
-                                          <Link to={`/product-detail/${product?.slug}`} onClick={() => handleSuggestionClick()}>
+                                        <li key={product.id}>
+                                          <Link
+                                            to={`/product-detail/${product?.slug}`}
+                                            onClick={() =>
+                                              handleSuggestionClick()
+                                            }
+                                          >
                                             {product.name}
                                           </Link>
                                         </li>
@@ -410,16 +444,14 @@ const Header = () => {
                                   )}
                                 </div>
                               </div>
- 
                             </div>
                           </form>
- 
                         </>
                       )}
                     </Link>
                   </li>
- 
-                  {authCustomer()?.id && (
+
+                  {/* {authCustomer()?.id && ( */}
                     <li className="cart_li">
                       <Link
                         data-bs-toggle="offcanvas"
@@ -447,48 +479,96 @@ const Header = () => {
                             ></path>
                           </g>
                         </svg>
-                        {cartData?.length != 0 && <span>{cartData?.length}</span>}
+                        {cartData?.length != 0 && (
+                          <span>{cartData?.length}</span>
+                        )}
                       </Link>
                     </li>
-                  )}
+                  {/* )} */}
                 </ul>
               </div>
             </div>
           </div>
         </section>
- 
+
         <header className="d-md-block d-none">
           <nav>
             <ul>
               <li>
-                <Link to="/"> Home</Link>
+                <Link
+                  to="/"
+                  className={
+                    location.pathname === "/" ? "active-tab " : ""
+                  }
+                >
+                  {" "}
+                  Home
+                </Link>
               </li>
               <li>
-                <Link to="/about">About Us </Link>
+                <Link
+                  to="/about"
+                  className={
+                    location.pathname === "/about"
+                      ? "active-tab "
+                      : ""
+                  }
+                >
+                  About Us{" "}
+                </Link>
               </li>
               <li className=" dropdown dropdown-hover">
                 <Link to="/shop/all" className="dropdown-toggle">
                   Shop
                 </Link>
                 <ul className="dropdown-menu dropdown-menu-md dropdown-menu-center dropdown-menu-list submenu">
-                  {categories?.map((item, i) => (
-                    <li>
-                      <Link to={`/shop/${item?.slug}`}>{item?.name}</Link>
-                    </li>
-                  ))}
+                  {categories?.map((item, i) => {
+                    const isActive = location.pathname.includes(
+                      `/shop/${item?.slug}`
+                    );
+
+                    return (
+                      <li key={i}>
+                        <Link
+                          to={`/shop/${item?.slug}`}
+                          className={isActive ? "active-tab " : ""}
+                        >
+                          {item?.name}
+                        </Link>
+                      </li>
+                    );
+                  })}
                 </ul>
               </li>
               <li>
-              <Link to="/blog">Blog</Link>
-            </li>
+                <Link
+                  to="/blog"
+                  className={
+                    location.pathname === "/blog"
+                      ? "active-tab "
+                      : ""
+                  }
+                >
+                  Blog
+                </Link>
+              </li>
               <li>
-                <Link to="/contact-us">Contact </Link>
+                <Link
+                  to="/contact-us"
+                  className={
+                    location.pathname === "/contact-us"
+                      ? "active-tab "
+                      : ""
+                  }
+                >
+                  Contact{" "}
+                </Link>
               </li>
             </ul>
           </nav>
         </header>
       </div>
- 
+
       <div
         className="offcanvas offcanvas-start offcanvas-mobile-header"
         tabIndex="-1"
@@ -599,5 +679,5 @@ const Header = () => {
     </>
   );
 };
- 
+
 export default Header;

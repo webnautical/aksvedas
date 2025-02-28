@@ -211,6 +211,8 @@ const Home = () => {
       console.log(error);
     }
   };
+
+
   return (
     <>
       {loading && <FrontLoader />}
@@ -406,6 +408,7 @@ const Home = () => {
                             value={item?.review_average}
                             readOnly
                           />
+                          {item?.review_count > 0 && <span>({item?.review_count})</span>}
                         </ul>
                       </div>
                       <div className="product_name">
@@ -499,6 +502,7 @@ const Home = () => {
                             value={item?.review_average}
                             readOnly
                           />
+                          {item?.review_count > 0 && <span>({item?.review_count})</span>}
                         </ul>
                       </div>
                       <div className="product_name">
@@ -811,7 +815,7 @@ const Home = () => {
                         <div className="new_arrival_product_name">
                           {item?.name}
                         </div>
-                        <div className="new_arrival_details">
+                        {/* <div className="new_arrival_details">
                           <div className="d-block text-wrap mt-2">
                             {" "}
                             <div
@@ -820,7 +824,7 @@ const Home = () => {
                               }}
                             />
                           </div>
-                        </div>
+                        </div> */}
                         <button
                           className="shop_now btn-2 mt-3"
                           onClick={() =>
@@ -856,8 +860,8 @@ const Home = () => {
           </div>
         </div>
       </section>
-      
-      <Spotlight spotlight={allData?.spotlight}/>
+
+      <Spotlight spotlight={allData?.spotlight} />
 
       <section className="about_experince">
         <div className="container">
@@ -873,10 +877,10 @@ const Home = () => {
                 <div className="small_second_image">
                   {
                     allData?.getAyurvedExperience?.img2 &&
-                  <img
-                    src={imgBaseURL() + allData?.getAyurvedExperience?.img2}
-                    alt="img"
-                  />
+                    <img
+                      src={imgBaseURL() + allData?.getAyurvedExperience?.img2}
+                      alt="img"
+                    />
                   }
                 </div>
               </div>
@@ -892,7 +896,13 @@ const Home = () => {
                       __html: allData?.getAyurvedExperience?.desc,
                     }}
                   />
+
+                  <div className="doble_btn text-md-start text-center ">
+                    <button className="shop_now btn-2" to="/">Shop Now <i class="fa-solid fa-arrow-right"></i></button>
+                  </div>
                 </div>
+
+
               </div>
             </div>
           </div>
@@ -952,10 +962,14 @@ const Home = () => {
                   <div className="col-xl-12 col-lg-12 col-md-12 mb-md-0 ">
                     <div className="product_img">
                       {allData ? (
-                        <img
-                          src={imgBaseURL() + item?.img1}
-                          alt="product_img"
-                        />
+                        <>
+                          <Link to={item?.product_url ? item?.product_url : "#"} target="_blank">
+                            <img
+                              src={imgBaseURL() + item?.img1}
+                              alt="product_img"
+                            />
+                          </Link>
+                        </>
                       ) : (
                         <Skeleton
                           variant="rectangular"
@@ -1002,11 +1016,12 @@ const Home = () => {
                 <div className="col-xl-12 col-lg-12 col-md-12 mb-md-0 ">
                   <div className="product_img">
                     {allData ? (
-                      <img
-                        src={imgBaseURL() + item?.img1}
-                        alt="product_img"
-                        style={{ width: "100%", height: "auto" }}
-                      />
+                      <Link to={item?.product_url ? item?.product_url : "#"} target="_blank">
+                        <img
+                          src={imgBaseURL() + item?.img1}
+                          alt="product_img"
+                        />
+                      </Link>
                     ) : (
                       <Skeleton
                         variant="rectangular"

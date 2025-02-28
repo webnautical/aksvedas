@@ -698,13 +698,19 @@ optgroup.divider {
 
 .main_header {
     transition: 0.6s;
+    position: sticky;
+    top: 0px;
+    width: 100%;
+    transition: 0.6s;
+    background: white;
+    z-index: 999;
 }
 
 .main_header.scrolled {
     position: sticky;
     top: 0px;
     transition: 0.6s;
-    z-index: 9;
+    z-index: 99;
 }
 
 .mbile-heaader.scrolled {
@@ -717,7 +723,7 @@ optgroup.divider {
 }
 
 .main_header.scrolled .top_logo_section img {
-    height: 40px;
+    height: 32px;
     transition: 0.2s;
 }
 
@@ -1169,4 +1175,127 @@ footer .footer_support_btn  .btn-primary:hover{
     font-weight: 700;
 }
 
+.animated-modal .modal-dialog {
+    transform: translateY(-100%);
+    transition: transform 0.5s ease-out;
+  }
+ 
+  .animated-modal.modal-show .modal-dialog {
+    transform: translateY(0);
+  }
+ 
+ 
+ 
+ 
+ 
+.vouchercard {
+    width: 100%;
+    background-color: #fae8cd;
+    padding: 10px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+ 
+  .main,
+  .copy-button {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    align-items: center;
+  }
+  .vouchercard::after {
+    position: absolute;
+    content: "";
+    height: 40px;
+    right: -31px;
+    border-radius: 40px;
+    z-index: 1;
+    top: 6%;
+    background-color: #fff;
+    width: 40px;
+  }
+ 
+  .vouchercard::before {
+    position: absolute;
+    content: "";
+    height: 40px;
+    left: -31px;
+    border-radius: 40px;
+    z-index: 1;
+    top: 6%;
+    background-color: #fff;
+    width: 40px;
+  }
+ 
+  .co-img img {
+    width: 100px;
+    height: 100px;
+  }
+  .vertical {
+    border-left: 5px dotted black;
+    height: 100px;
+    position: absolute;
+    left: 40%;
+  }
+ 
+  .content h1 {
+    font-size: 35px;
+ 
+    color: #565656;
+  }
+ 
+  .content h1 span {
+    font-size: 18px;
+  }
+  .content h2 {
+    font-size: 15px;
+    color: #000000;
+    text-transform: uppercase;
+  }
+ 
+  .content p {
+    font-size: 16px;
+    color: #696969;
+ 
+  }
+ 
+  .copy-button {
+    margin: 6px 0 0px 0;
+    border-radius: 4px;
+    padding: 0 5px;
+    border: 1px solid #e1e1e1;
+  }
+ 
+  .copy-button input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    padding: 8px;
+  }
+ 
+  .copy-button button {
+    padding: 5px 20px;
+    background-color: #dc143c;
+    color: #fff;
+    border: 1px solid transparent;
+  }
+ 
+  .buy{
+   position: absolute;
+    content: "";
+    bottom: 20px;
+    left:20px;
+    background-color: #dc143c;
+   }
+ 
+   .vouchercard .main{ min-height: unset!important;}
 
+
+   /* .mui_custom_modall .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded {
+    max-width: 35rem !important;
+    width: 35rem !important;
+    margin: 0px !important;
+    display: block !important;
+} */

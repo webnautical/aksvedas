@@ -22,7 +22,6 @@ const Checkout = () => {
                 setLoading(false);
             }
         };
-
         fetchPaymentUrl();
     }, [amount]);
 
@@ -32,9 +31,7 @@ const Checkout = () => {
                 setIframeHeight(`${e.data.newHeight}px`);
             }
         };
-
         window.addEventListener('message', handleMessage);
-
         return () => {
             window.removeEventListener('message', handleMessage);
         };

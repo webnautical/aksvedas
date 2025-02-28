@@ -3,6 +3,7 @@ import DataTable from 'react-data-table-component';
 import { getDataAPI } from '../../../utility/api/api';
 import Spinner from '../../../components/admin/Spinner';
 import { timeAgo } from './../../../utility/Date';
+import { Link } from 'react-router-dom';
 
 const QueryList = () => {
     const columns = [
@@ -16,7 +17,11 @@ const QueryList = () => {
         },
         {
             name: <span className='text-capitalize'>email</span>,
-            selector: row => <>{row.email || '---'}</>,
+            selector: row => (
+                <Link style={{color:'black!important'}} to={`mailto:${row.email}`} target="_blank" rel="noopener noreferrer" className="text-dark">
+                    {row.email || '---'}
+                </Link>
+            ),
         },
         {
             name: <span className='text-capitalize'>phone</span>,

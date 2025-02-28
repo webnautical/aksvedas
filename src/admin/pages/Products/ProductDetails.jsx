@@ -488,6 +488,8 @@ const ProductDetails = () => {
             }
         } catch (error) {
             setAttLoad(false)
+        }finally{
+            setAttLoad(false)
         }
     }
     const [attachmentData, setAttachmentData] = useState(null)
@@ -497,12 +499,15 @@ const ProductDetails = () => {
             const params = { product_id: productDetails?.id, type: 'attachment' }
             const res = await postDataAPI('get-product-content', params)
             if (res.status) {
-                setAttachmentData(res?.data[0])
+                 const lastIndex = res.data.length - 1;
+                setAttachmentData(res.data[lastIndex]);
             } else {
                 setAttachmentData(null)
             }
         } catch (error) {
             setAttachmentData(null)
+        }finally{
+            setLoading(false)
         }
     }
 
