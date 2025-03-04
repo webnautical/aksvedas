@@ -205,6 +205,27 @@ const OrderSummary = (props) => {
         }
     }
 
+    const removeCoupon = () =>{
+        setResponse({ ...response, 
+            error: null,
+            msg: null,
+            coupon: null,
+            allow: '',
+            saving: 0,
+        })
+        setOfferCouponObj(null)
+        setCoupon("")
+    }
+
+    useEffect(() =>{
+        if(coupon){
+            applyCoupon(coupon)
+        }
+    },[cartData])
+
+    console.log("coupon",coupon)
+    console.log("cartData",cartData)
+
     return (
         <>
             <div className="card">
@@ -214,8 +235,9 @@ const OrderSummary = (props) => {
                             Have a <span className="fw-semibold">promo</span> code ?
                         </h6>
                     </div>
-                    <div className="hstack gap-3 px-3 mx-n3">
-                        <input
+                    <div className="hstack gap-3 px-3 mx-n3 align-items-start">
+                       <div className='w-100'>
+                       <input
                             className="form-control me-auto"
                             type="text"
                             placeholder="Enter coupon code"
@@ -223,6 +245,10 @@ const OrderSummary = (props) => {
                             onChange={(e) => setCoupon(e.target.value)}
                             aria-label="Add Promo Code here..."
                         />
+                  <div className='text-end'>
+                  <button type="button" className="p-0 border-0" style={{ color:'#af6800' }} onClick={() => removeCoupon(coupon)}>Remove</button>
+                  </div>
+                       </div>
                         <button type="button" className="btn-normals w-xs" onClick={() => applyCoupon(coupon)}>Apply</button>
                     </div>
                     <span className={response.error ? 'text-success' : 'text-danger'}>{response?.msg}</span>
@@ -234,7 +260,11 @@ const OrderSummary = (props) => {
                                 <div class="">
                                     <div class="content d-flex justify-content-between">
                                         <h2 className="m-0">{item?.coupon_code}</h2>
-                                        <button className="border-0 p-0" style={{ color: '#B46B00' }} onClick={() => { setCoupon(item?.coupon_code); applyCoupon(item?.coupon_code) }}>Apply</button>
+                                        {item?.coupon_code == coupon ? 
+                                            <button className="border-0 p-0" style={{ color: '#B46B00', cursor: "none" }}>Applied</button>
+                                            :
+                                            <button className="border-0 p-0" style={{ color: '#B46B00' }} onClick={() => { setCoupon(item?.coupon_code); applyCoupon(item?.coupon_code) }}>Apply</button>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -314,12 +344,12 @@ const OrderSummary = (props) => {
                 </div>
             </div>
 
-            <div className={`modal fade ${showModal ? "show d-block" : ""}`} id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden={!showModal}>
-                <div className="modal-dialog modal-dialog-centered">
+            <div className={`modal fade voucher_modal ${showModal ? "show d-block" : ""}`} id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden={!showModal}>
+                <div className="voucher_pop modal-dialog modal-dialog-centered">
                     <div className="modal-content">
-                        <div className="modal-header">
+                        {/* <div className="modal-header">
                             <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
-                        </div>
+                        </div> */}
                         <div className="modal-body">
                             <div className="text-center">
                                 <img className="m-auto" width={"250px"} src={applycoupan} alt="icon-gif" />

@@ -11,7 +11,7 @@ import { Rating } from "@mui/material";
 
 const CartPopUp = ({ item }) => {
   const navigate = useNavigate();
-  const { cartData, allData, removeCartItemFun, offcanvas, setOffcanvas } =
+  const { cartData, allData, removeCartItemFun, offcanvas, setOffcanvas,getCartFun } =
     useFrontDataContext();
   const [cartList, setCartList] = useState([]);
 
@@ -86,6 +86,7 @@ const CartPopUp = ({ item }) => {
         if (newQuantity <= 5) {
           const param = { product_id: item.product_id, qnt: newQuantity };
           cartQntChange(param);
+          getCartFun()
         }
         return { ...item, qnt: newQuantity };
       }

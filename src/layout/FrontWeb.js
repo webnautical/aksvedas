@@ -61,32 +61,46 @@ const FrontWeb = ({ cmp }) => {
   }
 
   useEffect(() => {
-    if(firstSegment !== "product-detail"){
+    if (firstSegment !== "product-detail") {
       if (metaDetails) {
         document.title = metaDetails.meta_title || "Aksvedas";
-    
+  
         const descriptionMetaTag = document.querySelector("meta[name='description']");
         if (descriptionMetaTag) {
           descriptionMetaTag.setAttribute("content", metaDetails.meta_desc || "Aksvedas");
         } else {
-          const metaTag = document.createElement('meta');
+          const metaTag = document.createElement("meta");
           metaTag.name = "description";
           metaTag.content = metaDetails.meta_desc || "Aksvedas";
           document.head.appendChild(metaTag);
         }
-    
+  
         const keywordsMetaTag = document.querySelector("meta[name='keywords']");
         if (keywordsMetaTag) {
           keywordsMetaTag.setAttribute("content", metaDetails.meta_keyword || "default, keywords");
         } else {
-          const metaTag = document.createElement('meta');
+          const metaTag = document.createElement("meta");
           metaTag.name = "keywords";
           metaTag.content = metaDetails.meta_keyword || "default, keywords";
           document.head.appendChild(metaTag);
         }
+  
+        // ✅ Add or Update Canonical Link
+        let canonicalLink = document.querySelector("link[rel='canonical']");
+        if (canonicalLink) {
+          canonicalLink.setAttribute("href", window.location.href);
+        } else {
+          canonicalLink = document.createElement("link");
+          canonicalLink.rel = "canonical";
+          canonicalLink.href = window.location.href;
+          document.head.appendChild(canonicalLink);
+        }
       }
     }
   }, [metaDetails]);
+  
+
+
   
   return (
     <>

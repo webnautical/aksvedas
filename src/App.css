@@ -2,6 +2,7 @@
     --main-color: #7367f0;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 body {
@@ -1299,3 +1300,51 @@ footer .footer_support_btn  .btn-primary:hover{
     margin: 0px !important;
     display: block !important;
 } */
+
+
+.section-inner-des ul li{ list-style: disc;}
+
+.ck-editor__editable ul li{
+
+    list-style: disc;
+
+}
+
+
+@media screen and (max-width: 767px) {
+
+
+    .main_header{ margin-top: 165px;}
+
+
+
+  }
+
+
+  .voucher_pop .modal-content{
+
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .voucher_pop .modal-content h2{
+
+    font-size: 24px;
+    /* margin: 0px; */
+    color: white;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .voucher_pop .modal-content p{
+
+    color: white;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
+
+  }
+  
+
+  .voucher_modal {
+    background: #000000c2!important;
+}
+
+  

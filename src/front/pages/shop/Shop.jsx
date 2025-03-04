@@ -30,7 +30,7 @@ const Shop = () => {
   };
 
   useEffect(() => {
-    if (category === "mens-health" || category === "womens-health") {
+    if (category === "mens-health" || category === "womens-health"|| category === "womens-health-suppliment") {
       navigate('/not-found')
     }
   }, [category])

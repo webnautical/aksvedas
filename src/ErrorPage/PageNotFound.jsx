@@ -14,8 +14,8 @@ const PageNotFound = () => {
                         <h1 className="m-0">404</h1>
                         <h2 className="mb-0">Oops! Page not found</h2>
                         <p className="text-gray-500 ">The page you are looking for doesn't exist or has been moved.</p>
-                        <Link to="/shop/all" className="btn-2 w-100">
-                            Go Shop <i class="fa-solid fa-arrow-right"></i>
+                        <Link to="/shop/all" className=" d-inline-block" style={{color:'#b26a00', textDecoration:'underline'}}>
+                            Go Shop  <i class="fa-solid fa-arrow-right"></i>
                         </Link>
                     </div>
                 </div>

@@ -542,6 +542,16 @@ const ProductDetail = () => {
       "keywords",
       productDetails.meta_keyword || "default, keywords"
     );
+
+    let canonicalLink = document.querySelector("link[rel='canonical']");
+    if (canonicalLink) {
+      canonicalLink.setAttribute("href", window.location.href);
+    } else {
+      canonicalLink = document.createElement("link");
+      canonicalLink.rel = "canonical";
+      canonicalLink.href = window.location.href;
+      document.head.appendChild(canonicalLink);
+    }
   }, [productDetails]);
 
   const [showStickyBar, setShowStickyBar] = useState(false);
@@ -1007,7 +1017,7 @@ const ProductDetail = () => {
               {/* Know About */}
               <div className="my-4">
                 <h3 className="text-center">Product Description</h3>
-                <div className="d-block text-center mt-2">
+                <div className="d-block mt-2">
                   {" "}
                   <div
                     dangerouslySetInnerHTML={{

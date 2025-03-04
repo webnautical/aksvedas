@@ -192,11 +192,11 @@
     margin-right: 0px!important;
   }
   header nav ul li ul.submenu a {
-    color: #000;
+    color: #3a3a3a;
     padding: 8px 12px;
     white-space: unset;
-    font-size: 16px;
-    font-weight: 400;
+    font-size: 15px;
+    font-weight: 500;
   }
 
   header nav ul ul li a:hover {
@@ -271,6 +271,11 @@
 
   .mbile-heaader {
     padding: 0px 0px 15px;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    z-index: 99;
+    background-color: white;
 }
 
   .userrevie-info img {
@@ -407,6 +412,12 @@
 
 @media (max-width: 575.98px) {
 
+
+  .cart-section .doble_btn-pro{
+
+    flex-direction: column;
+
+  }
 
 
 

@@ -898,7 +898,7 @@ const Home = () => {
                   />
 
                   <div className="doble_btn text-md-start text-center ">
-                    <button className="shop_now btn-2" to="/">Shop Now <i class="fa-solid fa-arrow-right"></i></button>
+                    <Link className="shop_now btn-2" to="/product-detail/aksvedas-multivitamin-for-men-women">Shop Now <i class="fa-solid fa-arrow-right"></i></Link>
                   </div>
                 </div>
 

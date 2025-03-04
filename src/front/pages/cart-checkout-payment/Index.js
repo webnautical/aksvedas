@@ -129,6 +129,15 @@ const Index = () => {
             const lastAddressID = customerDetails?.address[customerDetails?.address?.length - 1].id;
             setAddressID(lastAddressID);
         }
+
+        setAddressVal(prevState => ({
+            ...prevState,
+            customer_id: customerDetails?.id,
+            name: customerDetails?.name,
+            phone: customerDetails?.phone,
+            email: customerDetails?.email,
+        }));
+        
     }, [customerDetails]);
 
     const [updAddress, setUpdAddress] = useState(null)
@@ -398,6 +407,21 @@ const Index = () => {
             otpInputs[index - 1].current.focus();
         }
     };
+  const [countdown, setCountdown] = useState(60);
+  const [count, setCount] = useState(0)
+    useEffect(() => {
+      if (otpSent) {
+        const timer = setInterval(() => {
+          setCountdown((prevCount) => {
+            if (prevCount === 1) {
+              clearInterval(timer);
+            }
+            return prevCount - 1;
+          });
+        }, 1000);
+        return () => clearInterval(timer);
+      }
+    }, [otpSent, count]);
 
     const handleVerifyOTP = async () => {
         const otpValue = otp.join("");
@@ -420,11 +444,13 @@ const Index = () => {
                     name: res?.data?.data?.name,
                 }
                 setGuestID(dataParam?.id)
-                setAddressVal({
-                    ...addressVal,
+                setAddressVal(prevState => ({
+                    ...prevState,
                     customer_id: dataParam?.id,
                     phone: mobileNumber,
-                });
+                }));
+                
+                getCustomerDetails(dataParam?.id);
                 setLoading(false)
                 setAddressModal(true)
                 setOtpSent(false);
@@ -438,6 +464,13 @@ const Index = () => {
             setLoading(false)
             setError("Server error");
         }
+    };
+
+    const handleResendOtp = () => {
+        setCountdown(60);
+        setCount(count + 1)
+        setOtpSent(true);
+        handleMobileNumberSubmit()
     };
 
 
@@ -543,7 +576,7 @@ const Index = () => {
                                                                                 <h4 className='mt-2 mb-0'>Otp Sent </h4>
                                                                                 <span className='mt-0 d-block'>Please check your phone for the OTP.</span>
                                                                                 <div className="gap-3 px-3 mx-n3">
-                                                                                    <div className="custom-otp mt-3">
+                                                                                    <div className="custom-otp mt-3 justify-content-between">
                                                                                         {otp?.map((digit, index) => (
                                                                                             <input
                                                                                                 key={index}
@@ -560,6 +593,15 @@ const Index = () => {
                                                                                             />
                                                                                         ))}
                                                                                     </div>
+                                                                                  <div class="mt-3 text-end">
+                                                                                  {countdown > 0 && (
+                                                                                        <p className="mt-3 mb-0"><i className="fa-regular fa-clock"></i> Resend Otp in {countdown} sec</p>
+                                                                                    )}
+                                                                                    {
+                                                                                        countdown === 0 &&
+                                                                                        <button onClick={handleResendOtp} className="p-0 border-0" style={{ color:'#af6800' }}>Resend OTP</button>
+                                                                                    }
+                                                                                  </div>
                                                                                     <button type="button" className="btn-normals w-xs text-nowrap mt-3" onClick={() => handleVerifyOTP()}>Verify</button>
                                                                                 </div>
                                                                                 {error && (
@@ -584,7 +626,7 @@ const Index = () => {
                                                             {(!customerDetails || customerDetails?.address?.length < 5) && (
                                                                 <div className="flex-shrink-0">
                                                                     <Link to="#" onClick={() => addAddress()} className="add_address btn-normals fs-14">
-                                                                        Add Address
+                                                                        Add new address
                                                                     </Link>
                                                                 </div>
                                                             )}
@@ -766,7 +808,7 @@ const Index = () => {
                                                                 {
                                                                     !submitLoading ?
                                                                         <button type="button" className="btn-2 w-100 mb-3" onClick={handleCreateAddress}>
-                                                                            Add <i class="fa-solid fa-plus mx-1"></i>
+                                                                            Save
                                                                         </button>
                                                                         :
                                                                         <button type="button" className="btn-2 w-100 mb-3" >
@@ -823,7 +865,10 @@ const Index = () => {
 
                                                             <>
                                                                 {activeStep === 0 ?
+                                                                    <>
+                                                                    <Link to="/shop/all" className="btn-2 buy-btn" onClick={handleNext}> Continue shopping </Link>
                                                                     <button className="btn-2" onClick={handleNext}> Next </button>
+                                                                    </>
                                                                     :
                                                                     <>
                                                                         {customerDetails?.address?.length > 0 ?

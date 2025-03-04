@@ -79,8 +79,8 @@ const Thumslider = (props) => {
         </Swiper>
  
         {/* Navigation Buttons */}
-        <button className="swiper-button-prev"></button>
-        <button className="swiper-button-next"></button>
+        <button className="swiper-button-prev"><i class="fa-solid fa-arrow-left"></i></button>
+        <button className="swiper-button-next"><i class="fa-solid fa-arrow-right"></i></button>
       </div>
  
       <Swiper
