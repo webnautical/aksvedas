@@ -20,7 +20,7 @@ const OrderList = () => {
     const columns = [
         {
             name: <span className='text-uppercase'>ORDER ID</span>,
-            selector: row => <span className='text-uppercase fw-bold'>#{row.id} </span>,
+            selector: row => <span className='text-uppercase fw-bold'> <Link to={`/admin/order-details/${row.id}`} className='text-dark'>#{row.id}</Link>  </span>,
         },
         {
             name: <span className='text-uppercase'>order date</span>,

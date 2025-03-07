@@ -145,9 +145,9 @@ const AddProduct = () => {
       });
       setImgPreview({
         ...imgPreview,
-        cover: imgBaseURL() + productDetails.cover,
-        hover_img: imgBaseURL() + productDetails.hover_img,
-        video: imgBaseURL() + productDetails.video,
+        cover: productDetails?.cover ? imgBaseURL() + productDetails.cover : null,
+        hover_img: productDetails.hover_img ? imgBaseURL() + productDetails.hover_img : null,
+        video: productDetails.video ? imgBaseURL() + productDetails.video : null,
         images: img,
       });
       setSubscriptionVal(productDetails?.product_subscription)
@@ -191,7 +191,9 @@ const AddProduct = () => {
     } else if (e.target.name === "video") {
       setValue({ ...value, video: e.target.files[0] });
       const imageUrl = URL.createObjectURL(e.target.files[0]);
+      // setImgPreview(prev => ({ ...prev, video: imageUrl }));
       setImgPreview({ ...imgPreview, video: imageUrl });
+
     } else if (e.target.name === "title") {
       setValue({
         ...value,
@@ -209,6 +211,8 @@ const AddProduct = () => {
       });
     }
   };
+
+  console.log("imgPreview",imgPreview?.video)
 
   const handleEditorChange = (value) => {
     setValue((prevValues) => {
@@ -543,6 +547,9 @@ const AddProduct = () => {
 
     setSubscriptionVal(newSubscriptions);
   };
+
+
+  console.log("productDetails", productDetails)
 
 
   return (
@@ -974,21 +981,18 @@ const AddProduct = () => {
                         </label>
                         <div class="preview_upload">
                           <h4>Video Preview</h4>
-                          <div
-                            className="d-flex align-items-center"
-                            style={{ gap: "10px" }}
-                          >
-                            {imgPreview.video && (
-                              <video style={{height: "60px", width: "100px"}}  controls>
-                                <source src={imgPreview.video} type="video/mp4" />
+                          <div  className="d-flex align-items-center"  style={{ gap: "10px" }} >
+                            {imgPreview?.video && (
+                              <video style={{height: "140px", width: "240px"}}  controls>
+                                <source src={imgPreview?.video} type="video/mp4" />
                                 Your browser does not support the video tag.
                               </video>
                             )}
-                            {/* {imgPreview.video && (
+                            {imgPreview?.video && (
                               <button className="icon_btn __danger" onClick={() => handleRemoveImage("video")}>
                                 <i className="fa fa-trash" />
                               </button>
-                            )} */}
+                            )}
                           </div>
                         </div>
 

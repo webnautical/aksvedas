@@ -16,9 +16,6 @@ const CKEditorCom = ({ handleEditorChange, ckValue }) => {
                     ckfinder: {
                         uploadUrl: 'https://aksvedas.com/api/upload'
                     },
-                    // toolbar: [
-                    //     'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo', 'imageUpload'
-                    // ],
                     image: {
                         toolbar: [
                             'imageTextAlternative', 'imageStyle:full', 'imageStyle:side'

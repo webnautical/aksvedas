@@ -294,18 +294,18 @@ const ProductDetail = () => {
       subscription_id: selectedPlan?.id,
     };
     // if (authCustomer()?.id) {
-      const canvas = type == "buy" ? 0 : 1;
-      addToCartRepeater(param, getWishlistFun, getCartFun, 0, canvas);
-      selectedProducts?.map((item) => {
-        const param = { product_id: item, qnt: 1 };
-        return addToCartRepeater(param, getWishlistFun, getCartFun, 1);
-      });
-      const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-      await delay(2000);
-      setDisabledBtn(false);
-      if (type == "buy") {
-        navigate("/checkout");
-      }
+    const canvas = type == "buy" ? 0 : 1;
+    addToCartRepeater(param, getWishlistFun, getCartFun, 0, canvas);
+    selectedProducts?.map((item) => {
+      const param = { product_id: item, qnt: 1 };
+      return addToCartRepeater(param, getWishlistFun, getCartFun, 1);
+    });
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    await delay(2000);
+    setDisabledBtn(false);
+    if (type == "buy") {
+      navigate("/checkout");
+    }
     // } else {
     //   sessionStorage.setItem("cart", JSON.stringify(param));
     //   navigate("/login", { state: { data: type } });
@@ -569,7 +569,7 @@ const ProductDetail = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const [value, setValue] = useState('Know More');
+  const [value, setValue] = useState("Know More");
 
   const handleChangeProduct = (event, newValue) => {
     setValue(newValue);
@@ -612,9 +612,7 @@ const ProductDetail = () => {
                       <source src={imgBaseURL() + productDetails?.video} type="video/mp4" />
                       Your browser does not support the video tag.
                     </video> */}
-                    
                   </div>
-
 
                   <div className="col-lg-7 ps-lg-4">
                     <div className="product-deatisl-content">
@@ -627,7 +625,9 @@ const ProductDetail = () => {
                               value={averageFun()}
                               readOnly
                             />
-                            {reviewList?.length > 0 && <span>({reviewList?.length})</span>}
+                            {reviewList?.length > 0 && (
+                              <span>({reviewList?.length})</span>
+                            )}
                           </div>
                           {/* <span className="fw-medium"> (4)</span> */}
                         </div>
@@ -830,7 +830,7 @@ const ProductDetail = () => {
                               <button
                                 className="btn-2 buy-btn"
                                 onClick={() => addToCartFun("buy")}
-                              // disabled={disabledBtn}
+                                // disabled={disabledBtn}
                               >
                                 Buy Now
                               </button>
@@ -849,8 +849,9 @@ const ProductDetail = () => {
                         <>
                           {/* Sticky Bottom Bar with Transition */}
                           <div
-                            className={`sticky-bottom-bar ${showStickyBar ? "show" : ""
-                              }`}
+                            className={`sticky-bottom-bar ${
+                              showStickyBar ? "show" : ""
+                            }`}
                           >
                             <div className="container p-0">
                               <div class="my_sticky_bar">
@@ -906,7 +907,6 @@ const ProductDetail = () => {
                                   </div>
                                 )}
                               </div>
-
                             </div>
                           </div>
                         </>
@@ -1028,208 +1028,215 @@ const ProductDetail = () => {
               </div>
 
               <div className="all_product_additional_details">
-                <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
-                  <Tabs value={value} onChange={handleChangeProduct} centered>
-                    {productContents?.knowabout?.length > 0 && (
-                      <Tab label="Know More" value="Know More" />
-                    )}
-
-                    {productContents?.keyingredients?.length > 0 && (
-                      <Tab label="Key Ingredients" value="Key Ingredients" />
-                    )}
-
-                    {productContents?.useoff?.length > 0 && (
-                      <Tab label="How to use" value="How to use" />
-                    )}
-
-                    {productContents?.recommendedwith?.length > 0 && (
-                      <Tab label="Recommended with" value="Recommended with" />
-                    )}
-
-                    {productContents?.faq?.length > 0 && (
-                      <Tab label="FAQ" value="FAQ" />
-                    )}
-                  </Tabs>
-
-                  <Box sx={{ p: 2 }}>
-                    {value === "Know More" && (
-                      <Typography>
-                        {productContents?.knowabout?.length > 0 && (
-                          <div className="how-use mb-md-5 mb-3">
-                            <h3>Know About {productDetails?.name}</h3>
-                            <div className="row">
-                              <div className="col-xl-11  mx-auto">
-                                <div className="about-shilajit">
-                                  <div className="row mx-0">
-                                    <div className="col-sm-8 px-0">
-                                      <div className="about-shilajit-inner">
-                                        <h4>{productContents?.knowabout[0]?.title}</h4>
-                                        <HTMLContent
-                                          data={productContents?.knowabout[0]?.desc}
-                                        />
-                                      </div>
-                                    </div>
-                                    <div className="col-sm-4 px-0">
-                                      <div className="about-shilaimg">
-                                        <img
-                                          src={imgBaseURL() + productContents?.knowabout[0]?.img}
-                                          alt=""
-                                        />
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-
-
-                        {productContents?.attachment[0] && (
-                          <div className="row justify-content-center mt-4">
-                            <div className="col-lg-3 col-md-4">
-                              <div className="product-button">
-                                <div className="doble_btn-pro">
-                                  <Link
-                                    className="btn-2"
-                                    target="_blank"
-                                    to={
-                                      imgBaseURL() + productContents?.attachment[0]?.img
-                                    }
-                                  >
-                                    Download Attachment
-                                    <i className="ms-2 fa-solid fa-download"></i>
-                                  </Link>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-
-                      </Typography>
-                    )}
-                    {value === "Key Ingredients" && (
-                      <Typography>
-                        {productContents?.keyingredients?.length > 0 && (
-                          <div className="how-use">
-                            <h3>Key Ingredients</h3>
-                            <div className="row justify-content-center">
-                              {productContents?.keyingredients?.map((item, i) => (
-                                <div className="col-md-4 col-sm-6 mb-md-5 mb-4" key={i}>
-                                  <div className="keyingrents">
-                                    <img
-                                      src={imgBaseURL() + item?.img}
-                                      alt=""
-                                    />
-                                    <h4>{item?.title}</h4>
-                                    <HTMLContent data={item?.desc} />
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </Typography>
-                    )}
-                    {value === "How to use" && (
-                      <Typography>
-                        <div className="row">
-                          <div className="col-lg-10 mx-auto">
-                            {productContents?.useoff?.length > 0 && (
-                              <div className="how-use">
-                                <h3>How to use {productDetails?.name}</h3>
-                                <div className="row justify-content-center">
-                                  {productContents?.useoff?.map((item, i) => (
-                                    <div className="col-sm-6" key={i}>
-                                      <div className="how-tobox">
-                                        <div className="how-imgbox">
-                                          <img
-                                            src={imgBaseURL() + item?.img}
-                                            alt=""
-                                          />
-                                        </div>
-                                        <h4>Step {i + 1}</h4>
-                                        <HTMLContent data={item?.desc} />
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-                          </div>
+  <div className="accordion" id="accordionExample">
+    {productContents?.knowabout?.length > 0 && (
+      <div className="accordion-item">
+        <h2 className="accordion-header">
+          <button
+            className="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseOne"
+          >
+            Know More
+          </button>
+        </h2>
+        <div id="collapseOne" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div className="accordion-body">
+            <div className="how-use mb-0 pt-3">
+              <h3>Know About {productDetails?.name}</h3>
+              <div className="row">
+                <div className="col-xl-11 mx-auto">
+                  <div className="about-shilajit">
+                    <div className="row mx-0">
+                      <div className="col-sm-8 px-0">
+                        <div className="about-shilajit-inner">
+                          <h4>{productContents?.knowabout[0]?.title}</h4>
+                          <HTMLContent data={productContents?.knowabout[0]?.desc} />
                         </div>
-                      </Typography>
-                    )}
-                    {value === "Recommended with" && (
-                      <Typography>
-                        {productContents?.recommendedwith?.length > 0 && (
-                          <div className="how-use">
-                            <h3>{productDetails?.name} is recommended with</h3>
-                            <div className="row justify-content-center">
-                              {productContents?.recommendedwith?.map((item, i) => (
-                                <div className="col-sm-6 mb-md-5 mb-4" key={i}>
-                                  <div className="how-tobox">
-                                    <div className="how-imgbox">
-                                      <img
-                                        src={imgBaseURL() + item?.img}
-                                        alt=""
-                                      />
-                                    </div>
-                                    <h4>{item.title}</h4>
-                                    <HTMLContent data={item?.desc} />
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </Typography>
-                    )}
-                    {value === "FAQ" && (
-                      <Typography>
-                        {productContents?.faq?.length > 0 && (
-                          <div className="how-use">
-                            <div className="faq-section">
-                              <h3>FAQ</h3>
-                              <div className="row">
-                                <div className="col-lg-8 mx-auto">
-                                  <div className="accordion accordion-flush" id="accordionFlushExample">
-                                    {productContents?.faq?.map((item, i) => (
-                                      <div className="accordion-item" key={i}>
-                                        <h2 className="accordion-header" id={`flush-headingOne-${i}`}>
-                                          <Link
-                                            className="product-info-accordion text-decoration-none"
-                                            data-bs-toggle="collapse"
-                                            data-bs-target={`#flush-collapseOne-${i}`}
-                                            aria-expanded={i === 0 ? "true" : "false"}
-                                            aria-controls={`flush-collapseOne-${i}`}
-                                          >
-                                            <span className="fs-18px">{item.title}</span>
-                                          </Link>
-                                        </h2>
-                                        <div
-                                          id={`flush-collapseOne-${i}`}
-                                          className={`accordion-collapse collapse ${i === 0 ? "show" : ""}`}
-                                          aria-labelledby={`flush-headingOne-${i}`}
-                                          data-bs-parent="#accordionFlushExample"
-                                        >
-                                          <div className="py-8">
-                                            <HTMLContent data={item?.desc} />
-                                          </div>
-                                        </div>
-                                      </div>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </Typography>
-                    )}
-                  </Box>
-                </Box>
+                      </div>
+                      <div className="col-sm-4 px-0">
+                        <div className="about-shilaimg">
+                          <img src={imgBaseURL() + productContents?.knowabout[0]?.img} alt="" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
+            </div>
+
+            {productContents?.attachment[0] && (
+              <div className="row justify-content-center mt-4">
+                <div className="col-lg-3 col-md-4">
+                  <div className="product-button">
+                    <div className="doble_btn-pro">
+                      <Link
+                        className="btn-2"
+                        target="_blank"
+                        to={imgBaseURL() + productContents?.attachment[0]?.img}
+                      >
+                        Download Attachment
+                        <i className="ms-2 fa-solid fa-download"></i>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    )}
+
+    {productContents?.keyingredients?.length > 0 && (
+      <div className="accordion-item">
+        <h2 className="accordion-header">
+          <button
+            className="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseTwo"
+          >
+            Key Ingredients
+          </button>
+        </h2>
+        <div id="collapseTwo" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div className="accordion-body">
+            <div className="how-use pt-3">
+              <h3>Key Ingredients</h3>
+              <div className="row justify-content-center">
+                {productContents?.keyingredients?.map((item, i) => (
+                  <div className="col-md-4 col-sm-6 mb-md-5 mb-4" key={i}>
+                    <div className="keyingrents">
+                      <img src={imgBaseURL() + item?.img} alt="" />
+                      <h4>{item?.title}</h4>
+                      <HTMLContent data={item?.desc} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {productContents?.useoff?.length > 0 && (
+      <div className="accordion-item">
+        <h2 className="accordion-header">
+          <button
+            className="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseThree"
+          >
+            How to use
+          </button>
+        </h2>
+        <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div className="accordion-body">
+            <div className="row pt-3">
+              <div className="col-lg-10 mx-auto">
+                <div className="how-use">
+                  <h3>How to use {productDetails?.name}</h3>
+                  <div className="row justify-content-center">
+                    {productContents?.useoff?.map((item, i) => (
+                      <div className="col-sm-6" key={i}>
+                        <div className="how-tobox">
+                          <div className="how-imgbox">
+                            <img src={imgBaseURL() + item?.img} alt="" />
+                          </div>
+                          <h4>Step {i + 1}</h4>
+                          <HTMLContent data={item?.desc} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {productContents?.recommendedwith?.length > 0 && (
+      <div className="accordion-item">
+        <h2 className="accordion-header">
+          <button
+            className="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseFour"
+          >
+            Recommended with
+          </button>
+        </h2>
+        <div id="collapseFour" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+          <div className="accordion-body">
+            <div className="how-use pt-3">
+              <h3>{productDetails?.name} is recommended with</h3>
+              <div className="row justify-content-center">
+                {productContents?.recommendedwith?.map((item, i) => (
+                  <div className="col-sm-6 mb-md-5 mb-4" key={i}>
+                    <div className="how-tobox">
+                      <div className="how-imgbox">
+                        <img src={imgBaseURL() + item?.img} alt="" />
+                      </div>
+                      <h4>{item.title}</h4>
+                      <HTMLContent data={item?.desc} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+
+  {productContents?.faq?.length > 0 && (
+    <div className="how-use">
+      <div className="faq-section">
+        <h3>FAQ</h3>
+        <div className="row">
+          <div className="col-lg-8 mx-auto">
+            <div className="accordion accordion-flush" id="accordionFlushExample">
+              {productContents?.faq?.map((item, i) => (
+                <div className="accordion-item" key={i}>
+                  <h2 className="accordion-header" id={`flush-heading-${i}`}>
+                    <Link
+                      className="product-info-accordion text-decoration-none"
+                      data-bs-toggle="collapse"
+                      data-bs-target={`#flush-collapse-${i}`}
+                      aria-expanded="false"
+                      aria-controls={`flush-collapse-${i}`}
+                    >
+                      <span className="fs-18px">{item.title}</span>
+                    </Link>
+                  </h2>
+                  <div
+                    id={`flush-collapse-${i}`}
+                    className="accordion-collapse collapse"
+                    aria-labelledby={`flush-heading-${i}`}
+                    data-bs-parent="#accordionFlushExample"
+                  >
+                    <div className="py-8">
+                      <HTMLContent data={item?.desc} />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+</div>
+
 
               {/* Benefits */}
               {/* {productDetails?.product_benefits?.length > 0 && (
@@ -1254,10 +1261,6 @@ const ProductDetail = () => {
               )} */}
             </div>
           </section>
-
-
-
-
 
           <section className="bestseller">
             <div className="container">
@@ -1527,8 +1530,8 @@ const ProductDetail = () => {
                         WRITE A REVIEWS
                       </button>
                     </div>
-                    // )
                   ) : (
+                    // )
                     <div className="graph-star-rating-footer text-center mt-3 mb-4">
                       <button
                         type="button"
@@ -1719,77 +1722,85 @@ const ProductDetail = () => {
                               </div>
                               <div className="media-body">
                                 <div className="reviews-members-body">
-                                  <h6 className="text-uppercase">{item?.name}</h6>
+                                  <h6 className="text-uppercase">
+                                    {item?.name}
+                                  </h6>
                                   <p> {item?.review} </p>
 
                                   <div className="upload-img-show">
-                                    {item?.images?.split(",").map((media, i) => {
-                                      const isVideo =
-                                        media.endsWith(".mp4") ||
-                                        media.endsWith(".mov");
-                                      const mediaURL = imgBaseURL() + media;
+                                    {item?.images
+                                      ?.split(",")
+                                      .map((media, i) => {
+                                        const isVideo =
+                                          media.endsWith(".mp4") ||
+                                          media.endsWith(".mov");
+                                        const mediaURL = imgBaseURL() + media;
 
-                                      return (
-                                        <div
-                                          key={i}
-                                          className="media-container m-2"
-                                          style={{
-                                            position: "relative",
-                                            width: "150px",
-                                            height: "150px",
-                                          }}
-                                        >
-                                          {isVideo ? (
-                                            <video
-                                              src={mediaURL}
-                                              alt={`Video ${i}`}
-                                              className="media-thumbnail"
-                                              style={{
-                                                cursor: "pointer",
-                                                width: "150px",
-                                                height: "150px",
-                                                objectFit: "cover",
-                                              }}
-                                              controls
-                                              onClick={() =>
-                                                handleImageClick(media)
-                                              }
-                                            />
-                                          ) : (
-                                            <img
-                                              src={mediaURL}
-                                              alt={`Image ${i}`}
-                                              className="img-thumbnail"
-                                              style={{
-                                                cursor: "pointer",
-                                                width: "150px",
-                                                height: "150px",
-                                                objectFit: "cover",
-                                              }}
-                                              onClick={() =>
-                                                handleImageClick(media)
-                                              }
-                                            />
-                                          )}
-                                          {/* <i className="fa fa-trash" onClick={() => handleDeleteMedia(i)} style={{ position: 'absolute', top: '5px', right: '5px', cursor: 'pointer' }}></i> */}
-                                        </div>
-                                      );
-                                    })}
+                                        return (
+                                          <div
+                                            key={i}
+                                            className="media-container m-2"
+                                            style={{
+                                              position: "relative",
+                                              width: "150px",
+                                              height: "150px",
+                                            }}
+                                          >
+                                            {isVideo ? (
+                                              <video
+                                                src={mediaURL}
+                                                alt={`Video ${i}`}
+                                                className="media-thumbnail"
+                                                style={{
+                                                  cursor: "pointer",
+                                                  width: "150px",
+                                                  height: "150px",
+                                                  objectFit: "cover",
+                                                }}
+                                                controls
+                                                onClick={() =>
+                                                  handleImageClick(media)
+                                                }
+                                              />
+                                            ) : (
+                                              <img
+                                                src={mediaURL}
+                                                alt={`Image ${i}`}
+                                                className="img-thumbnail"
+                                                style={{
+                                                  cursor: "pointer",
+                                                  width: "150px",
+                                                  height: "150px",
+                                                  objectFit: "cover",
+                                                }}
+                                                onClick={() =>
+                                                  handleImageClick(media)
+                                                }
+                                              />
+                                            )}
+                                            {/* <i className="fa fa-trash" onClick={() => handleDeleteMedia(i)} style={{ position: 'absolute', top: '5px', right: '5px', cursor: 'pointer' }}></i> */}
+                                          </div>
+                                        );
+                                      })}
                                   </div>
                                 </div>
                               </div>
                             </div>
 
-                            {
-                              item?.reply &&
+                            {item?.reply && (
                               <div className="admin_reply">
                                 <div className="d-flex justify-content-between mb-1">
-                                  <p className="mb-0"><b>Aksvedas Reply</b></p>
-                                  <p class="text-gray mb-0 mt-0"> {timeAgo(item?.updated_at)}</p>
+                                  <p className="mb-0">
+                                    <b>Aksvedas Reply</b>
+                                  </p>
+                                  <p class="text-gray mb-0 mt-0">
+                                    {" "}
+                                    {timeAgo(item?.updated_at)}
+                                  </p>
                                 </div>
                                 <p className="mb-0">{item?.reply}</p>
                               </div>
-                            }
+                            )}
                           </div>
                         ))
                     ) : (

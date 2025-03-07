@@ -24,6 +24,7 @@ export const AyurvedExperience = () => {
 
   const [value, setValue] = useState({
     title: "",
+    product_url: "",
     desc: "",
     img1: "",
     img2: "",
@@ -35,6 +36,7 @@ export const AyurvedExperience = () => {
         ...value,
         id: updData.id,
         title: updData.title,
+        product_url: updData.product_url,
         desc: updData.desc,
         img1: updData.img1,
         img2: updData.img2,
@@ -43,6 +45,7 @@ export const AyurvedExperience = () => {
       setValue({
         ...value,
         title: "",
+        product_url: "",
         desc: "",
         img1: "",
         img2: "",
@@ -149,6 +152,7 @@ export const AyurvedExperience = () => {
     setLoading(true);
     const requiredVal = {
       title: value.title,
+      product_url: value.product_url,
       img1: value.img1,
       desc: value.desc,
     };
@@ -158,6 +162,7 @@ export const AyurvedExperience = () => {
       const formData = new FormData();
       formData.append("id", value.id);
       formData.append("title", value.title);
+      formData.append("product_url", value.product_url);
       formData.append("desc", value.desc);
       formData.append("img1", value.img1);
       formData.append("img2", value.img2);
@@ -292,6 +297,7 @@ export const AyurvedExperience = () => {
                     {page == "updateDashboard" ? (
                       <div className="upd-box">
                         <div className="row">
+
                           <div className="col-12 col-md-12">
                             <label className="form-label">Title</label>
                             <input
@@ -303,6 +309,19 @@ export const AyurvedExperience = () => {
                               placeholder="Title"
                             />
                             <span className="errMsg">{errors.title}</span>
+                          </div>
+
+                          <div className="col-12 col-md-12 mt-3">
+                            <label className="form-label">URL</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              onChange={handleChange}
+                              name="product_url"
+                              value={value.product_url}
+                              placeholder="URL"
+                            />
+                            <span className="errMsg">{errors.product_url}</span>
                           </div>
 
                           <div className="col-12 col-md-12 my-4">

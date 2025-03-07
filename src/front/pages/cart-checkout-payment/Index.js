@@ -422,6 +422,7 @@ const Index = () => {
         return () => clearInterval(timer);
       }
     }, [otpSent, count]);
+    const [parentTrigger, setParentTrigger] = useState(false);
 
     const handleVerifyOTP = async () => {
         const otpValue = otp.join("");
@@ -449,7 +450,7 @@ const Index = () => {
                     customer_id: dataParam?.id,
                     phone: mobileNumber,
                 }));
-                
+                setParentTrigger(true)
                 getCustomerDetails(dataParam?.id);
                 setLoading(false)
                 setAddressModal(true)
@@ -495,7 +496,7 @@ const Index = () => {
             </div>
 
             <section className="cart-section checkout-pagebg">
-
+                    {/* <button onClick={()=>callChildApplyCoupon()}>Applu</button> */}
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12 mx-auto">
@@ -850,7 +851,7 @@ const Index = () => {
                                         cartData?.length > 0 &&
                                         <div className="col-lg-4  rightdiv-tableorder mt-lg-0 mt-3">
                                             <div className="sticky-side-div">
-                                                <OrderSummary subTotal={getSubTotalFunc()} setOfferCouponObj={setOfferCouponObj} setLoyaltyDiscount={setLoyaltyDiscount} loyaltyDiscount={loyaltyDiscount} />
+                                                <OrderSummary subTotal={getSubTotalFunc()} setOfferCouponObj={setOfferCouponObj} setLoyaltyDiscount={setLoyaltyDiscount} loyaltyDiscount={loyaltyDiscount} parentTrigger={parentTrigger}/>
                                                 <div className="product-button">
                                                     <Box
                                                         sx={{ display: "flex", justifyContent: "flex-end" }}

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
 import { APICALL } from '../../utility/api/api'
-import { authCustomer } from '../../utility/Utility'
+import { authCustomer, toastifySuccess } from '../../utility/Utility'
 import { useFrontDataContext } from '../../context/FrontContextProvider'
 import applycoupan from "../../assets/img/coupan-apply.gif";
-const OrderSummary = (props) => {
+const OrderSummary =(props) => {
     const { shippingDetails, cartData, customerDetails, categories } = useFrontDataContext()
 
     // const [discountOnCategory, setDiscountOnCategory] = useState([])
-    const { subTotal, setOfferCouponObj, loyaltyDiscount, setLoyaltyDiscount } = props
+    const { subTotal, setOfferCouponObj, loyaltyDiscount, setLoyaltyDiscount, parentTrigger } = props
     const [coupon, setCoupon] = useState('')
     const [response, setResponse] = useState({
         error: null,
@@ -16,6 +16,7 @@ const OrderSummary = (props) => {
         allow: '',
         saving: 0,
     })
+
 
     const applyCoupon = async (coupon) => {
         try {
@@ -30,7 +31,17 @@ const OrderSummary = (props) => {
                     const saving = calculateSavings1(res?.data, cartData)
                     setOfferCouponObj({ saving: saving, coupon: coupon, allow: res?.data?.allow })
                     // setOfferCouponObj({ saving: saving * parseInt(cartData?.length), coupon: coupon, allow: res?.data?.allow })
+
                     setResponse({ ...response, 'error': res?.status, 'msg': res?.message, 'coupon': res?.data?.coupon_code, saving: saving, allow: res?.data?.allow })
+
+                    // setResponse(prevState => ({
+                    //     ...prevState,
+                    //     'error': res?.status,
+                    //     'msg': res?.message,
+                    //     'coupon': res?.data?.coupon_code,
+                    //     saving,
+                    //     allow: res?.data?.allow
+                    // }));
                 }
                 if (res?.data?.allow !== 'all') {
                     const filteredProducts = cartData.filter(product => {
@@ -54,12 +65,13 @@ const OrderSummary = (props) => {
                     setResponse({ ...response, 'error': res?.status, 'msg': msg, 'coupon': res?.data?.coupon_code, saving: saving, allow: res?.data?.allow })
                 }
             } else {
-                setResponse({ ...response, 'error': res?.status, 'msg': res?.message })
+                setResponse({ ...response, 'error': res?.status, 'msg': res?.message, allow: '',saving: 0 })
             }
         } catch (error) {
             console.log(error)
         }
     }
+
 
     const getFreeDeliveryText = () => {
         const subTotalAmount = parseInt(subTotal);
@@ -223,8 +235,14 @@ const OrderSummary = (props) => {
         }
     },[cartData])
 
-    console.log("coupon",coupon)
-    console.log("cartData",cartData)
+    useEffect(() =>{
+        if(parentTrigger){
+            if(coupon){
+                applyCoupon(coupon)
+            }
+        }
+    },[parentTrigger])
+
 
     return (
         <>
@@ -364,6 +382,6 @@ const OrderSummary = (props) => {
             </div>
         </>
     )
-}
+};
 
 export default OrderSummary

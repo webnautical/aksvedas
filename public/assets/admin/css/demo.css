@@ -6250,6 +6250,14 @@ content: unset!important;
  
 .rating_box .fs-15{ display: flex; gap: 3px;}
 
+.ck-editor__editable_inline ol li{
+
+
+  list-style: unset!important;
+  list-style-type: unset!important;
+
+}
+
 
 
 

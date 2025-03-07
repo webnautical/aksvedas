@@ -1303,6 +1303,8 @@ footer .footer_support_btn  .btn-primary:hover{
 
 
 .section-inner-des ul li{ list-style: disc;}
+.section-inner-des ol li{ list-style: auto!important;}
+
 
 .ck-editor__editable ul li{
 
@@ -1347,4 +1349,37 @@ footer .footer_support_btn  .btn-primary:hover{
     background: #000000c2!important;
 }
 
+
+.all_product_additional_details .accordion-header button{
+
+    background-color: #c3c3c340;
+    border-radius: 0px;
+    margin: 5px 0;
+
+
+}
+
+
+.all_product_additional_details .accordion.accordion-flush{ 
+
+    box-shadow: unset!important;
+}
+
+
+
+.all_product_additional_details .faq-section{ 
+
+    padding-top: 30px;
+
+
+}
+
+
+
+
+.faq-section .product-info-accordion:not(.collapsed){
+
+    color: black!important;
+
+}
   
