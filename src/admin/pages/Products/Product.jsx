@@ -20,6 +20,20 @@ const Product = () => {
   const navigate = useNavigate();
   const [selectedID, setSelectedID] = useState([]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    const savedPage = sessionStorage.getItem("productPage");
+    if (savedPage) {
+      setCurrentPage(Number(savedPage));
+    }
+  }, []);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    sessionStorage.setItem("productPage", page);
+  };
+
   const columns = [
     {
       name: "Product Image",
@@ -304,6 +318,8 @@ const Product = () => {
   const filterReset = () => {
     setFilterData(listData)
     setSearchVal({ ...searchVal, 'searchText': '', 'drpDownVal': '' })
+    setCurrentPage(1);
+    sessionStorage.setItem("productPage", 1);
   }
 
   const handleDrpDown = (type, val) => {
@@ -390,7 +406,8 @@ const Product = () => {
                 highlightOnHover
                 selectableRowsHighlight
                 pagination
-              // selectableRows
+                paginationDefaultPage={currentPage}
+                onChangePage={handlePageChange}
               />
             </div>
           </div>

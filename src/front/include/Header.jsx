@@ -294,7 +294,7 @@ const Header = () => {
               value={headerSearchVal}
               onChange={handleChange}
             />
-            <button onClick={(e) => handleSearch(e)}>
+            <button onClick={(e) => handleSearch(e)}  aria-label="Submit search">
               <i className="fa fa-search"></i>
             </button>
 
@@ -323,13 +323,16 @@ const Header = () => {
         <section className="header d-md-block d-none">
           <div className="container">
             <div className="main_inner_header">
-              <div className="text-center top_logo_section">
-                <Link onClick={handleLinkClick} to="/">
+            <div className="text-center top_logo_section">
+                <Link onClick={handleLinkClick} to="/" aria-label="Home">
                   {" "}
                   <img
                     className="mx-auto"
                     src={imgBaseURL() + webAttr?.logo}
-                    alt=""
+                    alt="Site Logo"
+                    width={160}
+                    height={32}
+                     loading="lazy"
                   />
                 </Link>
               </div>
@@ -338,7 +341,7 @@ const Header = () => {
                 <ul>
                   {authCustomer()?.id ? (
                     <li>
-                      <Link to="#">
+                      <Link to="#" aria-label="User">
                         <span>
                           <i class="fa-regular fa-user"></i>
                           {authCustomer()?.name
@@ -393,20 +396,20 @@ const Header = () => {
 
                   {/* {authCustomer()?.id && ( */}
                     <li>
-                      <button
-                        className="text-dark planBtn"
-                        onClick={() => redirectPage("wishlist")}
-                      >
-                        <i class="fa-regular fa-heart"></i>
-                        {wishlistData?.length != 0 && (
-                          <span>{wishlistData?.length}</span>
-                        )}
-                      </button>
+                                <button
+              className="text-dark planBtn"
+              onClick={() => redirectPage("wishlist")}
+              aria-label={`Wishlist ${wishlistData?.length ? wishlistData.length : ''}`}
+            >
+              <i className="fa-regular fa-heart"></i>
+              {wishlistData?.length !== 0 && <span>{wishlistData?.length}</span>}
+            </button>
+
                     </li>
                   {/* )} */}
 
                   <li>
-                    <Link>
+                    <Link aria-label="Search Icon">
                       <div className="search-icon" onClick={toggleSearch}>
                         <i className="fa fa-search"></i>
                       </div>
@@ -421,7 +424,7 @@ const Header = () => {
                                   value={headerSearchVal}
                                   onChange={handleChange}
                                 />
-                                <button type="button" onClick={closeSearch}>
+                                <button type="button" onClick={closeSearch}  aria-label="Submit search">
                                   <i className="fa-solid fa-xmark"></i>
                                 </button>
 
@@ -453,36 +456,36 @@ const Header = () => {
 
                   {/* {authCustomer()?.id && ( */}
                     <li className="cart_li">
-                      <Link
-                        data-bs-toggle="offcanvas"
-                        data-bs-target="#offcanvasRight"
-                        aria-controls="offcanvasRight"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          version="1.1"
-                          xmlnsXlink="http://www.w3.org/1999/xlink"
-                          width={24}
-                          height={24}
-                          x="0"
-                          y="0"
-                          viewBox="0 0 64 64"
-                          style={{ enableBackground: "new 0 0 512 512" }}
-                          xmlSpace="preserve"
-                        >
-                          <g>
-                            <path
-                              d="M25.308 61.679c-3.514 0-6.373-2.859-6.373-6.373s2.859-6.372 6.373-6.372 6.373 2.858 6.373 6.372-2.859 6.373-6.373 6.373zm0-8.745a2.375 2.375 0 0 0-2.373 2.372c0 1.309 1.064 2.373 2.373 2.373s2.373-1.064 2.373-2.373a2.375 2.375 0 0 0-2.373-2.372zM47.462 61.679c-3.514 0-6.372-2.859-6.372-6.373s2.858-6.372 6.372-6.372 6.373 2.858 6.373 6.372-2.86 6.373-6.373 6.373zm0-8.745a2.375 2.375 0 0 0-2.372 2.372 2.375 2.375 0 0 0 2.372 2.373 2.375 2.375 0 0 0 2.373-2.373 2.375 2.375 0 0 0-2.373-2.372zM52.128 43.994H20.709a6.482 6.482 0 0 1-6.35-5.061L7.838 10.456a1.264 1.264 0 0 0-.696-.86L1.733 7.089a2.5 2.5 0 0 1 2.102-4.536L9.244 5.06a6.293 6.293 0 0 1 3.468 4.28l6.521 28.479a1.506 1.506 0 0 0 1.476 1.176h31.419a1.51 1.51 0 0 0 1.476-1.171l5.07-21.813a1.488 1.488 0 0 0-.288-1.284 1.49 1.49 0 0 0-1.186-.572h-37a2.5 2.5 0 1 1 0-5h37c1.999 0 3.857.897 5.101 2.462s1.696 3.579 1.244 5.526l-5.071 21.814a6.489 6.489 0 0 1-6.346 5.037z"
-                              fill={333330}
-                              opacity="1"
-                              data-original="#000000"
-                            ></path>
-                          </g>
-                        </svg>
-                        {cartData?.length != 0 && (
-                          <span>{cartData?.length}</span>
-                        )}
-                      </Link>
+                    <Link
+  data-bs-toggle="offcanvas"
+  data-bs-target="#offcanvasRight"
+  aria-controls="offcanvasRight"
+  aria-label="Open Cart"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    version="1.1"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+    width={24}
+    height={24}
+    x="0"
+    y="0"
+    viewBox="0 0 64 64"
+    style={{ enableBackground: "new 0 0 512 512" }}
+    xmlSpace="preserve"
+  >
+    <g>
+      <path
+        d="M25.308 61.679c-3.514 0-6.373-2.859-6.373-6.373s2.859-6.372 6.373-6.372 6.373 2.858 6.373 6.372-2.859 6.373-6.373 6.373zm0-8.745a2.375 2.375 0 0 0-2.373 2.372c0 1.309 1.064 2.373 2.373 2.373s2.373-1.064 2.373-2.373a2.375 2.375 0 0 0-2.373-2.372zM47.462 61.679c-3.514 0-6.372-2.859-6.372-6.373s2.858-6.372 6.372-6.372 6.373 2.858 6.373 6.372-2.86 6.373-6.373 6.373zm0-8.745a2.375 2.375 0 0 0-2.372 2.372 2.375 2.375 0 0 0 2.372 2.373 2.375 2.375 0 0 0 2.373-2.373 2.375 2.375 0 0 0-2.373-2.372zM52.128 43.994H20.709a6.482 6.482 0 0 1-6.35-5.061L7.838 10.456a1.264 1.264 0 0 0-.696-.86L1.733 7.089a2.5 2.5 0 0 1 2.102-4.536L9.244 5.06a6.293 6.293 0 0 1 3.468 4.28l6.521 28.479a1.506 1.506 0 0 0 1.476 1.176h31.419a1.51 1.51 0 0 0 1.476-1.171l5.07-21.813a1.488 1.488 0 0 0-.288-1.284 1.49 1.49 0 0 0-1.186-.572h-37a2.5 2.5 0 1 1 0-5h37c1.999 0 3.857.897 5.101 2.462s1.696 3.579 1.244 5.526l-5.071 21.814a6.489 6.489 0 0 1-6.346 5.037z"
+        fill="#333330"
+        opacity="1"
+        data-original="#000000"
+      ></path>
+    </g>
+  </svg>
+  {cartData?.length !== 0 && <span>{cartData?.length}</span>}
+</Link>
+
                     </li>
                   {/* )} */}
                 </ul>

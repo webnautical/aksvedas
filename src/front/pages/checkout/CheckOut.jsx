@@ -6,7 +6,7 @@ import {
   stringToArray,
 } from "../../../utility/Utility";
 import { useFrontDataContext } from "../../../context/FrontContextProvider";
-import emptycart from "../../../assets/img/empty-cart.png";
+import emptycart from "../../../assets/img/empty-cart.webp";
 import { cartQntChange } from "../../../utility/api/RepeaterAPI";
 import FrontLoader from "../../../components/front/FrontLoader";
 
@@ -185,7 +185,7 @@ const CheckOut = () => {
                           <Link
                             className="d-block colorRedcolor"
                             to={"#"}
-                            onClick={() => removeCartItemFun(item?.id || item?.product_id)}
+                            onClick={() => removeCartItemFun(item?.product_id)}
                           >
                             <i class="fa fa-trash  me-1"></i> Remove
                           </Link>

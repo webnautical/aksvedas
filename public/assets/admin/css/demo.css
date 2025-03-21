@@ -1976,7 +1976,7 @@ section.product_knowlenge_base .shop_now {
 }
 
 .news_letter {
-  background-image: url('../img/avatars/newsletter.png');
+  background-image: url('../img/avatars/newsletter.webp');
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -5244,7 +5244,7 @@ section.review-section {
 }
 
 .blog-details-thumb img {
-  height: 625px;
+  height: auto;
   object-fit: cover;
   width: 100%;
   border-radius: 30px;

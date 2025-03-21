@@ -29319,3 +29319,7 @@ a.bg-vimeo:hover, a.bg-vimeo:focus {
 
     .title_box.benifits{    border-bottom: 1px solid #ececec;}
     .inner_benf-its p{ margin: 0px;}
+
+.auth-cover-bg-color {
+        background-color: #f8f7fa;
+    }

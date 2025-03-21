@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import OwlCarousel from "react-owl-carousel";
-import emptycart from "../../../assets/img/empty-cart.png";
+import emptycart from "../../../assets/img/empty-cart.webp";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import "swiper/swiper-bundle.min.css";
 import siderbg from "../../../assets/img/sliderbg.png";
-import newarrivals from "../../../assets/img/newarrivals.png";
+import newarrivals from "../../../assets/img/newarrivals.webp";
 import { Link, useNavigate } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -16,17 +16,17 @@ import ProductItemButton from "../../../components/front/ProductItemButton";
 import { Rating, Skeleton, imageListClasses } from "@mui/material";
 import { APICALL } from "../../../utility/api/api";
 import FrontLoader from "../../../components/front/FrontLoader";
-import Spotlight from './../../../components/front/Spotlight';
+import Spotlight from "./../../../components/front/Spotlight";
 
 const imageUrl = [
-  "https://aksvedas.com/storage/tags_img/immu.png",
-  "https://aksvedas.com/storage/tags_img/dig.png",
-  "https://aksvedas.com/storage/tags_img/perf.png",
-  "https://aksvedas.com/storage/tags_img/slep.png",
-  "https://aksvedas.com/storage/tags_img/tired.png",
-  "https://aksvedas.com/storage/tags_img/tagimg6.png",
-  "https://aksvedas.com/storage/tags_img/bonee.png",
-  "https://aksvedas.com/storage/tags_img/fitness.png",
+  "https://aksvedas.com/storage/tags_img/immu.webp",
+  "https://aksvedas.com/storage/tags_img/dig.webp",
+  "https://aksvedas.com/storage/tags_img/perf.webp",
+  "https://aksvedas.com/storage/tags_img/slep.webp",
+  "https://aksvedas.com/storage/tags_img/tired.webp",
+  "https://aksvedas.com/storage/tags_img/tagimg6.webp",
+  "https://aksvedas.com/storage/tags_img/bonee.webp",
+  "https://aksvedas.com/storage/tags_img/fitness.webp",
 ];
 
 const Home = () => {
@@ -140,7 +140,7 @@ const Home = () => {
   // Usage in your component
   <OwlCarousel className="owl-theme" {...productslider}>
     {/* Your slides here */}
-  </OwlCarousel>
+  </OwlCarousel>;
 
   const heroslider = {
     loop: true,
@@ -192,10 +192,10 @@ const Home = () => {
     getCustomerDetails();
     selectedTagsFun();
   }, []);
-  const [wishCount, setWishlistCount] = useState(0)
+  const [wishCount, setWishlistCount] = useState(0);
   useEffect(() => {
-    getWishlistFun()
-  }, [wishCount])
+    getWishlistFun();
+  }, [wishCount]);
 
   const [tags, setTags] = useState([]);
   const selectedTagsFun = async () => {
@@ -212,6 +212,13 @@ const Home = () => {
     }
   };
 
+  document.querySelectorAll(".owl-prev").forEach((button) => {
+    button.setAttribute("aria-label", "Previous slide");
+  });
+
+  document.querySelectorAll(".owl-next").forEach((button) => {
+    button.setAttribute("aria-label", "Next slide");
+  });
 
   return (
     <>
@@ -220,64 +227,77 @@ const Home = () => {
         <OwlCarousel className="owl-theme" {...heroslider}>
           {allData ? (
             allData?.banner?.map((item, i) => (
-
               <>
-                {
-                  item?.title == 'null' ?
-                    <Link to={!item?.url || item?.url !== 'null' ? item?.url : '/shop/all'}>
-                      <div
-                        className="only_banner"
+                {item?.title == "null" ? (
+              <Link
+              to={!item?.url || item?.url !== "null" ? item?.url : "/shop/all"}
+              title={item?.name || "Shop Now"} // Adding a discernible name
+              aria-label={item?.name || "Shop Now"} // Improves accessibility
+            >
+             <div className="only_banner">
+                      <img
+                        src={`${imgBaseURL() + item?.img}`}
+                        alt="Banner"
                         style={{
-                          backgroundImage: `url(${imgBaseURL() + item?.img})`,
-                          backgroundRepeat: 'no-repeat',
-                          backgroundSize: 'cover',
-                          backgroundPosition: 'center'
+                          objectFit: "cover",
                         }}
-                      >
-                      </div>
-                    </Link>
-
-                    :
-                    <div className="item" key={i}>
-                      <div
-                        className="slider"
-                        style={{
-                          backgroundImage: `url(${siderbg})`,
-                          backgroundSize: "cover",
-                          backgroundPosition: "center",
-                          backgroundRepeat: "no-repeat",
-                        }}
-                      >
-                        <div className="container">
-                          <div className="row align-items-center">
-                            <div className="col-md-6">
-                              <div className="left_product_about" data-aos="fade-up">
-                                <div className="off_price">30% off</div>
-                                <p>{item?.title}</p>
-                                <h2>{item?.desc}</h2>
-                                <button
-                                  onClick={() => navigate(!item?.url || item?.url !== 'null' ? item?.url : '/shop/all')}
-                                  className="btn-2"
-                                >
-                                  Shop Now
-                                </button>
-                              </div>
+                        width="1920"
+                        height="1080"
+          
+                      />
+                    </div>
+            </Link>
+            
+                ) : (
+                  <div className="item" key={i}>
+                    <div
+                      className="slider"
+                      style={{
+                        backgroundImage: `url(${siderbg})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat",
+                      }}
+                    >
+                      <div className="container">
+                        <div className="row align-items-center">
+                          <div className="col-md-6">
+                            <div
+                              className="left_product_about"
+                              data-aos="fade-up"
+                            >
+                              <div className="off_price">30% off</div>
+                              <p>{item?.title}</p>
+                              <h2>{item?.desc}</h2>
+                              <button
+                                onClick={() =>
+                                  navigate(
+                                    !item?.url || item?.url !== "null"
+                                      ? item?.url
+                                      : "/shop/all"
+                                  )
+                                }
+                                className="btn-2"
+                              >
+                                Shop Now
+                              </button>
                             </div>
+                          </div>
 
-                            <div className="col-md-6">
-                              <div className="slider_product text-end">
-                                <img
-                                  src={imgBaseURL() + item?.img}
-                                  alt="slider product"
-                                />
-                              </div>
+                          <div className="col-md-6">
+                            <div className="slider_product text-end">
+                              <img
+                                src={imgBaseURL() + item?.img}
+                                alt="slider product"
+                                loading="lazy"  // Add lazy loading here
+                              />
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-
-                }
+                  </div>
+                )}
               </>
             ))
           ) : (
@@ -313,10 +333,12 @@ const Home = () => {
             allData?.mobileBanner?.map((item, i) => (
               <div className="item" key={i}>
                 <div className="slider p-0">
-                  <Link to={item?.url !== 'null' ? item?.url : '/shop/all'}>
+                  <Link to={item?.url !== "null" ? item?.url : "/shop/all"}>
                     <img
                       src={imgBaseURL() + item?.img}
-                      alt="slider product" className="img-fluid"
+                      alt="slider product"
+                      className="img-fluid"
+                      loading="lazy"  // Add lazy loading here
                     />
                   </Link>
                 </div>
@@ -369,21 +391,27 @@ const Home = () => {
                       <div className="quick-access-btns">
                         <button
                           className="btn1"
-                          onClick={() => { addProductInWishlistFun(item.id); setWishlistCount(wishCount + 1) }}
+                          onClick={() => {
+                            addProductInWishlistFun(item.id);
+                            setWishlistCount(wishCount + 1);
+                          }}
+                          aria-label={
+                            isInWishlist(item.id)
+                              ? "Remove from wishlist"
+                              : "Add to wishlist"
+                          }
                         >
                           {isInWishlist(item.id) ? (
                             <i
-                              class="fa-solid fa-heart"
+                              className="fa-solid fa-heart"
                               style={{ fontSize: "18px", color: "#ddad67" }}
                               aria-hidden="true"
                             ></i>
                           ) : (
-                            <>
-                              <i
-                                class="fa-solid fa-heart text-white"
-                                aria-hidden="true"
-                              ></i>
-                            </>
+                            <i
+                              className="fa-solid fa-heart text-white"
+                              aria-hidden="true"
+                            ></i>
                           )}
                         </button>
                       </div>
@@ -393,23 +421,31 @@ const Home = () => {
                             className="withouthover"
                             src={imgBaseURL() + item.cover}
                             alt="product_img"
+                            width='300'
+                            height="400"
+                              loading="lazy"
                           />
                           <img
                             className="withhover"
                             src={imgBaseURL() + item.hover_img}
                             alt="product_img"
+                            width='300'
+                            height="400"
+                              loading="lazy"
                           />
                         </Link>
                       </div>
                       <div className="rating_box mt-2">
-                        <ul>
+                        <div className="ratings-custom d-flex align-items-center">
                           <Rating
                             name="read-only"
                             value={item?.review_average}
                             readOnly
                           />
-                          {item?.review_count > 0 && <span>({item?.review_count})</span>}
-                        </ul>
+                          {item?.review_count > 0 && (
+                            <span>({item?.review_count})</span>
+                          )}
+                        </div>
                       </div>
                       <div className="product_name">
                         <Link to={`/product-detail/${item?.slug}`}>
@@ -435,7 +471,7 @@ const Home = () => {
             </div>
           ) : (
             <div className="product-item-inner">
-              <img src={emptycart} alt="" />
+              <img src={emptycart} alt="empty-cart" width={300} height={300} />
               <h4>No items found Products.</h4>
             </div>
           )}
@@ -463,21 +499,27 @@ const Home = () => {
                       <div className="quick-access-btns">
                         <button
                           className="btn1"
-                          onClick={() => { addProductInWishlistFun(item.id); setWishlistCount(wishCount + 1) }}
+                          onClick={() => {
+                            addProductInWishlistFun(item.id);
+                            setWishlistCount(wishCount + 1);
+                          }}
+                          aria-label={
+                            isInWishlist(item.id)
+                              ? "Remove from wishlist"
+                              : "Add to wishlist"
+                          }
                         >
                           {isInWishlist(item.id) ? (
                             <i
-                              class="fa-solid fa-heart"
+                              className="fa-solid fa-heart"
                               style={{ fontSize: "18px", color: "#ddad67" }}
                               aria-hidden="true"
                             ></i>
                           ) : (
-                            <>
-                              <i
-                                class="fa-solid fa-heart text-white"
-                                aria-hidden="true"
-                              ></i>
-                            </>
+                            <i
+                              className="fa-solid fa-heart text-white"
+                              aria-hidden="true"
+                            ></i>
                           )}
                         </button>
                       </div>
@@ -487,23 +529,31 @@ const Home = () => {
                             className="withouthover"
                             src={imgBaseURL() + item.cover}
                             alt="product_img"
+                            width='300'
+                            height="400"
+                              loading="lazy"
                           />
                           <img
                             className="withhover"
                             src={imgBaseURL() + item.hover_img}
                             alt="product_img"
+                            width='300'
+                            height="400"
+                              loading="lazy"
                           />
                         </Link>
                       </div>
                       <div className="rating_box mt-2">
-                        <ul>
+                        <div className="ratings-custom d-flex align-items-center">
                           <Rating
                             name="read-only"
                             value={item?.review_average}
                             readOnly
                           />
-                          {item?.review_count > 0 && <span>({item?.review_count})</span>}
-                        </ul>
+                          {item?.review_count > 0 && (
+                            <span>({item?.review_count})</span>
+                          )}
+                        </div>
                       </div>
                       <div className="product_name">
                         <Link to={`/product-detail/${item?.slug}`}>
@@ -529,7 +579,7 @@ const Home = () => {
             </div>
           ) : (
             <div className="product-item-inner">
-              <img src={emptycart} alt="" />
+              <img src={emptycart} alt="empty-cart " width={300} height={300} />
               <h4>No items found Products.</h4>
             </div>
           )}
@@ -554,18 +604,18 @@ const Home = () => {
               <OwlCarousel className="owl-theme" {...collections}>
                 {tags?.map((item, i) => (
                   <Link to={`/shop/t-${item}`}>
-                    <div class="item" key={i} >
+                    <div class="item" key={i}>
                       <div className="cat_box-outer">
                         <div
                           className="cat_box"
-                        // style={{
-                        //   backgroundImage: `url('${imageUrl[i]}')`,
-                        //   backgroundSize: "cover",
-                        //   backgroundRepeat: "no-repeat",
-                        //   backgroundPosition: "center",
-                        // }}
+                          // style={{
+                          //   backgroundImage: `url('${imageUrl[i]}')`,
+                          //   backgroundSize: "cover",
+                          //   backgroundRepeat: "no-repeat",
+                          //   backgroundPosition: "center",
+                          // }}
                         >
-                          <img src={`${imageUrl[i]}`} alt={item} />
+                          <img src={`${imageUrl[i]}`} alt={item} width={100} height={100}  />
                           <div className="categri-title">
                             <h2>{item}</h2>
                           </div>
@@ -588,8 +638,11 @@ const Home = () => {
                       <Link to={`/shop/t-${tags[0]}`}>
                         <div className="cat_box">
                           <img
-                            src="https://aksvedas.com/storage/tags_img/immu.png"
-                            alt="tag img"
+                            src="https://aksvedas.com/storage/tags_img/immu.webp"
+                            alt="tag img" 
+                            width="100"
+                            height="100"
+                            loading="lazy"
                           ></img>
                           <div className="categri-title">
                             <h2>{tags[0]}</h2>
@@ -608,8 +661,11 @@ const Home = () => {
                           <Link to={`/shop/t-${tags[1]}`}>
                             <div className="cat_box">
                               <img
-                                src="https://aksvedas.com/storage/tags_img/dig.png"
+                                src="https://aksvedas.com/storage/tags_img/dig.webp"
                                 alt="tag img"
+                                width="100"
+                                height="100"
+                                loading="lazy"
                               ></img>
 
                               <div className="categri-title">
@@ -626,8 +682,11 @@ const Home = () => {
                           <Link to={`/shop/t-${tags[2]}`}>
                             <div className="cat_box">
                               <img
-                                src="https://aksvedas.com/storage/tags_img/perf.png"
+                                src="https://aksvedas.com/storage/tags_img/perf.webp"
                                 alt="tag img"
+                                width="100"
+                                height="100"
+                                loading="lazy"
                               ></img>
 
                               <div className="categri-title">
@@ -635,7 +694,6 @@ const Home = () => {
                               </div>
                             </div>
                           </Link>
-
                         </div>
                       </div>
                     )}
@@ -650,16 +708,19 @@ const Home = () => {
                           <Link to={`/shop/t-${tags[3]}`}>
                             <div
                               className="cat_box"
-                            // style={{
-                            //   backgroundImage: `url('${imgBaseURL() + categories[0]?.cover}')`,
-                            //   backgroundSize: "cover",
-                            //   backgroundRepeat: "no-repeat",
-                            //   backgroundPosition: "center",
-                            // }}
+                              // style={{
+                              //   backgroundImage: `url('${imgBaseURL() + categories[0]?.cover}')`,
+                              //   backgroundSize: "cover",
+                              //   backgroundRepeat: "no-repeat",
+                              //   backgroundPosition: "center",
+                              // }}
                             >
                               <img
-                                src="https://aksvedas.com/storage/tags_img/slep.png"
+                                src="https://aksvedas.com/storage/tags_img/slep.webp"
                                 alt="tag img"
+                                width="100"
+                                height="100"
+                                loading="lazy"
                               ></img>
 
                               <div className="categri-title">
@@ -677,16 +738,19 @@ const Home = () => {
                           <Link to={`/shop/t-${tags[4]}`}>
                             <div
                               className="cat_box"
-                            // style={{
-                            //   backgroundImage: `url('${imgBaseURL() + categories[2]?.cover}')`,
-                            //   backgroundSize: "cover",
-                            //   backgroundRepeat: "no-repeat",
-                            //   backgroundPosition: "center",
-                            // }}
+                              // style={{
+                              //   backgroundImage: `url('${imgBaseURL() + categories[2]?.cover}')`,
+                              //   backgroundSize: "cover",
+                              //   backgroundRepeat: "no-repeat",
+                              //   backgroundPosition: "center",
+                              // }}
                             >
                               <img
-                                src="https://aksvedas.com/storage/tags_img/tired.png"
+                                src="https://aksvedas.com/storage/tags_img/tired.webp"
                                 alt="tag img"
+                                width="100"
+                                height="100"
+                                loading="lazy"
                               ></img>
 
                               <div className="categri-title">
@@ -704,16 +768,19 @@ const Home = () => {
                           <Link to={`/shop/t-${tags[5]}`}>
                             <div
                               className="cat_box"
-                            // style={{
-                            //   backgroundImage: `url('${imgBaseURL() + categories[0]?.cover}')`,
-                            //   backgroundSize: "cover",
-                            //   backgroundRepeat: "no-repeat",
-                            //   backgroundPosition: "center",
-                            // }}
+                              // style={{
+                              //   backgroundImage: `url('${imgBaseURL() + categories[0]?.cover}')`,
+                              //   backgroundSize: "cover",
+                              //   backgroundRepeat: "no-repeat",
+                              //   backgroundPosition: "center",
+                              // }}
                             >
                               <img
-                                src="https://aksvedas.com/storage/tags_img/tagimg6.png"
+                                src="https://aksvedas.com/storage/tags_img/tagimg6.webp"
                                 alt="tag img"
+                                width="100"
+                                height="100"
+                                loading="lazy"
                               ></img>
 
                               <div className="categri-title">
@@ -735,16 +802,19 @@ const Home = () => {
                           <Link to={`/shop/t-${tags[6]}`}>
                             <div
                               className="cat_box"
-                            // style={{
-                            //   backgroundImage: `url('${imgBaseURL() + categories[2]?.cover}')`,
-                            //   backgroundSize: "cover",
-                            //   backgroundRepeat: "no-repeat",
-                            //   backgroundPosition: "center",
-                            // }}
+                              // style={{
+                              //   backgroundImage: `url('${imgBaseURL() + categories[2]?.cover}')`,
+                              //   backgroundSize: "cover",
+                              //   backgroundRepeat: "no-repeat",
+                              //   backgroundPosition: "center",
+                              // }}
                             >
                               <img
-                                src="https://aksvedas.com/storage/tags_img/bonee.png"
+                                src="https://aksvedas.com/storage/tags_img/bonee.webp"
                                 alt="tag img"
+                                width="100"
+                                height="100"
+                                loading="lazy"
                               ></img>
 
                               <div className="categri-title">
@@ -762,16 +832,19 @@ const Home = () => {
                           <Link to={`/shop/t-${tags[7]}`}>
                             <div
                               className="cat_box"
-                            // style={{
-                            //   backgroundImage: `url('${imgBaseURL() + categories[1]?.cover}')`,
-                            //   backgroundSize: "cover",
-                            //   backgroundRepeat: "no-repeat",
-                            //   backgroundPosition: "center",
-                            // }}
+                              // style={{
+                              //   backgroundImage: `url('${imgBaseURL() + categories[1]?.cover}')`,
+                              //   backgroundSize: "cover",
+                              //   backgroundRepeat: "no-repeat",
+                              //   backgroundPosition: "center",
+                              // }}
                             >
                               <img
-                                src="https://aksvedas.com/storage/tags_img/fitness.png"
+                                src="https://aksvedas.com/storage/tags_img/fitness.webp"
                                 alt="tag img"
+                                width="100"
+                                height="100"
+                                loading="lazy"
                               ></img>
 
                               <div className="categri-title">
@@ -801,7 +874,6 @@ const Home = () => {
                 {allData?.newArrivals?.map((item, i) => (
                   <div className="col-lg-6 mb-lg-0 mb-4">
                     <div
-
                       className="new_arrivals_box"
                       style={{
                         backgroundImage: `url(${newarrivals})`,
@@ -834,15 +906,19 @@ const Home = () => {
                           Shop Now <i className="fa-solid fa-arrow-right"></i>
                         </button>
                       </div>
-                      <div className="product_box_new" onClick={() =>
-                        navigate(`/product-detail/${item.slug}`)
-                      }
-                        style={{ cursor: 'pointer' }}
+                      <div
+                        className="product_box_new"
+                        onClick={() => navigate(`/product-detail/${item.slug}`)}
+                        style={{ cursor: "pointer" }}
                       >
                         <div className="new_arrival_product">
                           <img
                             src={imgBaseURL() + item.cover}
                             alt="product_img"
+                            width="100"
+                            height="100"
+                            loading="lazy"
+
                           />
                           <div className="product_tags">
                             <div className="new_tag">New</div>
@@ -872,16 +948,17 @@ const Home = () => {
                   <img
                     src={imgBaseURL() + allData?.getAyurvedExperience?.img1}
                     alt="img"
+                    width="100%"
+                    height="auto"
                   />
                 </div>
                 <div className="small_second_image">
-                  {
-                    allData?.getAyurvedExperience?.img2 &&
+                  {allData?.getAyurvedExperience?.img2 && (
                     <img
                       src={imgBaseURL() + allData?.getAyurvedExperience?.img2}
                       alt="img"
                     />
-                  }
+                  )}
                 </div>
               </div>
             </div>
@@ -896,13 +973,15 @@ const Home = () => {
                       __html: allData?.getAyurvedExperience?.desc,
                     }}
                   />
-
                   <div className="doble_btn text-md-start text-center ">
-                    <Link className="shop_now btn-2" to={allData?.getAyurvedExperience?.product_url}>Shop Now <i class="fa-solid fa-arrow-right"></i></Link>
+                    <Link
+                      className="shop_now btn-2"
+                      to={allData?.getAyurvedExperience?.product_url}
+                    >
+                      Shop Now <i class="fa-solid fa-arrow-right"></i>
+                    </Link>
                   </div>
                 </div>
-
-
               </div>
             </div>
           </div>
@@ -963,7 +1042,10 @@ const Home = () => {
                     <div className="product_img">
                       {allData ? (
                         <>
-                          <Link to={item?.product_url ? item?.product_url : "#"} target="_blank">
+                          <Link
+                            to={item?.product_url ? item?.product_url : "#"}
+                            target="_blank"
+                          >
                             <img
                               src={imgBaseURL() + item?.img1}
                               alt="product_img"
@@ -1016,7 +1098,10 @@ const Home = () => {
                 <div className="col-xl-12 col-lg-12 col-md-12 mb-md-0 ">
                   <div className="product_img">
                     {allData ? (
-                      <Link to={item?.product_url ? item?.product_url : "#"} target="_blank">
+                      <Link
+                        to={item?.product_url ? item?.product_url : "#"}
+                        target="_blank"
+                      >
                         <img
                           src={imgBaseURL() + item?.img1}
                           alt="product_img"
@@ -1053,7 +1138,6 @@ const Home = () => {
           ))}
         </OwlCarousel>
       </section>
-
     </>
   );
 };

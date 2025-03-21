@@ -326,7 +326,7 @@ const Account = () => {
                               </tr>
                               <tr>
                                 <td>Email Address</td>
-                                <td className="fw-medium">
+                                <td className="my_email fw-medium">
                                   {checkItem(customerDetails?.email)}
                                 </td>
                               </tr>
@@ -531,16 +531,15 @@ const Account = () => {
                 >
                   <div className="card">
                     <div className="card-body">
-                      <div className="table-responsive table-card whishlist-page">
+                      <div className=" table-card whishlist-page">
                         {wishlistData?.length > 0 ? (
                           <>
                             <table className="table fs-15 table-nowrap align-middle">
                               <thead>
                                 <tr>
                                   <th scope="col">Product</th>
-                                  <th scope="col">Price</th>
-                                  <th scope="col">Stock Status</th>
-                                  <th scope="col">Action</th>
+                           
+                                         
                                 </tr>
                               </thead>
 
@@ -548,7 +547,8 @@ const Account = () => {
                                 {wishlistData?.map((item, i) => (
                                   <tr>
                                     <td>
-                                      <div className="d-flex gap-3 align-items-center">
+                                    <div className="card_my_outer">
+                                    <div className="w-100 product_tittle d-flex  align-items-center">
                                         <div className="avatar-sm">
                                           <div className="avatar-title rounded">
                                             <img
@@ -561,11 +561,11 @@ const Account = () => {
                                             />
                                           </div>
                                         </div>
-                                        <div className="flex-grow-1">
+                                        <div className=" mt-2">
                                           <Link
                                             to={`/product-detail/${item.product?.slug}`}
                                           >
-                                            <h6 className="fs-16">
+                                            <h6 className="my_tittle fs-16">
                                               {textSlice(item?.product?.name,50)}
                                             </h6>
                                           </Link>
@@ -573,42 +573,44 @@ const Account = () => {
                                             {item?.product?.category?.name}
                                           </p>
                                         </div>
-                                      </div>
-                                    </td>
-                                    <td>
-                                      <div className="price_product">
+
+                                        <div className="price_product mt-0">
                                         ₹{item?.product?.sale_price}{" "}
                                         <span className="high_price">
                                           {item?.product?.price}
                                         </span>
                                       </div>
-                                    </td>
-                                    <td>
-                                      <span className="py-1 px-2 bg-success-subtle text-success ">
+
+                                      <span className="my_in_stock py-1 px-2 bg-success-subtle text-success">
                                         In Stock
                                       </span>
-                                    </td>
-                                    <td>
-                                      <ul className="list-unstyled d-flex gap-3 mb-0">
+                                      </div>
+
+                                      <div>
+                                      <ul className="list-unstyled d-flex gap-3 justify-content-end mb-0">
                                         <li>
                                           <Link
                                             to="#"
-                                            className="btn btn-soft-info btn-icon btn-sm"
+                                            className="shop_now btn-2 mt-3 rounded btn-sm"
                                             onClick={() => addToCartFun(item)}
                                           >
-                                            <i className="fa fa-cart-plus fs-13"></i>
+                                        <i class="me-1 fa-solid fa-cart-plus"></i> Add To Cart
                                           </Link>
                                         </li>
-                                        <li>
-                                          <button
+                                       
+                                      </ul>
+                                      <button
                                             onClick={() => addProductInWishlistFun(item?.product?.id)}
-                                            className="btn btn-soft-danger btn-icon btn-sm"
+                                            className="clear_card_my btn btn-soft-danger btn-icon btn-sm"
                                           >
                                             <i className="fa-solid fa-xmark  fs-13"></i>
                                           </button>
-                                        </li>
-                                      </ul>
+                                      </div>
+                                    </div>
                                     </td>
+                                  
+                                   
+                                  
                                   </tr>
                                 ))}
                               </tbody>
@@ -667,14 +669,11 @@ const Account = () => {
                           <thead>
                             <tr>
                               <th scope="col">Order ID</th>
-                              <th scope="col">Date</th>
-                              <th scope="col">Total Amount</th>
-                              <th scope="col">Status</th>
-                              <th scope="col">Earned AksCoins</th>
-                              <th scope="col">Review</th>
-                              <th scope="col" className="text-center">
-                                View
-                              </th>
+                      
+                     
+                         
+                          
+                             
                             </tr>
                           </thead>
                           <tbody>
@@ -683,17 +682,12 @@ const Account = () => {
                                 {orderList?.map((item, i) => (
                                   <tr>
                                     <td>
-                                      <Link to={`/order-details/${item?.id}`}>
+                                   <div className="order_details_main">
+                                   <Link to={`/order-details/${item?.id}`}>
                                         {item?.id}
                                       </Link>
-                                    </td>
-                                    <td>
-                                      <span>{timeAgo(item?.created_at)}</span>
-                                    </td>
-                                    <td className="fw-medium">
-                                      ₹{item?.total_amount}
-                                    </td>
-                                    <td>
+                                      <span className="time_order d-block">{timeAgo(item?.created_at)}</span>
+                                      <p className="order_price">    ₹{item?.total_amount}</p>
                                       <span
                                         style={{
                                           color: getStatusColor(
@@ -703,18 +697,13 @@ const Account = () => {
                                             item?.order_status
                                           )?.bg,
                                         }}
-                                        className={`order_status_front`}
+                                        className={`order_status_my order_status_front`}
                                       >
                                         {item?.order_status}
                                       </span>
-                                    </td>
-                                    <td className="fw-medium">
-                                      {item.earned_loyalty_discount
-                                        ? item.earned_loyalty_discount
-                                        : "---"}
-                                    </td>
-                                    <td>
-                                      {item?.order_status == "Delivered" ? (
+                                   </div>
+                                   <div className="add_review">
+                                  {item?.order_status == "Delivered" ? (
                                         <>
                                           <Link
                                             to={`/product-detail/${item?.order_products[0]?.product?.slug}`}
@@ -723,14 +712,34 @@ const Account = () => {
                                           </Link>
                                         </>
                                       ) : (
-                                        "---"
+                                        "No Reviews"
                                       )}
-                                    </td>
-                                    <td className="fw-medium text-center">
-                                      <Link to={`/order-details/${item?.id}`}>
-                                        <i className="fa fa-eye"></i>
+                                  </div>
+
+                                   <div className="d-flex justify-content-between mt-3">
+                                   <div className="earn_coins">
+                                      <img className="d-inline-block" src={akcoin} width={'15px'} alt="icon-aks_coin"/> Earned Aks Coins {item.earned_loyalty_discount
+                                        ? item.earned_loyalty_discount
+                                        : "0"} 
+                                      </div>
+
+                                      <div className="view_details text-md-end text-center ">
+                                  <Link to={`/order-details/${item?.id}`}>
+                                       View Details <i class="fa-solid fa-angles-right"></i>
                                       </Link>
+                                  </div>
+                                   </div>
+
+                                  
+
+                                
                                     </td>
+                                
+                                
+                              
+                                  
+                                   
+                                  
                                   </tr>
                                 ))}
                               </>

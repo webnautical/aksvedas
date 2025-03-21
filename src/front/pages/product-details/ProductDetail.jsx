@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import emptycart from "../../../assets/img/empty-cart.png";
+import emptycart from "../../../assets/img/empty-cart.webp";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Breadcrumbs, Rating, Typography } from "@mui/material";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
@@ -1311,22 +1311,28 @@ const ProductDetail = () => {
                                   className="withouthover"
                                   src={imgBaseURL() + item.cover}
                                   alt="product_img"
+                                  width='300'
+                                  height="400"
+                                    loading="lazy"
                                 />
                                 <img
                                   className="withhover"
                                   src={imgBaseURL() + item.hover_img}
                                   alt="product_img"
+                                  width='300'
+                                  height="400"
+                                    loading="lazy"
                                 />
                               </Link>
                             </div>
                             <div className="rating_box mt-3">
-                              <ul>
+                              <div className="ratings-custom d-flex align-items-center">
                                 <Rating
                                   name="read-only"
                                   value={item?.review_average}
                                   readOnly
                                 />
-                              </ul>
+                              </div>
                             </div>
                             <div className="product_name">
                               <Link
@@ -1358,7 +1364,7 @@ const ProductDetail = () => {
               ) : (
                 <>
                   <div class="product-item-inner">
-                    <img src={emptycart} alt="" />
+                    <img src={emptycart} alt="empty-cart" width={300} height={300} />
                     <h4>No items found in Related Products.</h4>
                   </div>
                 </>

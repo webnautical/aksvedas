@@ -68,6 +68,20 @@ const Customer = () => {
     const [filterData, setFilterData] = useState([])
     const [loading, setLoading] = useState(false)
 
+    const [currentPage, setCurrentPage] = useState(1);
+
+    useEffect(() => {
+        const savedPage = sessionStorage.getItem("customerPage");
+        if (savedPage) {
+            setCurrentPage(Number(savedPage));
+        }
+    }, []);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+        sessionStorage.setItem("customerPage", page);
+    };
+
     useEffect(() => {
         getListFun()
     }, [])
@@ -184,9 +198,10 @@ const Customer = () => {
                             <DataTable className='cs_table_inerr'
                                 columns={columns}
                                 data={filterData}
-                                // dense
                                 highlightOnHover
                                 pagination
+                                paginationDefaultPage={currentPage}
+                                onChangePage={handlePageChange}
                             />
 
                         </div>

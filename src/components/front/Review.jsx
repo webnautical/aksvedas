@@ -71,9 +71,9 @@ const Review = () => {
                         <div className="qouote_img text-center">
                           <img className="m-auto" src={quote} alt="qoute_img" />
                           <HTMLContent data={item?.review} />
-                          <ul>
+                          <div>
                             <Rating name="read-only" value={item?.star} readOnly />
-                          </ul>
+                          </div>
                           <div className="Name_peraon">{item?.name}</div>
                         </div>
                       </div>

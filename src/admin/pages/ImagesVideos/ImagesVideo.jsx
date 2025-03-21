@@ -8,6 +8,7 @@ import { deleteDataAPI, getDataAPI, postDataAPI } from '../../../utility/api/api
 import { imgBaseURL, toastifyError, toastifySuccess } from '../../../utility/Utility';
 import ItemImg from '../../../components/admin/ItemImg';
 import Spinner from '../../../components/admin/Spinner';
+// import ShopBanner from './ShopBanner';
 
 const ImagesVideo = () => {
     const [updData, setUpdData] = useState(null)
@@ -15,9 +16,11 @@ const ImagesVideo = () => {
 
     const [submitLoading, setsubmitLoading] = useState(false)
     const [webBanner, setWebBanner] = useState([])
+    const [shopBanner, setShopBanner] = useState([])
     const [mobileBanner, setMobileBanner] = useState([])
     const [spotLightList, setSpotLightList] = useState([])
     const [imgPreview, setImgPreview] = useState(null)
+    const [mImgPreview, setMImgPreview] = useState(null)
 
     const [value, setValue] = useState({
         'type': '',
@@ -25,8 +28,10 @@ const ImagesVideo = () => {
         'desc': '',
         'url': '',
         'img': '',
+        'm_img': '',
         'status': 0,
     });
+
     const [errors, setErrors] = useState({});
     useEffect(() => {
         if (updData?.id) {
@@ -39,8 +44,10 @@ const ImagesVideo = () => {
                 'desc': updData.desc == 'null' ? "" : updData?.desc,
                 'status': updData.status,
                 'img': updData.img,
+                'm_img': updData.m_img,
             })
             setImgPreview(imgBaseURL() + updData.img)
+            setMImgPreview(imgBaseURL() + updData.m_img)
         } else {
             setValue({
                 ...value,
@@ -50,6 +57,7 @@ const ImagesVideo = () => {
                 'desc': '',
                 'status': 0,
                 'img': '',
+                'm_img': '',
             })
         }
     }, [updData])
@@ -57,10 +65,14 @@ const ImagesVideo = () => {
     useEffect(() => {
         getDataList()
     }, [])
+
     const handleChange = (e) => {
         if (e.target.name === 'file') {
             setValue({ ...value, 'img': e.target.files[0] })
             setImgPreview(URL.createObjectURL(e.target.files[0]));
+        } else if(e.target.name === 'm_img'){
+            setValue({ ...value, 'm_img': e.target.files[0] })
+            setMImgPreview(URL.createObjectURL(e.target.files[0]));
         } else {
             setValue({
                 ...value,
@@ -70,7 +82,7 @@ const ImagesVideo = () => {
     }
     const handleCancel = () => {
         setErrors({})
-        setValue({ ...value, 'img': '', 'title': '', 'desc': '', 'status': 0, 'url': '' })
+        setValue({ ...value, 'img': '',m_img: "", 'title': '', 'desc': '', 'status': 0, 'url': '' })
         setUpdData(null)
     }
 
@@ -82,9 +94,11 @@ const ImagesVideo = () => {
                 const webRes = res?.data.filter((item) => item.type == "web")
                 const mobileRes = res?.data.filter((item) => item.type == "mobile")
                 const spotLightRes = res?.data.filter((item) => item.type == "spotlight")
+                const shopRes = res?.data.filter((item) => item.type == "shop")
                 setWebBanner(webRes)
                 setMobileBanner(mobileRes)
                 setSpotLightList(spotLightRes)
+                setShopBanner(shopRes)
                 setLoading(false)
             } else {
                 setLoading(false)
@@ -156,6 +170,7 @@ const ImagesVideo = () => {
             formData.append('desc', value.desc);
             formData.append('status', value.status);
             formData.append('img', value.img);
+            formData.append('m_img', value.m_img);
             const res = await postDataAPI('update-banner', formData)
             if (res.status) {
                 handleCancel()
@@ -178,6 +193,52 @@ const ImagesVideo = () => {
                     <div className='d-flex justify-content-between align-items-center'>
                         <h4 class="py-3 mb-2"><span class="fw-light">Aksvedas /</span>Banner Settings </h4>
                         <button onClick={() => setValue({ ...value, 'type': 'web' })} data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" className="btn btn-primary"><i className='fa fa-plus'></i>  Add New Banner</button>
+                    </div>
+
+                    {/* <ShopBanner /> */}
+
+                    <div className="card mb-4">
+                        <div className="card-widget-separator-wrapper">
+                            <div className="card-body card-widget-separator">
+                                <div className="row gy-4 gy-sm-1">
+                                    <div className="box d-flex justify-content-between">
+                                        <h5><i class="fa-solid fa-desktop"></i> Shop Banner </h5>
+                                    </div>
+
+                                    {
+                                        shopBanner.length > 0 ?
+                                            shopBanner?.map((item, i) => (
+                                                <>
+                                                <div className="col-sm-12 col-lg-6 p_btn" key={i}>
+                                                    <div className="d-flex justify-content-between align-items-start card-widget-1 border-end pb-3 pb-sm-0">
+                                                        <img src={imgBaseURL() + item.img} alt="" style={{ width: '100%', height: '160px', objectFit: 'top' }} />
+                                                    </div>
+                                                    <span>Web</span>
+
+                                                    <div>
+                                                        <img src={imgBaseURL() + item.m_img} alt="" style={{ width: '100%', height: '160px', objectFit: 'top' }} />
+                                                    </div>
+                                                    <span>Mobile</span>
+
+                                                    <div className="content mt-2">
+                                                        <h4 className='m-0 p-0'>{item.title != 'null' && item.title}</h4>
+                                                    </div>
+                                                    <div className="c_btn d-flex">
+                                                        <button className='icon_btn __warning mx-2' data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" onClick={() => setUpdData(item)}><i className='fa fa-edit'></i></button>
+                                                    </div>
+                                                    <hr className="d-none d-sm-block d-lg-none me-4" />
+                                                </div>
+                                                </>
+                                            ))
+                                            :
+                                            <>
+                                                <h6>There are no Banner for Home Page</h6>
+                                            </>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div className="card mb-4">
@@ -323,14 +384,17 @@ const ImagesVideo = () => {
                 <div className="offcanvas-body">
                     <form className="pt-0" id="eCommerceCategoryListForm" onSubmit={updData ? handleUpdate : handleSubmit}>
 
-                        <div className="mb-4 ecommerce-select2-dropdown">
-                            <label className="form-label">Select Type</label>
-                            <select id="ecommerce-category-status" className="select2 form-select" onChange={handleChange} value={value.type} name='type'>
-                                <option value="web">Web</option>
-                                <option value="mobile">Mobile</option>
-                                <option value="spotlight">Spotlight</option>
-                            </select>
-                        </div>
+                        {value?.type != "shop" &&
+                            <div className="mb-4 ecommerce-select2-dropdown">
+                                <label className="form-label">Select Type</label>
+                                <select id="ecommerce-category-status" className="select2 form-select" onChange={handleChange} value={value.type} name='type'>
+                                    <option value="web">Web</option>
+                                    <option value="mobile">Mobile</option>
+                                    <option value="spotlight">Spotlight</option>
+                                </select>
+                            </div>
+                        }
+
                         {/* Title */}
                         <div className="mb-3">
                             <label className="form-label">Title</label>
@@ -339,16 +403,19 @@ const ImagesVideo = () => {
                         </div>
 
                         {/* Title */}
-                        <div className="mb-3">
-                            <label className="form-label">Description</label>
-                            <textarea
-                                type="text"
-                                name='desc'
-                                className='form-control w-100'
-                                value={value.desc}
-                                onChange={handleChange}
-                            />
-                        </div>
+                        {value?.type != "shop" &&
+
+                            <div className="mb-3">
+                                <label className="form-label">Description</label>
+                                <textarea
+                                    type="text"
+                                    name='desc'
+                                    className='form-control w-100'
+                                    value={value.desc}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        }
 
                         {/* Image */}
                         <div className="mb-3">
@@ -375,10 +442,35 @@ const ImagesVideo = () => {
                         </div>
 
                         <div className="mb-3">
-                            <label className="form-label">Redirect URL</label>
-                            <input type="url" className="form-control" onChange={handleChange} name="url" value={value.url} placeholder="Paste redirect URL here" />
-                            <span className='errMsg'>{errors.url}</span>
+                            {
+                                value?.type == "spotlight" ? <label>
+                                    Aspect Ratio: 9:16 - Resolution: 1080 x 1920px
+                                </label>
+                                    :
+                                    <label className="form-label">Attachment (Recommended Banner Size - {value.type == 'web' ? "1920 * 678" : "800 * 500"}px)</label>
+                            }
+                            <input className="form-control" type="file" onChange={handleChange} name='m_img' />
+                            <span className='errMsg'>{errors.img}</span>
+                            {
+                                mImgPreview &&
+                                <div className='mt-1'>
+                                    {
+                                        value?.type == "spotlight" ?
+                                            <ItemImg img={mImgPreview} />
+                                            :
+                                            <img src={mImgPreview} alt="" style={{ height: '40px', width: '40px', borderRadius: '50%', objectFit: 'contain', background: '#ddd' }} />
+                                    }
+                                </div>
+                            }
                         </div>
+
+                        {value?.type != "shop" &&
+                            <div className="mb-3">
+                                <label className="form-label">Redirect URL</label>
+                                <input type="url" className="form-control" onChange={handleChange} name="url" value={value.url} placeholder="Paste redirect URL here" />
+                                <span className='errMsg'>{errors.url}</span>
+                            </div>
+                        }
 
                         {/* Status */}
                         <div className="mb-4 ecommerce-select2-dropdown">
@@ -389,6 +481,7 @@ const ImagesVideo = () => {
                                 <option value="0">Inactive</option>
                             </select>
                         </div>
+
                         {/* Submit and reset */}
                         <div className="mb-3">
                             {

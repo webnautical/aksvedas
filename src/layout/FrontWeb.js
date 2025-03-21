@@ -113,10 +113,10 @@ const FrontWeb = ({ cmp }) => {
           <div style={{ position: 'relative' }}>
             <div class="c-modal-dialog p-0" style={{ cursor: 'pointer', }} onClick={() => handleRedirect()}>
               <div class="modal-body p-0">
-                <img src={imgBaseURL() + allData?.popupHomePage?.img1} alt='sad' />
+                <img src={imgBaseURL() + allData?.popupHomePage?.img1} alt='pop-up-banner' width={'100%'} height={'100%'} />
               </div>
             </div>
-            <button style={{ position: 'absolute', top: '-15px', right: '-15px', width: '25px', height: '25px', borderRadius: '100%', backgroundColor: 'white', opacity: 1 }} type="button" class="btn-close" aria-label="Close" onClick={() => handleCloseModal(false)}></button>
+            <button style={{ position: 'absolute', top: '-15px', right: '-15px', width: '25px', height: '25px', borderRadius: '100%', backgroundColor: 'white', opacity: 1, zIndex:'3333' }} type="button" class="btn-close" aria-label="Close" onClick={() => handleCloseModal(false)}></button>
           </div>
         </div>}
 

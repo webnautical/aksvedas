@@ -1382,4 +1382,97 @@ footer .footer_support_btn  .btn-primary:hover{
     color: black!important;
 
 }
+
+
+.mobile-sticky {
+    display: none;
+}
+
+/* Mobile पर sticky */
+@media (max-width: 768px) {
+    .mobile-sticky {
+        display: block;
+        position: fixed;
+        bottom: 0;
+        background: #fff;
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        width: 100%;
+        left: 0px;
+        z-index: 9999;
+    }
+
+
+
+    .mobile-sticky .doble_btn-pro{ 
+
+        display: flex
+        ;
+            flex-direction: row;
+    }
+
+}
+
+
+.product_tittle{
+    align-items: start!important;
+        flex-direction: column;
+    }
+    
+    
+    .clear_card_my{ position: absolute; top: 0px; right: 0px;}
+    
+    .card_my_outer{ position: relative; display: flex; align-items: end; justify-content: space-between;}
+    
+    .my_in_stock{ position: absolute; right: 40px; top: 1px;}
+    
+    
+    .my_tittle{ white-space: break-spaces!important;}
+    
+    .order_details_main{ position: relative;}
+    
+    .time_order{ position: absolute; right: 0px; top: 0px; font-size: 14px;}
+    .order_status_my{ position: absolute; right: 0px; top: 30px;}
+    
+    .earn_coins{
+    
+        display: inline-block;
+        background: antiquewhite;
+        padding: 2px 9px;
+        border-radius: 20px;
+        color: #B46B00;
+        font-size: 14px;
+    
+    }
+    
+    .order_price{
+        margin: 0px;
+        margin-top: 10px;
+    }
+    
+    .add_review{ 
+    
+        background: #f6f6f6;
+        margin-top: 10px;
+        border-radius: 5px;
+        padding: 0px 10px;
+        font-size: 14px;
+    }
   
+
+    .my_email{ 
+
+        word-break: break-word; 
+        word-wrap: break-word;   
+        overflow-wrap: break-word; 
+        white-space: normal;  
+    }
+
+
+    .innerfiltermpbile.hidden{ display: none;}
+
+    .free-box h3{ font-size: 16px;}
+
+    .auth-cover-bg-color {
+        background-color: #f8f7fa;
+    }

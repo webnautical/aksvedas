@@ -1,25 +1,34 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import "react-input-range/lib/css/index.css";
 import { useFrontDataContext } from "../../context/FrontContextProvider";
-import { useNavigate, useParams } from "react-router";
 
-function Filters(props) {
-  const navigate = useNavigate()
-  const { categories } = useFrontDataContext()
-
+function Filters({ closeFilterOverlay }) {
+  const navigate = useNavigate();
+  const { categories } = useFrontDataContext();
   const [checkboxes, setCheckboxes] = useState({});
+  const { category } = useParams();
 
   const handleCategoryChange = (categorySlug) => {
-    setCheckboxes({ ...checkboxes, [categorySlug]: !checkboxes[categorySlug] });
+    setCheckboxes((prev) => {
+      const updatedCheckboxes = { ...prev, [categorySlug]: !prev[categorySlug] };
+  
+      if (updatedCheckboxes["all"]) {
+        delete updatedCheckboxes["all"];
+      }
+  
+      return updatedCheckboxes;
+    });
   };
 
   var checkedCategories = Object.keys(checkboxes).filter(key => checkboxes[key]);
-  checkedCategories = checkedCategories.join('+')
+  checkedCategories = checkedCategories.join('+');
+
   const handleFilter = () => {
-    navigate(`/shop/${checkedCategories ? checkedCategories : 'all'}`)
-  }
-  const { category } = useParams();
-  
+    navigate(`/shop/${checkedCategories ? checkedCategories : 'all'}`);
+    closeFilterOverlay(); // Close the filter overlay after applying the filter
+  };
+
   useEffect(() => {
     const params = category?.split('+');
     if(params){
@@ -27,9 +36,9 @@ function Filters(props) {
       params.forEach(key => {
         result[key] = true;
       });
-      setCheckboxes(result)
+      setCheckboxes(result);
     }
-  }, [category])
+  }, [category]);
 
   return (
     <div className="innerfiltermpbile">
@@ -50,9 +59,10 @@ function Filters(props) {
           ))}
         </div>
       </div>
-      <button className="apllynow" onClick={() => handleFilter()}>Apply Now <i class="fa-solid fa-arrow-right"></i></button>
+      <button className="apllynow" onClick={handleFilter}>
+        Apply Now <i className="fa-solid fa-arrow-right"></i>
+      </button>
     </div>
-
   );
 }
 

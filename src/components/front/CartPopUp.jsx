@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import emptycart from "../../assets/img/empty-cart.png";
+import emptycart from "../../assets/img/empty-cart.webp";
 import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
@@ -166,7 +166,7 @@ const CartPopUp = ({ item }) => {
                           </div>
 
                           <div>
-                            <button className="icon_btn __danger mx-1" onClick={() => removeCartItemFun(item.id || item?.product_id)}>
+                            <button className="icon_btn __danger mx-1" onClick={() => removeCartItemFun(item?.product_id)}>
                               <i class="fa-solid fa-trash"></i>
                             </button>
                           </div>
@@ -179,7 +179,7 @@ const CartPopUp = ({ item }) => {
             ) : (
               <>
                 <div class="product-item-inner">
-                  <img src={emptycart} alt="" style={{ width: "100px" }} />
+                  <img src={emptycart} alt="empty-cart" width={100} height={100} />
                   <h5>There are no product added on your cart</h5>
                   <p className=" w-75 mx-auto">
                     <Link
@@ -223,14 +223,14 @@ const CartPopUp = ({ item }) => {
                           />
                         </div>
                         <div className="rating_box mt-2">
-                          <ul>
+                          <div className="ratings-custom d-flex align-items-center">
                             <Rating
                               name="read-only"
                               value={item?.review_average}
                               readOnly
                             />
                              {item?.review_count > 0 && <span>({item?.review_count})</span>} 
-                          </ul>
+                          </div>
                         </div>
                         <div className="product_name">{item.name}</div>
                         <div className="price_product">

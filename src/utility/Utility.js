@@ -147,10 +147,13 @@ export function filterListByValue(list, searchValues, exactMatchKeys = []) {
     });
 }
 
+
+
 export const getPercentageOff = (price, sale_price) => {
     const percentage = ((price - sale_price) / price) * 100;
-    return percentage.toFixed(2);
-}
+    return Math.ceil(percentage); // Next higher integer
+};
+
 
 export const checkItem = (item, textType) => {
     if (item) {

@@ -189,10 +189,15 @@ const AddProduct = () => {
       const imageUrl = URL.createObjectURL(e.target.files[0]);
       setImgPreview({ ...imgPreview, hover_img: imageUrl });
     } else if (e.target.name === "video") {
-      setValue({ ...value, video: e.target.files[0] });
-      const imageUrl = URL.createObjectURL(e.target.files[0]);
-      // setImgPreview(prev => ({ ...prev, video: imageUrl }));
-      setImgPreview({ ...imgPreview, video: imageUrl });
+      const file = e.target.files[0];
+
+      if (file) {
+        setValue((prev) => ({ ...prev, video: file }));
+        const videoUrl = URL.createObjectURL(file);
+        setImgPreview((prev) => ({ ...prev, video: file.name }));
+      } else {
+        console.warn("No video file selected.");
+      }
 
     } else if (e.target.name === "title") {
       setValue({
@@ -212,7 +217,7 @@ const AddProduct = () => {
     }
   };
 
-  console.log("imgPreview",imgPreview?.video)
+  console.log("imgPreview", imgPreview?.video)
 
   const handleEditorChange = (value) => {
     setValue((prevValues) => {
@@ -239,7 +244,7 @@ const AddProduct = () => {
     } else if (type === "hover_img") {
       setValue({ ...value, hover_img: "" });
       setImgPreview({ ...imgPreview, hover_img: null });
-    }else if (type === "video") {
+    } else if (type === "video") {
       setValue({ ...value, video: "" });
       setImgPreview({ ...imgPreview, video: null });
     } else if (type === "images") {
@@ -977,16 +982,18 @@ const AddProduct = () => {
                           <p className="m-0">Upload Video Here</p>
                           <span>(Video  -  Size: 10MB)</span>
                           <span className="image_class" style={{ fontWeight: '400!important', fontSize: '14px!important' }}>1:1 Aspect ratio</span>
-                          <input type="file" id="video1" name="video"  accept="video/*"  onChange={handleChange} />
+                          <input type="file" id="video1" name="video" accept="video/*" onChange={handleChange} />
                         </label>
                         <div class="preview_upload">
                           <h4>Video Preview</h4>
-                          <div  className="d-flex align-items-center"  style={{ gap: "10px" }} >
-                            {imgPreview?.video && (
-                              <video style={{height: "140px", width: "240px"}}  controls>
-                                <source src={imgPreview?.video} type="video/mp4" />
+                          <div className="d-flex align-items-center" style={{ gap: "10px" }} >
+                            {imgPreview?.video && imgPreview.video.startsWith("https") ? (
+                              <video style={{ height: "140px", width: "240px" }} controls>
+                                <source src={imgPreview.video} type="video/mp4" />
                                 Your browser does not support the video tag.
                               </video>
+                            ) : (
+                              <p>{imgPreview?.video}</p> 
                             )}
                             {imgPreview?.video && (
                               <button className="icon_btn __danger" onClick={() => handleRemoveImage("video")}>

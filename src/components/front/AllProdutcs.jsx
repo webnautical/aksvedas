@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import "swiper/swiper-bundle.min.css";
-import emptycart from "../../assets/img/empty-cart.png";
+import emptycart from "../../assets/img/empty-cart.webp";
 
 import Aos from "aos";
 import { useFrontDataContext } from "../../context/FrontContextProvider";
@@ -148,18 +148,25 @@ const AllProducts = ({ filterVal }) => {
                       className="withouthover"
                       src={imgBaseURL() + item.cover}
                       alt="product_img"
+                      width='300'
+                      height="400"
+                        loading="lazy"
                     />
                     <img
                       className="withhover"
                       src={imgBaseURL() + item.hover_img}
                       alt="product_img"
+                         width='300'
+                      height="400"
+               
+                      loading="lazy"
                     />
                   </Link>
                 </div>
                 <div className="rating_box mt-3">
-                  <ul>
+                  <div className="ratings-custom d-flex align-items-center">
                     <Rating name="read-only" value={item?.review_average} readOnly /> {item?.review_count > 0 && <span>({item?.review_count})</span>} 
-                  </ul>
+                  </div>
                 </div>
                 <div className="product_name">
                   <Link
@@ -183,7 +190,7 @@ const AllProducts = ({ filterVal }) => {
         ) : (
           <>
             <div class="product-item-inner">
-              <img src={emptycart} alt="" />
+              <img src={emptycart} alt="empty-box" width={300} height={300} />
               <h4>
                 No products were found matching your selection.
               </h4>

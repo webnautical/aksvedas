@@ -106,7 +106,6 @@ const BlogDetails = () => {
     }
   }
 
-  console.log("blogDetails",blogDetails)
 
   return (
     <>
@@ -126,7 +125,7 @@ const BlogDetails = () => {
             </Link>
             <Typography>Blog Details</Typography>
           </Breadcrumbs>
-          <h1>Blog Details</h1>
+          <h1>{blogDetails?.title}</h1>
         </div>
       </div>
       {/* <!-- blog-details-area --> */}
@@ -140,7 +139,7 @@ const BlogDetails = () => {
                 </div>
                 <div className="blog-details-content">
                   <div className="blog-meta">
-                    <ul className="list-wrap">
+                    <ul className="list-wrap mb-2 pb-0">
                       <li className="blog-author">
                         <Link to="#"> <i className="far fa-user"></i> Admin</Link>
                       </li>
@@ -155,7 +154,6 @@ const BlogDetails = () => {
                       </li>
                     </ul>
                   </div>
-                  <h2 className="title">{blogDetails?.title}</h2>
 
                   <HTMLContent data={blogDetails?.desc} />
                   <div className="blog-details-bottom"></div>

@@ -3,11 +3,11 @@ import { APICALL } from '../../utility/api/api'
 import { authCustomer, toastifySuccess } from '../../utility/Utility'
 import { useFrontDataContext } from '../../context/FrontContextProvider'
 import applycoupan from "../../assets/img/coupan-apply.gif";
-const OrderSummary =(props) => {
+const OrderSummary = (props) => {
     const { shippingDetails, cartData, customerDetails, categories } = useFrontDataContext()
 
     // const [discountOnCategory, setDiscountOnCategory] = useState([])
-    const { subTotal, setOfferCouponObj, loyaltyDiscount, setLoyaltyDiscount, parentTrigger } = props
+    const { subTotal, setOfferCouponObj, loyaltyDiscount, setLoyaltyDiscount, parentTrigger, activeStep } = props
     const [coupon, setCoupon] = useState('')
     const [response, setResponse] = useState({
         error: null,
@@ -65,7 +65,7 @@ const OrderSummary =(props) => {
                     setResponse({ ...response, 'error': res?.status, 'msg': msg, 'coupon': res?.data?.coupon_code, saving: saving, allow: res?.data?.allow })
                 }
             } else {
-                setResponse({ ...response, 'error': res?.status, 'msg': res?.message, allow: '',saving: 0 })
+                setResponse({ ...response, 'error': res?.status, 'msg': res?.message, allow: '', saving: 0 })
             }
         } catch (error) {
             console.log(error)
@@ -217,8 +217,9 @@ const OrderSummary =(props) => {
         }
     }
 
-    const removeCoupon = () =>{
-        setResponse({ ...response, 
+    const removeCoupon = () => {
+        setResponse({
+            ...response,
             error: null,
             msg: null,
             coupon: null,
@@ -229,90 +230,112 @@ const OrderSummary =(props) => {
         setCoupon("")
     }
 
-    useEffect(() =>{
-        if(coupon){
+    useEffect(() => {
+        if (coupon) {
             applyCoupon(coupon)
         }
-    },[cartData])
+    }, [cartData])
 
-    useEffect(() =>{
-        if(parentTrigger){
-            if(coupon){
+    useEffect(() => {
+        if (parentTrigger) {
+            if (coupon) {
                 applyCoupon(coupon)
             }
         }
-    },[parentTrigger])
+    }, [parentTrigger])
 
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+
+    const couponBoxToggle = () =>{
+        if(isMobile){
+            if(isMobile && activeStep == 0){
+                return true
+            }else{
+                return false
+            }
+        }else{
+            return true
+        }
+    }
 
     return (
         <>
-            <div className="card">
-                <div className="card-body">
-                    <div className="text-center">
-                        <h6 className="mb-3 fs-14">
-                            Have a <span className="fw-semibold">promo</span> code ?
-                        </h6>
-                    </div>
-                    <div className="hstack gap-3 px-3 mx-n3 align-items-start">
-                       <div className='w-100'>
-                       <input
-                            className="form-control me-auto"
-                            type="text"
-                            placeholder="Enter coupon code"
-                            value={coupon}
-                            onChange={(e) => setCoupon(e.target.value)}
-                            aria-label="Add Promo Code here..."
-                        />
-                  <div className='text-end'>
-                  <button type="button" className="p-0 border-0" style={{ color:'#af6800' }} onClick={() => removeCoupon(coupon)}>Remove</button>
-                  </div>
-                       </div>
-                        <button type="button" className="btn-normals w-xs" onClick={() => applyCoupon(coupon)}>Apply</button>
-                    </div>
-                    <span className={response.error ? 'text-success' : 'text-danger'}>{response?.msg}</span>
-
-                    <div className='mt-2'>
-                    {couponList?.length > 0 &&
-                        couponList?.map((item, i) => (
-                            <div class="vouchercard mb-2">
-                                <div class="">
-                                    <div class="content d-flex justify-content-between">
-                                        <h2 className="m-0">{item?.coupon_code}</h2>
-                                        {item?.coupon_code == coupon ? 
-                                            <button className="border-0 p-0" style={{ color: '#B46B00', cursor: "none" }}>Applied</button>
-                                            :
-                                            <button className="border-0 p-0" style={{ color: '#B46B00' }} onClick={() => { setCoupon(item?.coupon_code); applyCoupon(item?.coupon_code) }}>Apply</button>
-                                        }
-                                    </div>
+            {
+                couponBoxToggle() &&
+                <div className="card">
+                    <div className="card-body">
+                        <div className="text-center">
+                            <h6 className="mb-3 fs-14">
+                                Have a <span className="fw-semibold">promo</span> code ?
+                            </h6>
+                        </div>
+                        <div className="hstack gap-3 px-3 mx-n3 align-items-start">
+                            <div className='w-100'>
+                                <input
+                                    className="form-control me-auto"
+                                    type="text"
+                                    placeholder="Enter coupon code"
+                                    value={coupon}
+                                    onChange={(e) => setCoupon(e.target.value)}
+                                    aria-label="Add Promo Code here..."
+                                />
+                                <div className='text-end'>
+                                    <button type="button" className="p-0 border-0" style={{ color: '#af6800' }} onClick={() => removeCoupon(coupon)}>Remove</button>
                                 </div>
                             </div>
-                        ))}
-                    </div>
+                            <button type="button" className="btn-normals w-xs" onClick={() => applyCoupon(coupon)}>Apply</button>
+                        </div>
+                        <span className={response.error ? 'text-success' : 'text-danger'}>{response?.msg}</span>
 
-                    <div className='mt-3'>
-                        <p className="px-1" style={{ fontSize: '14px', background: 'rgb(237 237 237)' }}>You can use 100 Coins max in one time shopping</p>
+                        <div className='mt-2'>
+                            {couponList?.length > 0 &&
+                                couponList?.map((item, i) => (
+                                    <div class="vouchercard mb-2">
+                                        <div class="">
+                                            <div class="content d-flex justify-content-between">
+                                                <h2 className="m-0">{item?.coupon_code}</h2>
+                                                {item?.coupon_code == coupon ?
+                                                    <button className="border-0 p-0" style={{ color: '#B46B00', cursor: "none" }}>Applied</button>
+                                                    :
+                                                    <button className="border-0 p-0" style={{ color: '#B46B00' }} onClick={() => { setCoupon(item?.coupon_code); applyCoupon(item?.coupon_code) }}>Apply</button>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                        </div>
 
-                        <span>Use AksCoins ₹{customerDetails?.loyalty || 0} </span>
+                        <div className='mt-3'>
+                            <p className="px-1" style={{ fontSize: '14px', background: 'rgb(237 237 237)' }}>You can use 100 Coins max in one time shopping</p>
 
-                        <>
-                            <label className="switch switch-primary switch-sm ms-2 pe-2">
-                                <input
-                                    type="checkbox"
-                                    className="switch-input"
-                                    onClick={(e) => submitLoyaltyDiscount(e.target.checked)}
-                                />
-                                <span className="switch-toggle-slider">
-                                    <span className="switch-on">
-                                        <span className="switch-off" />
+                            <span>Use AksCoins ₹{customerDetails?.loyalty || 0} </span>
+
+                            <>
+                                <label className="switch switch-primary switch-sm ms-2 pe-2">
+                                    <input
+                                        type="checkbox"
+                                        className="switch-input"
+                                        onClick={(e) => submitLoyaltyDiscount(e.target.checked)}
+                                    />
+                                    <span className="switch-toggle-slider">
+                                        <span className="switch-on">
+                                            <span className="switch-off" />
+                                        </span>
                                     </span>
-                                </span>
-                            </label>
-                        </>
+                                </label>
+                            </>
+                        </div>
+
                     </div>
-
                 </div>
-            </div>
-
+            }
 
             <div className="card overflow-hidden mt-4">
                 <div className="card-header border-bottom-dashed">

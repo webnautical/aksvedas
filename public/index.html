@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="layout-menu-100vh light-style">
 
 <head>
   <meta charset="utf-8" />
   <title>Aksvedas - Best Online Store</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
   <meta name="description" content="Aksveda - High-quality products & services. Shop now for the best deals!" />
   <meta name="google-site-verification" content="PqXcqccu7huHLzWcMNVJBhw14zLXxnblL-Lzcv887iQ" />
@@ -14,7 +14,7 @@
   <meta property="og:image" content="https://www.aksveda.com/logo.png" />
   <meta property="og:url" content="https://www.aksveda.com/" />
   <meta property="og:type" content="website" />
-  
+
   <!-- Icons -->
   <link rel="canonical" href="https://aksvedas.com/" />
   <link rel="icon" href="%PUBLIC_URL%/fav-icon.png" />
@@ -25,57 +25,23 @@
     rel="stylesheet">
   <link rel="stylesheet" href="%PUBLIC_URL%/assets/admin/vendor/fonts/fontawesome.css" />
   <link rel="stylesheet" href="%PUBLIC_URL%/assets/admin/vendor/fonts/tabler-icons.css" />
-  <link rel="stylesheet" href="%PUBLIC_URL%/assets/admin/vendor/fonts/flag-icons.css" />
-
-  <!-- Core CSS -->
   <link rel="stylesheet" href="%PUBLIC_URL%/assets/admin/css/core.css" />
   <link rel="stylesheet" href="%PUBLIC_URL%/assets/admin/css/theme-default.css" />
   <link rel="stylesheet" href="%PUBLIC_URL%/assets/admin/css/demo.css" />
   <link rel="stylesheet" href="%PUBLIC_URL%/assets/admin/css/responsive.css" />
-
-  <!-- Vendors CSS -->
-  <link rel="stylesheet" href="%PUBLIC_URL%/assets/admin/vendor/libs/node-waves/node-waves.css" />
-  <link rel="stylesheet" href="%PUBLIC_URL%/assets/admin/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-  <link rel="stylesheet" href="%PUBLIC_URL%/assets/admin/vendor/libs/typeahead-js/typeahead.css" />
-  <link rel="stylesheet" href="%PUBLIC_URL%/assets/admin/vendor/libs/apex-charts/apex-charts.css" />
-  <link rel="stylesheet" href="%PUBLIC_URL%/assets/admin/vendor/libs/datatables-bs5/datatables.bootstrap5.css">
   <link rel="stylesheet"
     href="%PUBLIC_URL%/assets/admin/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css">
   <link rel="stylesheet" href="%PUBLIC_URL%/assets/admin/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css">
 
-  <!-- Page CSS -->
 
-  <!-- Helpers -->
-  <script src="%PUBLIC_URL%/assets/admin/vendor/js/helpers.js" type="text/javascript"></script>
-  <script src="%PUBLIC_URL%/assets/admin/vendor/js/template-customizer.js" type="text/javascript"></script>
-  <script src="%PUBLIC_URL%/assets/admin/js/config.js" type="text/javascript"></script>
 
-  <script src="%PUBLIC_URL%/assets/admin/vendor/libs/jquery/jquery.js" type="text/javascript"></script>
-  <script src="%PUBLIC_URL%/assets/admin/vendor/libs/popper/popper.js" type="text/javascript"></script>
+
+
+  <script src="%PUBLIC_URL%/assets/admin/vendor/libs/jquery/jquery.js" type="text/javascript" defer></script>
   <script src="%PUBLIC_URL%/assets/admin/vendor/js/bootstrap.js" type="text/javascript"></script>
-  <script src="%PUBLIC_URL%/assets/admin/vendor/libs/node-waves/node-waves.js" type="text/javascript"></script>
-  <script src="%PUBLIC_URL%/assets/admin/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"
-    type="text/javascript"></script>
-  <script src="%PUBLIC_URL%/assets/admin/vendor/libs/hammer/hammer.js" type="text/javascript"></script>
-  <script src="%PUBLIC_URL%/assets/admin/vendor/libs/i18n/i18n.js" type="text/javascript"></script>
-  <script src="%PUBLIC_URL%/assets/admin/vendor/libs/typeahead-js/typeahead.js" type="text/javascript"></script>
-  <script src="%PUBLIC_URL%/assets/admin/vendor/js/menu.js" type="text/javascript"></script>
-
-  <!-- endbuild -->
-
-  <!-- Vendors JS -->
-  <script src="%PUBLIC_URL%/assets/admin/vendor/libs/apex-charts/apexcharts.js" type="text/javascript"></script>
-  <script src="%PUBLIC_URL%/assets/admin/vendor/libs/datatables-bs5/datatables-bootstrap5.js"
-    type="text/javascript"></script>
-
-  <!-- Main JS -->
-  <script src="%PUBLIC_URL%/assets/admin/js/main.js" type="text/javascript"></script>
-
-  <!-- <script  type="text/javascript" src="%PUBLIC_URL%/assets/payment/json.js"></script>
-      <script src="%PUBLIC_URL%/assets/payment/jquery-1.7.2.min.js"></script> -->
-
+  <script src="%PUBLIC_URL%/assets/admin/vendor/js/helpers.js" type="text/javascript"></script>
+  <script src="%PUBLIC_URL%/assets/admin/js/config.js" type="text/javascript"></script>
   <!-- Page JS -->
-  <script src="%PUBLIC_URL%/assets/admin/js/app-ecommerce-dashboard.js" type="text/javascript"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
@@ -83,6 +49,7 @@
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-D67SQDP2DD">
   </script>
+  
 
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -126,21 +93,23 @@
   <!-- End Google Tag Manager -->
 
   <!-- Meta Pixel Code -->
-<script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '931317185784232');
-  fbq('track', 'PageView');
+  <script>
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ?
+        n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+      };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+      n.queue = []; t = b.createElement(e); t.async = !0;
+      t.src = v; s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s)
+    }(window, document, 'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '931317185784232');
+    fbq('track', 'PageView');
   </script>
   <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=931317185784232&ev=PageView&noscript=1"
-  /></noscript>
+      src="https://www.facebook.com/tr?id=931317185784232&ev=PageView&noscript=1" /></noscript>
   <!-- End Meta Pixel Code -->
 
 

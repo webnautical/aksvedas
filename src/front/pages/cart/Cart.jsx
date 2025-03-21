@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useFrontDataContext } from "../../../context/FrontContextProvider";
 import { authCustomer, imgBaseURL } from "../../../utility/Utility";
 import { Link } from "react-router-dom";
-import emptycart from "../../../assets/img/empty-cart.png";
+import emptycart from "../../../assets/img/empty-cart.webp";
 
 const Cart = () => {
   const { cartData, removeCartItemFun, addProductInWishlistFun } = useFrontDataContext()
@@ -117,7 +117,7 @@ const Cart = () => {
             :
             <>
               <div class="product-item-inner">
-                <img src={emptycart} alt="" />
+                <img src={emptycart} alt="empty-cart" width={300} height={300} />
                 <h4>There are no product added on your cart.</h4>
               </div>
             </>

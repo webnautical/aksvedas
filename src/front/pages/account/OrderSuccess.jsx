@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import ordersucssefull from "../../../assets/img/ordersucssefull.png";
 import firework from "../../../assets/img/youwon.gif";
 import akscoins from "../../../assets/img/akscoin.png";
@@ -7,7 +7,13 @@ import { APICALL } from "../../../utility/api/api";
 import { formatdedDate } from "../../../utility/Utility";
 
 const OrderSuccess = () => {
-  const { order_id } = useParams();
+  // const { order_id } = useParams();
+
+  const locationData = useLocation()
+  const queryParams = new URLSearchParams(locationData.search);
+  const orderId = queryParams.get('order_id');
+
+  const order_id = locationData?.state ? locationData?.state?.order_id : orderId
   const [orderDetails, setOrderDetails] = useState(null);
   const [open, setOpen] = React.useState(false);
 
@@ -46,7 +52,7 @@ const OrderSuccess = () => {
       gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=AW-16785777896";
       gtagScript.async = true;
       document.head.appendChild(gtagScript);
-  
+
       const gtagConfig = document.createElement("script");
       gtagConfig.innerHTML = `
         window.dataLayer = window.dataLayer || [];
@@ -56,7 +62,7 @@ const OrderSuccess = () => {
       `;
       document.head.appendChild(gtagConfig);
     }
-  
+
     if (orderDetails) {
       // Add gtag conversion event
       const gtagScript = document.createElement("script");
@@ -69,7 +75,7 @@ const OrderSuccess = () => {
         });
       `;
       document.head.appendChild(gtagScript);
-  
+
       // Add dataLayer event for purchase
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
@@ -80,7 +86,7 @@ const OrderSuccess = () => {
           'value': orderDetails?.total_amount || 1.0, // Order total
           'currency': 'INR',
           'items_category': orderDetails?.order_products?.[0]?.product_category || "",
-          'items': 
+          'items':
             orderDetails?.order_products?.map(item => ({
               item_name: item.product_name,
               item_category: item.product_category || "Combo",
@@ -90,7 +96,7 @@ const OrderSuccess = () => {
             }))
         }
       });
-  
+
       return () => {
         document.head.removeChild(gtagScript);
       };
@@ -99,6 +105,7 @@ const OrderSuccess = () => {
 
 
   // console.log("orderDetails",orderDetails)
+
 
   return (
     <>

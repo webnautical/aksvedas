@@ -11,6 +11,19 @@ import PDFButton from '../../../components/PDFButton';
 
 const OrderList = () => {
     const navigate = useNavigate()
+    const [currentPage, setCurrentPage] = useState(1);
+
+    useEffect(() => {
+        const savedPage = sessionStorage.getItem("orderPage");
+        if (savedPage) {
+            setCurrentPage(Number(savedPage));
+        }
+    }, []);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+        sessionStorage.setItem("orderPage", page);
+    };
     const [selectedID, setSelectedID] = useState([])
     const [submitLoading, setSubmitLoading] = useState({
         'bulk': false,
@@ -52,7 +65,7 @@ const OrderList = () => {
         },
         {
             name: <span className='text-uppercase'>Invoice</span>,
-            selector: row => <><PDFButton order_id={row?.id} btnName={"Download"}/></>,
+            selector: row => <><PDFButton order_id={row?.id} btnName={"Download"} /></>,
         },
         {
             name: <span className='text-uppercase'>Earned AksCoins</span>,
@@ -117,17 +130,17 @@ const OrderList = () => {
 
         if (searchVal.drpDownVal !== "") {
             let updatedProducts = [];
-            if(searchVal.drpDownVal == "COD"){
+            if (searchVal.drpDownVal == "COD") {
                 updatedProducts = listData.filter(item =>
                     item?.payment_method == searchVal.drpDownVal
                 );
                 setFilterData(updatedProducts)
-            }else if(searchVal.drpDownVal.toLowerCase() === "prepaid"){
+            } else if (searchVal.drpDownVal.toLowerCase() === "prepaid") {
                 updatedProducts = listData.filter(item =>
                     item?.payment_method?.toLowerCase() !== "cod"
                 );
                 setFilterData(updatedProducts)
-            }else{
+            } else {
                 updatedProducts = listData.filter(item =>
                     item?.payment_method?.toLowerCase().includes(searchVal.drpDownVal.toLowerCase()) || item?.order_status?.toLowerCase().includes(searchVal.drpDownVal.toLowerCase())
                 );
@@ -149,6 +162,8 @@ const OrderList = () => {
     const filterReset = () => {
         setFilterData(listData)
         setSearchVal({ ...searchVal, 'searchText': '', 'fromDate': '', 'toDate': '', 'drpDownVal': '' })
+        setCurrentPage(1);
+        sessionStorage.setItem("orderPage", 1);
     }
 
     const handleDrpDown = (val) => {
@@ -237,7 +252,7 @@ const OrderList = () => {
                     <div className="div d-flex justify-content-between align-items-center">
                         <h4 class="py-3 mb-2"><span class=" fw-light">Aksvedas /</span> Order List</h4>
                         <div>
-                           
+
                             {
                                 submitLoading?.upd_order ?
                                     <button type='button' class="btn btn-primary buttons-collection dropdown-toggle btn-label-secondary waves-effect waves-light export_btn me-2">
@@ -333,9 +348,9 @@ const OrderList = () => {
                                 pagination
                                 selectableRows
                                 onSelectedRowsChange={handleRowSelected}
-                                // conditionalRowStyles={conditionalRowStyles}
                                 selectableRowDisabled={disabledCheckboxes}
-                            // selectableRowsComponentProps={selectableRowsComponentProps}
+                                paginationDefaultPage={currentPage}
+                                onChangePage={handlePageChange}
                             />
 
                         </div>

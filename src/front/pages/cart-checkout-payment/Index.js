@@ -14,7 +14,7 @@ import { APICALL, getDataAPI } from '../../../utility/api/api';
 import { SERVER_ERR, SOMETHING_ERR } from '../../../utility/Constants';
 import SpinnerBTN from '../../../components/SpinnerBTN';
 import ConfirmModal from '../../../components/ConfirmModal';
-import emptycart from "../../../assets/img/empty-cart.png";
+import emptycart from "../../../assets/img/empty-cart.webp";
 import { axiosInstance } from '../../../utility/api/interceptor';
 const steps = [
     'Cart',
@@ -31,7 +31,7 @@ const Index = () => {
     const pathWithoutSlash = path.substring(1);
     const [addressID, setAddressID] = useState(null)
     const [submitLoading, setSubmitLoading] = useState(false)
-    const [addressModal, setAddressModal] = useState(false);
+    const [addressModal, setAddressModal] = useState(true);
     const [loading, setLoading] = useState(false)
 
     const [mobileNumber, setMobileNumber] = useState("");
@@ -101,7 +101,8 @@ const Index = () => {
                 getCartFun()
                 getOrderListFun()
                 localStorage.removeItem('cart');
-                navigate(`/order-success/${res?.data?.id}`)
+                navigate('/order-success', { state: { order_id: res?.data?.id } })
+                // navigate(`/order-success/${res?.data?.id}`)
             } else {
                 setLoading(false)
             }
@@ -137,7 +138,7 @@ const Index = () => {
             phone: customerDetails?.phone,
             email: customerDetails?.email,
         }));
-        
+
     }, [customerDetails]);
 
     const [updAddress, setUpdAddress] = useState(null)
@@ -407,22 +408,24 @@ const Index = () => {
             otpInputs[index - 1].current.focus();
         }
     };
-  const [countdown, setCountdown] = useState(60);
-  const [count, setCount] = useState(0)
+    const [countdown, setCountdown] = useState(60);
+    const [count, setCount] = useState(0)
     useEffect(() => {
-      if (otpSent) {
-        const timer = setInterval(() => {
-          setCountdown((prevCount) => {
-            if (prevCount === 1) {
-              clearInterval(timer);
-            }
-            return prevCount - 1;
-          });
-        }, 1000);
-        return () => clearInterval(timer);
-      }
+        if (otpSent) {
+            const timer = setInterval(() => {
+                setCountdown((prevCount) => {
+                    if (prevCount === 1) {
+                        clearInterval(timer);
+                    }
+                    return prevCount - 1;
+                });
+            }, 1000);
+            return () => clearInterval(timer);
+        }
     }, [otpSent, count]);
     const [parentTrigger, setParentTrigger] = useState(false);
+
+    const [isDisabled, setIsDisabled] = useState(true)
 
     const handleVerifyOTP = async () => {
         const otpValue = otp.join("");
@@ -445,11 +448,13 @@ const Index = () => {
                     name: res?.data?.data?.name,
                 }
                 setGuestID(dataParam?.id)
+                setIsDisabled(false)
                 setAddressVal(prevState => ({
                     ...prevState,
                     customer_id: dataParam?.id,
                     phone: mobileNumber,
                 }));
+                getGuestCartItem()
                 setParentTrigger(true)
                 getCustomerDetails(dataParam?.id);
                 setLoading(false)
@@ -474,12 +479,59 @@ const Index = () => {
         handleMobileNumberSubmit()
     };
 
+    const checkVerifyInput = () => {
+        if (authCustomer()) {
+            return false
+        } else if (isDisabled) {
+            return true
+        }
+    }
+
+    const [isContentVisible, setIsContentVisible] = useState(false);
+    const contentRef = useRef(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsContentVisible(true);
+                  }
+            },
+            { threshold: 1.0 }
+        );
+
+        const checkElement = () => {
+            if (contentRef.current) {
+                observer.observe(contentRef.current);
+            } else {
+                setTimeout(checkElement, 100);
+            }
+        };
+
+        checkElement();
+
+        return () => {
+            if (contentRef.current) {
+                observer.unobserve(contentRef.current);
+            }
+        };
+    }, []);
+
+    const getGuestCartItem = () =>{
+        try {
+            const params = {cart : JSON.stringify(cartData)} 
+            APICALL('/v1/add-guest-cart', 'post', params)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
 
     return (
         <>
 
-            <div
-                className="innabout-section"
+            <div className="innabout-section"
                 style={{ backgroundImage: `url(${siderbg})` }}
             >
                 <div className="container">
@@ -496,7 +548,7 @@ const Index = () => {
             </div>
 
             <section className="cart-section checkout-pagebg">
-                    {/* <button onClick={()=>callChildApplyCoupon()}>Applu</button> */}
+                {/* <button onClick={()=>callChildApplyCoupon()}>Applu</button> */}
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12 mx-auto">
@@ -522,15 +574,10 @@ const Index = () => {
                                         {activeStep === 1 &&
                                             <>
 
-                                                {!authCustomer()?.id &&
+                                                {/* {!authCustomer()?.id &&
                                                     <div className='mobile_number_verify'>
                                                         <div className="card">
                                                             <div className="card-body">
-
-                                                                {/* <h6 className="mb-3 fs-14 text-center d-block">Verify your mobile number to place your order.</h6> */}
-
-
-                                                                {/* Number */}
                                                                 {!otpSent ?
                                                                     <div className='row justify-content-center'>
                                                                         <div className='col-md-6 text-center'>
@@ -570,7 +617,6 @@ const Index = () => {
                                                                     </div>
                                                                     :
                                                                     <>
-                                                                        {/* OTP */}
                                                                         <div className="row justify-content-center">
                                                                             <div className='col-12 col-md-5 text-center'>
                                                                                 <img className='m-auto' width={60} src={otpIcon} alt="ok" />
@@ -594,15 +640,15 @@ const Index = () => {
                                                                                             />
                                                                                         ))}
                                                                                     </div>
-                                                                                  <div class="mt-3 text-end">
-                                                                                  {countdown > 0 && (
-                                                                                        <p className="mt-3 mb-0"><i className="fa-regular fa-clock"></i> Resend Otp in {countdown} sec</p>
-                                                                                    )}
-                                                                                    {
-                                                                                        countdown === 0 &&
-                                                                                        <button onClick={handleResendOtp} className="p-0 border-0" style={{ color:'#af6800' }}>Resend OTP</button>
-                                                                                    }
-                                                                                  </div>
+                                                                                    <div class="mt-3 text-end">
+                                                                                        {countdown > 0 && (
+                                                                                            <p className="mt-3 mb-0"><i className="fa-regular fa-clock"></i> Resend Otp in {countdown} sec</p>
+                                                                                        )}
+                                                                                        {
+                                                                                            countdown === 0 &&
+                                                                                            <button onClick={handleResendOtp} className="p-0 border-0" style={{ color: '#af6800' }}>Resend OTP</button>
+                                                                                        }
+                                                                                    </div>
                                                                                     <button type="button" className="btn-normals w-xs text-nowrap mt-3" onClick={() => handleVerifyOTP()}>Verify</button>
                                                                                 </div>
                                                                                 {error && (
@@ -616,7 +662,7 @@ const Index = () => {
                                                             </div>
 
                                                         </div>
-                                                    </div>}
+                                                    </div>} */}
 
                                                 <div className="d-flex align-items-center mb-4">
                                                     {authCustomer()?.id &&
@@ -634,6 +680,7 @@ const Index = () => {
                                                         </>
                                                     }
                                                 </div>
+
                                                 {successMessage && (
                                                     <p className="text-start text-success mt-1">
                                                         {successMessage}
@@ -645,7 +692,7 @@ const Index = () => {
                                                         {
                                                             customerDetails?.address?.length > 0 &&
                                                             customerDetails?.address?.map((item, i) => (
-                                                                <div className="col-lg-6 col-12">
+                                                                <div className="col-lg-6 col-12 mb-3 mt-2">
                                                                     <div className="form-check card-radio">
                                                                         <input
                                                                             id={`radioAddress${i}`}
@@ -691,7 +738,82 @@ const Index = () => {
 
                                                 {
                                                     addressModal &&
-                                                    <div className="row mt-2 g-3">
+                                                    <div className="row g-3">
+                                                        {!authCustomer()?.id &&
+                                                            <>
+                                                                {/* {!otpSent ? */}
+                                                                <div className="col-md-12 mt-2">
+                                                                    <div className="gap-3 px-3 mx-n3 d-flex">
+                                                                        <input
+                                                                            type="tel"
+                                                                            value={mobileNumber}
+                                                                            onChange={(e) => {
+                                                                                const input = e.target.value.replace(/\D/g, "");
+                                                                                if (input.length <= 10) {
+                                                                                    setMobileNumber(input);
+                                                                                }
+                                                                            }}
+                                                                            maxLength="10"
+                                                                            placeholder="Mobile Number"
+                                                                            className='form-control'
+                                                                            disabled={otpSent ? true : false}
+                                                                        />
+                                                                        <div className=''>
+                                                                            {
+                                                                                otpSent ?
+                                                                                    <button type="button" className="text-center m-auto btn-normals w-xs text-nowrap" style={{ cursor: "none" }}>Verify</button>
+                                                                                    :
+                                                                                    <button type="button" className="text-center m-auto btn-normals w-xs text-nowrap" onClick={() => handleMobileNumberSubmit()}>Verify</button>
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                    {error && (
+                                                                        <p className="text-start errorlogin mt-1">
+                                                                            <i className="fas fa-exclamation-triangle"></i> {error}
+                                                                        </p>
+                                                                    )}
+                                                                </div>
+                                                                {
+                                                                    otpSent &&
+                                                                    <div className='col-12'>
+                                                                        <div className="gap-3 px-3 mx-n3">
+                                                                            <div className="custom-otp align-items-baseline  justify-content-between">
+                                                                                <div className='d-flex gap-2'>
+                                                                                    {otp?.map((digit, index) => (
+                                                                                        <input
+                                                                                            key={index}
+                                                                                            ref={otpInputs[index]}
+                                                                                            type="tel"
+                                                                                            maxLength="1"
+                                                                                            value={digit}
+                                                                                            onChange={(e) =>
+                                                                                                handleOtpChange(index, e.target.value)
+                                                                                            }
+                                                                                            style={{
+                                                                                                textAlign: "center",
+                                                                                            }}
+                                                                                            className='pt-md-2 pb-md-2'
+                                                                                        />
+                                                                                    ))}
+                                                                                </div>
+                                                                                <button type="button" className="btn-normals w-xs text-nowrap mt-3" onClick={() => handleVerifyOTP()}>Verify</button>
+                                                                            </div>
+                                                                            <div class="mt-3 text-end">
+                                                                                {countdown > 0 && (
+                                                                                    <p className="mt-3 mb-0"><i className="fa-regular fa-clock"></i> Resend Otp in {countdown} sec</p>
+                                                                                )}
+                                                                                {
+                                                                                    countdown === 0 &&
+                                                                                    <button onClick={handleResendOtp} className="p-0 border-0" style={{ color: '#af6800' }}>Resend OTP</button>
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            </>
+                                                        }
+
+
                                                         <div className="col-md-12">
                                                             <input
                                                                 type="text"
@@ -700,6 +822,7 @@ const Index = () => {
                                                                 onChange={handleChange}
                                                                 placeholder="Name"
                                                                 className="form-control"
+                                                                disabled={checkVerifyInput()}
                                                             />
                                                             <span className="errMsg">{errors.name}</span>
                                                         </div>
@@ -711,7 +834,7 @@ const Index = () => {
                                                                 onChange={handleChange}
                                                                 placeholder="Email"
                                                                 className="form-control"
-                                                                disabled={customerDetails?.email ? true : false}
+                                                                disabled={authCustomer() ? customerDetails?.email ? true : false : checkVerifyInput()}
                                                             />
                                                             <span className="errMsg">{errors.email}</span>
                                                         </div>
@@ -722,6 +845,7 @@ const Index = () => {
                                                                 onChange={handleChange}
                                                                 placeholder="State"
                                                                 className="form-control"
+                                                                disabled={checkVerifyInput()}
                                                             >
                                                                 <option value="">--Select State--</option>
                                                                 <option value="Andhra Pradesh">Andhra Pradesh</option>
@@ -763,6 +887,7 @@ const Index = () => {
                                                                 onChange={handleChange}
                                                                 placeholder="City"
                                                                 className="form-control"
+                                                                disabled={checkVerifyInput()}
                                                             />
                                                             <span className="errMsg">{errors.city}</span>
                                                         </div>
@@ -774,6 +899,7 @@ const Index = () => {
                                                                 onChange={handleChange}
                                                                 placeholder="Zip Code"
                                                                 className="form-control"
+                                                                disabled={checkVerifyInput()}
                                                             />
                                                             <span className="errMsg">{errors.zip}</span>
                                                         </div>
@@ -785,6 +911,7 @@ const Index = () => {
                                                                 onChange={handleChange}
                                                                 placeholder="Phone"
                                                                 className="form-control"
+                                                                disabled={checkVerifyInput()}
                                                             />
                                                             <span className="errMsg">{errors.phone}</span>
                                                         </div>
@@ -796,6 +923,7 @@ const Index = () => {
                                                                 onChange={handleChange}
                                                                 className="form-control"
                                                                 placeholder="Address"
+                                                                disabled={checkVerifyInput()}
                                                             >
                                                                 {" "}
                                                             </textarea>
@@ -841,7 +969,7 @@ const Index = () => {
 
                                     {cartData?.length < 1 && (
                                         <div class="product-item-inner">
-                                            <img src={emptycart} alt="" />
+                                            <img src={emptycart} alt="empty-cart" width={300} height={300} />
                                             <h4>There are no product added on your cart.</h4>
                                         </div>
                                     )}
@@ -851,8 +979,10 @@ const Index = () => {
                                         cartData?.length > 0 &&
                                         <div className="col-lg-4  rightdiv-tableorder mt-lg-0 mt-3">
                                             <div className="sticky-side-div">
-                                                <OrderSummary subTotal={getSubTotalFunc()} setOfferCouponObj={setOfferCouponObj} setLoyaltyDiscount={setLoyaltyDiscount} loyaltyDiscount={loyaltyDiscount} parentTrigger={parentTrigger}/>
-                                                <div className="product-button">
+                                                <OrderSummary subTotal={getSubTotalFunc()} setOfferCouponObj={setOfferCouponObj} setLoyaltyDiscount={setLoyaltyDiscount} loyaltyDiscount={loyaltyDiscount} parentTrigger={parentTrigger} activeStep={activeStep} />
+
+                                                <div className="product-button" ref={contentRef}>
+
                                                     <Box
                                                         sx={{ display: "flex", justifyContent: "flex-end" }}
                                                         className="doble_btn-pro"
@@ -867,15 +997,15 @@ const Index = () => {
                                                             <>
                                                                 {activeStep === 0 ?
                                                                     <>
-                                                                    <Link to="/shop/all" className="btn-2 buy-btn" onClick={handleNext}> Continue shopping </Link>
-                                                                    <button className="btn-2" onClick={handleNext}> Next </button>
+                                                                        <Link to="/shop/all" className="btn-2 buy-btn" onClick={handleNext}> Continue shopping </Link>
+                                                                        <button className="btn-2" onClick={handleNext}> Next </button>
                                                                     </>
                                                                     :
                                                                     <>
                                                                         {customerDetails?.address?.length > 0 ?
                                                                             <button className="btn-2" onClick={handleNext}> Continue to Payment </button>
                                                                             :
-                                                                            <button className="btn-2 my-btn" type='button'> Continue to Payment </button>
+                                                                            <button className="my-btn w-100"  style={{ background: "grey" }} type='button'> Continue to Payment</button>
                                                                         }
                                                                     </>
                                                                 }
@@ -902,6 +1032,71 @@ const Index = () => {
                                                             </>
                                                         )}
                                                     </Box>
+
+
+                                                    <div className="mobile-sticky">
+                                                        <Box className="doble_btn-pro">
+                                                            {activeStep > 0 && (
+                                                                <button className="btn-2 buy-btn" onClick={handleBack}>
+                                                                    Back
+                                                                </button>
+                                                            )}
+                                                            {activeStep < steps.length - 1 && (
+                                                                <>
+                                                                    {activeStep === 0 ? (
+                                                                        <>
+                                                                            <Link to="/shop/all" className="btn-2 buy-btn" onClick={handleNext}>
+                                                                                Continue shopping
+                                                                            </Link>
+                                                                            {
+                                                                                isContentVisible ?
+                                                                                    <button className="btn-2" onClick={handleNext}>
+                                                                                        Next
+                                                                                    </button>
+                                                                                    :
+                                                                                    <button className="w-100" style={{ background: "grey" }}>
+                                                                                        Next
+                                                                                    </button>
+                                                                            }
+                                                                        </>
+                                                                    ) : (
+                                                                        <>
+                                                                            {customerDetails?.address?.length > 0 ? (
+                                                                                <button className="btn-2" onClick={handleNext}>
+                                                                                    Continue to Payment
+                                                                                </button>
+                                                                            ) : (
+                                                                                <button className="w-100" style={{ background: "grey" }} type="button" disabled>
+                                                                                    Continue to Payment
+                                                                                </button>
+                                                                            )}
+                                                                        </>
+                                                                    )}
+                                                                </>
+                                                            )}
+                                                            {activeStep === steps.length - 1 && (
+                                                                <>
+                                                                    {loading ? (
+                                                                        <button type="button" className="btn-2">
+                                                                            <SpinnerBTN />
+                                                                        </button>
+                                                                    ) : (
+                                                                        <>
+                                                                            {paymentMethod === "COD" ? (
+                                                                                <button className="btn-2" onClick={createOrder}>
+                                                                                    Proceed to Payment
+                                                                                </button>
+                                                                            ) : (
+                                                                                <button className="btn-2" onClick={handlePayment}>
+                                                                                    Proceed to Payment
+                                                                                </button>
+                                                                            )}
+                                                                        </>
+                                                                    )}
+                                                                </>
+                                                            )}
+                                                        </Box>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

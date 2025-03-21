@@ -87,7 +87,7 @@ function App() {
         <Route path='/checkout' element={<FrontWeb cmp={Index} />} />
         <Route path='/account/:page' element={<FrontWeb cmp={Account} />} />
         <Route path='/order-details/:order_id' element={<FrontWeb cmp={OrderDetails} />} />
-        <Route path='/order-success/:order_id' element={<FrontWeb cmp={OrderSuccess} />} />
+        <Route path='/order-success' element={<FrontWeb cmp={OrderSuccess} />} />
         <Route path='/order-failure/:tracking_id' element={<FrontWeb cmp={OrderFailure} />} />
         <Route path='/login' Component={FrontLogin} />
 

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import free1 from "../../assets/img/experiment.png";
-import free2 from "../../assets/img/india.png";
-import free3 from "../../assets/img/freeshiping3.png";
-import crufree from "../../assets/img/cruelty-free.png";
-import free4 from "../../assets/img/freeshiping4.png";
+import free1 from "../../assets/img/experiment.webp";
+import free2 from "../../assets/img/india.webp";
+import free3 from "../../assets/img/freeshiping3.webp";
+import crufree from "../../assets/img/cruelty-free.webp";
+import free4 from "../../assets/img/freeshiping4.webp";
 import free5 from "../../assets/img/freeshiping5.png";
-import bgfree from "../../assets/img/bg-free.png";
+import bgfree from "../../assets/img/bg-free.webp";
 import BackToTop from "../../components/front/BackToTop";
 import { useFrontDataContext } from "../../context/FrontContextProvider";
 import { APICALL } from "../../utility/api/api";
@@ -88,42 +88,69 @@ const Footer = () => {
           <div className="row row-cols-2 row-cols-sm-3 row-cols-xl-5 row-cols-lg-5 row-cols-md-5 g-md-3 g-2">
             <div className="col borer-right">
               <div className="free-box">
-                <img src={free1} alt="footer_logo" />
-                <h5>
+              <img
+                  src={free1}
+                  alt="LAB TESTED"
+                  width="100"
+                  height="100"
+                  loading="lazy"
+                />
+                <h3>
                   LAB TESTED
-                </h5>
+                </h3>
               </div>
             </div>
             <div className="col borer-right">
               <div className="free-box">
-                <img src={free2} alt="footer_logo" />
-                <h5>
+              <img
+                  src={free2}
+                  alt="MAKE IN INDIA"
+                  width="100"
+                  height="100"
+                  loading="lazy"
+                />
+                <h3>
                   MAKE IN INDIA
-                </h5>
+                </h3>
               </div>
             </div>
             <div className="col borer-right">
               <div className="free-box">
-                <img src={icon2} alt="footer_logo" />
-                <h5>
+              <img
+                  src={free4}
+                  alt="QUALITY GUARANTEE"
+                  width="100"
+                  height="100"
+                  loading="lazy"
+                />
+                <h3>
                   QUALITY GUARANTEE
-                </h5>
+                </h3>
               </div>
             </div>
             <div className="col borer-right">
               <div className="free-box">
-                <img src={crufree} alt="footer_logo" />
-                <h5>
+              <img
+                  src={crufree}
+                  alt="CRUELTY FREE"
+                  width="100"
+                  height="100"
+                  loading="lazy"
+                />
+                <h3>
                   CRUELTY FREE
-                </h5>
+                </h3>
               </div>
             </div>
             <div className="col borer-right">
               <div className="free-box">
-                <img src={free3} alt="footer_logo" />
-                <h5>
+                <img src={free3} alt="footer_logo"
+                      width="100"
+                      height="100"
+                      loading="lazy" />
+                <h3>
                   SECURED PAYMENT
-                </h5>
+                </h3>
               </div>
             </div>
           </div>
@@ -211,7 +238,17 @@ const Footer = () => {
                     <div className="row">
                       {
                         allData?.availableOn?.map((item, i) => (
-                          <div className="col-md-6  col-sm-4 col-5 mb-4"> <Link to={item.url} target="_blank"><img src={imgBaseURL() + item?.img} alt="" className="img-fluid w-100" /></Link></div>
+                          <div className="col-md-6 col-sm-4 col-5 mb-4">
+                          <Link to={item?.url} target="_blank" aria-label={item?.name || "View Image"}>
+                            <img
+                              src={imgBaseURL() + item?.img}
+                              alt={item?.name || "Image"}
+                              className="img-fluid w-100"
+                              loading="lazy"
+                            />
+                          </Link>
+                        </div>
+                        
                         ))
                       }
                     </div>
@@ -225,49 +262,52 @@ const Footer = () => {
             <p>PAYMENTS WE ACCEPT</p>
             <div className="row">
               <div className="col-lg-6 mx-auto">
-                <img src={imgBaseURL() + webAttr?.payment_we_accept} alt="" className="img-fluid" />
+                <img src={imgBaseURL() + webAttr?.payment_we_accept} alt="payment-option" className="img-fluid" width={'100%'} height={'auto'}     loading="lazy" />
               </div>
             </div>
           </div>
           <div className="bottum_bar">
             <HTMLContent data={webAttr?.copyright} />
             <ul className="social_icons">
-              <li>
-                <Link to={webAttr?.fb_url} target="_blank">
-                  <i class={webAttr?.fb_icon}></i>
-                </Link>
-              </li>
-              <li>
-                <Link to={webAttr?.ig_url} target="_blank">
-                  <i class={webAttr?.ig_icon}></i>
-                </Link>
-              </li>
-              <li>
-                <Link to={webAttr?.twitter_url} target="_blank">
-                  <i class="fa-brands fa-linkedin-in"></i>
-                </Link>
-              </li>
-              {
-                webAttr?.yt_url?.length > 10 &&
-                <li>
-                  <Link to={webAttr?.yt_url} target="_blank">
-                    <i class={webAttr?.yt_icon}></i>
-                  </Link>
-                </li>
-              }
-              <li>
-                <BackToTop></BackToTop>
-              </li>
-            </ul>
+  <li>
+    <Link to={webAttr?.fb_url} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+      <i className={webAttr?.fb_icon}></i>
+    </Link>
+  </li>
+  <li>
+    <Link to={webAttr?.ig_url} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+      <i className={webAttr?.ig_icon}></i>
+    </Link>
+  </li>
+  <li>
+    <Link to={webAttr?.twitter_url} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+      <i className="fa-brands fa-linkedin-in"></i>
+    </Link>
+  </li>
+  {webAttr?.yt_url?.length > 10 && (
+    <li>
+      <Link to={webAttr?.yt_url} target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+        <i className={webAttr?.yt_icon}></i>
+      </Link>
+    </li>
+  )}
+  <li>
+    <BackToTop />
+  </li>
+</ul>
+
           </div>
         </div>
         <Link
-          to="https://api.whatsapp.com/send?phone=+919001115559&text=Hello"
-          className="whatspapp-footer"
-          target="_blank"
-        >
-          <i class="fab fa-whatsapp"></i>
-        </Link>
+  to="https://api.whatsapp.com/send?phone=+919001115559&text=Hello"
+  className="whatsapp-footer"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Chat on WhatsApp"
+>
+  <i className="fab fa-whatsapp"></i>
+</Link>
+
       </footer>
 
     </>

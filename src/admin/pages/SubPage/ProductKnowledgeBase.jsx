@@ -124,6 +124,8 @@ const ProductKnowledgeBase = () => {
                 setLoading(false);
             }
         } else {
+
+            console.log('kkk')
             setLoading(false);
         }
     }

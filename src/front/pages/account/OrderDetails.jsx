@@ -165,9 +165,9 @@ const OrderDetails = () => {
                     <thead>
                       <tr>
                         <th className="w-50">products</th>
-                        <th className="w-25">price</th>
-                        <th className="w-25">qty</th>
-                        <th>total</th>
+                 
+                     
+                      
                       </tr>
                     </thead>
                     <tbody>
@@ -202,16 +202,17 @@ const OrderDetails = () => {
                                       </>
                                     )}
                                 </ol>
-                              </td>
-                              <td className="fw-medium">
-                                ₹{item?.product_price}
-                              </td>
-                              <td className="fw-medium">{item?.qnt}</td>
-                              <td className="fw-medium">
-                                ₹
+
+                                <p>  ₹{item?.product_price} x {item?.qnt} <span style={{ color:'#E0A11C', fontWeight:'600'}}>( ₹
                                 {parseInt(item?.product_price) *
-                                  parseInt(item?.qnt)}
+                                  parseInt(item?.qnt)})</span></p>
+                                <p></p>
+
+                               
                               </td>
+                            
+                             
+                             
                             </tr>
                           ))}
                         </>
