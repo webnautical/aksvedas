@@ -1982,7 +1982,7 @@ section.product_knowlenge_base .shop_now {
   background-attachment: fixed;
   position: relative;
   padding: 80px 0;
-  z-index: -1;
+  z-index: 0;
 }
 
 .footer_logo p {

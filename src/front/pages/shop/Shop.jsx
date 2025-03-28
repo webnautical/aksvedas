@@ -70,7 +70,7 @@ const Shop = () => {
       return catBanner ? catBanner.banner ? imgBaseURL() + catBanner.banner : siderbg : siderbg;
     }else{
       const image = getImageByTitle(category)?.img;
-      return imgBaseURL() + image
+      return image
     }
   };
 
@@ -81,7 +81,7 @@ const Shop = () => {
       return catBanner ? catBanner?.mobile_banner ? imgBaseURL() + catBanner?.mobile_banner : siderbg : siderbg;
     }else{
       const image = getImageByTitle(category)?.m_img;
-      return imgBaseURL() + image
+      return  image
     }
   };
 
@@ -110,10 +110,10 @@ const Shop = () => {
       item.title.split("+").sort().join("+") === sortedUrlTitle
     );
     if(banner){
-      const data = {img : banner?.img ? banner?.img : siderbg, m_img : banner?.m_img ? banner?.m_img : siderbg}
+      const data = {img : banner?.img ? imgBaseURL() + banner?.img : siderbg, m_img : banner?.m_img ? imgBaseURL() + banner?.m_img : siderbg}
       return data
     }else{
-      const data = {img : siderbg, m_img : siderbg}
+      const data = {img :  siderbg, m_img : siderbg}
       return data
     }
   };

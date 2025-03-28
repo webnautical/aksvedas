@@ -98,17 +98,14 @@ const FrontWeb = ({ cmp }) => {
       }
     }
   }, [metaDetails]);
-  
 
-
-  
   return (
     <>
       <Header />
       <Component />
       <Footer />
 
-      {(modal && !authCustomer()?.id && pathname === '/') &&
+      {(modal && !authCustomer()?.id && pathname === '/' && allData?.popupHomePage?.status) &&
         <div class="c-modal-for-banner">
           <div style={{ position: 'relative' }}>
             <div class="c-modal-dialog p-0" style={{ cursor: 'pointer', }} onClick={() => handleRedirect()}>

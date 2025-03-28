@@ -65,10 +65,12 @@ const OrderSummary = (props) => {
                     setResponse({ ...response, 'error': res?.status, 'msg': msg, 'coupon': res?.data?.coupon_code, saving: saving, allow: res?.data?.allow })
                 }
             } else {
+                setOfferCouponObj({ saving: 0, coupon: coupon })
                 setResponse({ ...response, 'error': res?.status, 'msg': res?.message, allow: '', saving: 0 })
             }
         } catch (error) {
-            console.log(error)
+            setOfferCouponObj({ saving: 0, coupon: coupon })
+            setResponse({ ...response, 'error': false, 'msg': "Something went wrong. try again letter", allow: '', saving: 0 })
         }
     }
 

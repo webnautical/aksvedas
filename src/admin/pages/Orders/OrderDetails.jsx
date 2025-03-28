@@ -3,8 +3,10 @@ import { APICALL } from '../../../utility/api/api';
 import Spinner from '../../../components/admin/Spinner';
 import { timeAgo } from './../../../utility/Date';
 import { Link, useParams } from 'react-router-dom';
-import { defaultUserIMG, getStatusColor, imgBaseURL, stringToArray } from '../../../utility/Utility';
+import { defaultUserIMG, getStatusColor, imgBaseURL, stringToArray, toastifyError, toastifySuccess } from '../../../utility/Utility';
 import { useFrontDataContext } from '../../../context/FrontContextProvider';
+import { SOMETHING_ERR } from './../../../utility/Constants';
+import ConfirmModal from '../../../components/ConfirmModal';
 
 const OrderDetails = () => {
     const { products } = useFrontDataContext()
@@ -13,6 +15,8 @@ const OrderDetails = () => {
     const { order_id } = useParams()
     const [orderDetails, setOrderDetails] = useState(null)
     const [shippingStatus, setShippingStatus] = useState(false)
+    const [completeLoading, setCompleteLoading] = useState(false)
+
     useEffect(() => {
         getOrderDetailsFun()
     }, [])
@@ -66,7 +70,26 @@ const OrderDetails = () => {
         }
     }
 
-    console.log("orderDetails", orderDetails)
+  const [modalOpen, setModalOpen] = useState(false)
+
+    const markAsComplete = async () => {
+        setCompleteLoading(true)
+        try {
+            const res = await APICALL(`/v1/mark-as-complete/${order_id}`);
+            if (res?.status) {
+                toastifySuccess(res?.message)
+                getOrderDetailsFun()
+                setModalOpen(false)
+                setCompleteLoading(false)
+            } else {
+                toastifyError(SOMETHING_ERR)
+                setCompleteLoading(false)
+            }
+        } catch (error) {
+            toastifyError(SOMETHING_ERR)
+            setCompleteLoading(false)
+        }
+    }
 
     return (
         <>
@@ -84,6 +107,10 @@ const OrderDetails = () => {
                             <p className="text-body">{timeAgo(orderDetails?.created_at)}</p>
                         </div>
                         <div className="d-flex align-content-center text-end flex-wrap gap-2">
+                            {
+                                orderDetails?.order_status != "Delivered" &&
+                            <button type='button' className="btn btn-primary" onClick={() => setModalOpen(true)}> {completeLoading ? "Wait..." : " Mark as complete"}</button>
+                            }
                             {
                                 (!orderDetails?.shipment_id && orderDetails?.order_status == "pending") &&
                                 <button type='button' className="btn btn-primary" onClick={() => cancelOrder()}> {cancelLoader ? "Wait..." : "Cancel Order"} </button>
@@ -332,6 +359,21 @@ const OrderDetails = () => {
                 {/* / Content */}
                 <div className="content-backdrop fade" />
             </div>
+
+            <ConfirmModal
+            msg={
+              <>
+                <h3 className="mt-2 mb-1">Are you sure ?</h3>
+                <h5 className="my-0">You want to complete this order</h5>
+              </>}
+            modalOpen={modalOpen}
+            setModalOpen={setModalOpen}
+            funCall={markAsComplete}
+            btn1={"Yes"}
+            btn2={"NO"}
+            submitLoading={completeLoading}
+            icon={false}
+          />
 
             <Spinner sppiner={loading} />
         </>

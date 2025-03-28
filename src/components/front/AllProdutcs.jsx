@@ -58,12 +58,12 @@ const AllProducts = ({ filterVal }) => {
       const res = await postDataAPI("/v1/get-products", JSON.stringify(param));
       if (res?.status) {
         setProductList(res?.data);
-        if(stateData?.searchVal){
+        if (stateData?.searchVal) {
           const updatedProducts = res?.data.filter(product =>
             product.name.toLowerCase().includes(stateData?.searchVal.toLowerCase())
           );
           setFilterProductList(updatedProducts);
-        }else{
+        } else {
           setFilterProductList(res?.data);
         }
         setLoading(false);
@@ -102,13 +102,15 @@ const AllProducts = ({ filterVal }) => {
       );
       setFilterProductList(updatedProducts);
     }
-    if(stateData?.searchVal){
+    if (stateData?.searchVal) {
       const updatedProducts = proudctList.filter(product =>
         product.name.toLowerCase().includes(stateData?.searchVal.toLowerCase())
       );
       setFilterProductList(updatedProducts);
     }
   }, [filterVal, filterVal.sort, filterVal.searchText, stateData]);
+
+  console.log("category", category)
 
 
   return (
@@ -150,22 +152,22 @@ const AllProducts = ({ filterVal }) => {
                       alt="product_img"
                       width='300'
                       height="400"
-                        loading="lazy"
+                      loading="lazy"
                     />
                     <img
                       className="withhover"
                       src={imgBaseURL() + item.hover_img}
                       alt="product_img"
-                         width='300'
+                      width='300'
                       height="400"
-               
+
                       loading="lazy"
                     />
                   </Link>
                 </div>
                 <div className="rating_box mt-3">
                   <div className="ratings-custom d-flex align-items-center">
-                    <Rating name="read-only" value={item?.review_average} readOnly /> {item?.review_count > 0 && <span>({item?.review_count})</span>} 
+                    <Rating name="read-only" value={item?.review_average} readOnly /> {item?.review_count > 0 && <span>({item?.review_count})</span>}
                   </div>
                 </div>
                 <div className="product_name">
@@ -198,6 +200,15 @@ const AllProducts = ({ filterVal }) => {
           </>
         )}
       </div>
+
+      {/* {category == "mens-health-supplement" &&
+        <div className="row">
+          <div className="col-12">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi aliquam praesentium alias velit tempora soluta, distinctio sint perspiciatis cumque magnam!</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, sequi dignissimos. Officia provident debitis saepe quidem, incidunt soluta ullam, totam consequatur repellendus ratione temporibus, ex enim sequi dolores. Eveniet asperiores a, ex neque facilis ullam alias error soluta recusandae. Sit recusandae laboriosam laudantium illum, eveniet possimus iusto porro cum veritatis excepturi, natus corporis sunt quae illo, cupiditate debitis enim velit ullam? Eos sequi iusto sit at accusamus perferendis voluptate ipsa ab? Et necessitatibus numquam excepturi ipsa veniam voluptatibus quod quae eius laudantium, est, dicta, sunt vitae iste ipsam fuga unde labore autem? Iure sequi rerum reprehenderit vitae eum, tenetur error quisquam quo non a, ipsam, id debitis deserunt odit quia sint explicabo! Impedit laboriosam quasi ut adipisci, aspernatur porro minus eum inventore a modi minima! Praesentium consequatur alias dolorem deleniti asperiores sed porro quo itaque officia ex facere doloremque, quos quasi dolores. Voluptate architecto doloremque quisquam mollitia a! Exercitationem eum voluptates dolorem non quod magnam, dolorum sint illum qui totam excepturi nemo tempora facere quia consequatur ex, obcaecati ipsum maiores, modi voluptatum. Aspernatur blanditiis reprehenderit, a mollitia quidem aperiam odit tempora, explicabo doloremque expedita praesentium, harum assumenda asperiores voluptatibus saepe voluptate dolore eius omnis labore laboriosam maxime. Laboriosam, placeat ea.</p>
+          </div>
+        </div>
+      } */}
     </>
 
   );

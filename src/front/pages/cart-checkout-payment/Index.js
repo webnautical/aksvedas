@@ -92,6 +92,9 @@ const Index = () => {
         "tax": 0
     }
 
+    console.log("params",params)
+    console.log("data",data)
+
     const createOrder = async () => {
         setLoading(true)
         try {

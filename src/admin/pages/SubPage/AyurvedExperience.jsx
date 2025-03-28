@@ -28,6 +28,7 @@ export const AyurvedExperience = () => {
     desc: "",
     img1: "",
     img2: "",
+    status: "",
   });
 
   useEffect(() => {
@@ -72,13 +73,14 @@ export const AyurvedExperience = () => {
     id: "",
     img1: "",
     imgPreview1: "",
+    status: "",
   });
   const getPopupContentFun = async () => {
     try {
       setLoading(true);
       const res = await getDataAPI("get-ayurved-experience/home_popup");
       if (res?.status) {
-        setPopupImg({ ...popupImg, 'id': res?.data[0]?.id, 'img1': res?.data[0]?.img1 })
+        setPopupImg({ ...popupImg, 'id': res?.data[0]?.id, 'img1': res?.data[0]?.img1, "status": res?.data[0]?.status })
         setLoading(false);
       } else {
         setLoading(false);
@@ -192,6 +194,7 @@ export const AyurvedExperience = () => {
       const formData = new FormData();
       formData.append("id", popupImg.id);
       formData.append("img1", popupImg.img1);
+      formData.append("status", popupImg.status);
       const res = await postDataAPI("ayurved-experience", formData);
       if (res.status) {
         getDataFun();
@@ -206,6 +209,8 @@ export const AyurvedExperience = () => {
       setLoading(false);
     }
   };
+
+  console.log("popupImg",popupImg)
 
   return (
     <div className="content-wrapper">
@@ -263,6 +268,13 @@ export const AyurvedExperience = () => {
                             {popupImg?.imgPreview1 ? (
                               <div className="mt-1"><img style={{ width: '40px' }} src={popupImg?.imgPreview1} alt="" /></div>
                             ) : <ItemImg img={popupImg?.img1} />}
+
+                            <div className="col-6">
+                              <select name="status" value={popupImg?.status}  className="form-control" onChange={(e)=>setPopupImg({...popupImg, 'status' : e.target.value})}>
+                                <option value={1}>Active</option>
+                                <option value={0}>Inactive</option>
+                              </select>
+                            </div>
 
                             <button className="btn btn-primary btn-sm" onClick={() => updateHomePopup()}>Update</button>
                           </div>
