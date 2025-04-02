@@ -1,12 +1,14 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Thumbs } from "swiper";
 import { useState } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
+import { imgBaseURL } from "../../utility/Utility";
 
 const Thumslider = (props) => {
+  const productDetails = props?.productDT
   const [activeThumb, setActiveThumb] = useState();
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -20,6 +22,11 @@ const Thumslider = (props) => {
     }
     setIsPlaying(!isPlaying);
   };
+
+  const playNow = () =>{
+    videoRef.current.play();
+    setIsPlaying(true)
+  }
 
   const buttonStyle = {
     marginTop: '10px',
@@ -48,11 +55,22 @@ const Thumslider = (props) => {
 
   const updatedImages = reorderMedia([...props.images]);
 
-
+  useEffect(() => {
+    document.addEventListener(
+      "wheel",
+      (e) => {
+        e.stopPropagation();
+      },
+      { passive: false }
+    );
+  }, []);
   return (
     <>
       <div className="product-slider-container">
         <Swiper
+          allowTouchMove={true}  // Touch interaction allow karega
+          simulateTouch={true}
+          slidesPerView={1}    // Mouse se bhi swipe allow karega
           loop={true}
           spaceBetween={10}
           navigation={{
@@ -60,7 +78,7 @@ const Thumslider = (props) => {
             prevEl: ".swiper-button-prev",
           }}
           modules={[Navigation, Thumbs]}
-          grabCursor={true}
+          grabCursor={false}
           thumbs={{ swiper: activeThumb }}
           className="product-images-slider"
         >
@@ -71,17 +89,14 @@ const Thumslider = (props) => {
                 item.endsWith(".ogg") ? (
                 <>
                   <div className="video_main_box">
-
                     <video ref={videoRef} width="100%" height="auto">
                       <source src={item} type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
-
                     <button className="play_pause_btn" onClick={handlePlayPause} style={buttonStyle}>
-                      <i className={isPlaying ? "fas fa-pause" : "fas fa-play"}></i> {/* Font Awesome icon */}
+                      <i className={isPlaying ? "fas fa-pause" : "fas fa-play"}></i>
                       {isPlaying ? '' : ''}
                     </button>
-
                   </div>
                 </>
               ) : (
@@ -110,10 +125,12 @@ const Thumslider = (props) => {
               {item.endsWith(".mp4") ||
                 item.endsWith(".webm") ||
                 item.endsWith(".ogg") ? (
-                <video>
-                  <source src={item} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
+                <>
+                 <div className="video_thumbnail">
+                    <img src={imgBaseURL() + productDetails?.video_thumbnail} alt="product images" />
+                    <i className="fa fa-play" onClick={()=>playNow()}></i>
+                 </div>
+                </>
               ) : (
                 <img src={item} alt="product images" />
               )}

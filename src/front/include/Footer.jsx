@@ -34,14 +34,19 @@ const Footer = () => {
         setMsg(<span className="text-danger">Please enter a valid email address.</span>);
         return false
       }
+      
       const res = await APICALL('/v1/subscribe', 'post', { email });
+      console.log(res)
       if (res?.status) {
         setMsg(<span className="text-success">Thank you for the subscribe.</span>);
+        setEmail("")
       } else {
-        toastifyError(SOMETHING_ERR)
+        toastifyError(res?.message)
+        setMsg("")
       }
     } catch (error) {
-      toastifyError(SOMETHING_ERR);
+      toastifyError(error?.response?.data?.message || SOMETHING_ERR);
+      setMsg("")
     }
   }
   const validateEmail = (email) => {
@@ -63,7 +68,7 @@ const Footer = () => {
                 </p> */}
                 <div className="suns_input d-flex ps-3 mt-3">
                   <i className="fa-regular fa-envelope align-items-center d-flex"></i>
-                  <input className="ps-1" type="text" placeholder="Enter Your Email" onChange={(e) => setEmail(e.target.value)} />
+                  <input className="ps-1" type="text" value={email} placeholder="Enter Your Email" onChange={(e) => setEmail(e.target.value)} />
                   <div className="submit">
                     <button className="button" onClick={() => handleSubmit()} class="shop_now btn-2">Subscribe</button>
                   </div>
@@ -159,7 +164,7 @@ const Footer = () => {
 
       <footer>
         <div className="container footer">
-          <div className="row mb-md-5 mb-4">
+          <div className="row mb-md-5 ">
             <div className="col-lg-4 col-md-6 pe-md-5 mb-lg-0 mb-4">
               <div className="footer_logo">
                 <img src={imgBaseURL() + webAttr?.logo} alt="footer_logo" />
@@ -170,7 +175,7 @@ const Footer = () => {
             </div>
             <div className="col-lg-8">
               <div className="row">
-                <div className="col-md-2 col-sm-4 mb-md-0 mb-4">
+                <div className="col-md-2 col-3 mb-md-0 mb-4">
                   <div className="f_menu">
                     <h2>About</h2>
                     <ul className="p-0">
@@ -190,7 +195,7 @@ const Footer = () => {
                     </ul>
                   </div>
                 </div>
-                <div className="col-md-3 col-sm-4 mb-md-0 mb-4">
+                <div className="col-md-3 col-4 mb-md-0 mb-4">
                   <div className="f_menu">
                     <h2>Categories</h2>
                     <ul className="p-0">
@@ -202,7 +207,7 @@ const Footer = () => {
                     </ul>
                   </div>
                 </div>
-                <div className="col-md-3 col-sm-4 mb-md-0 mb-4">
+                <div className="col-md-3 col-5 mb-md-0 mb-4">
                   <div className="f_menu">
                     <h2>Get In touch</h2>
                     <ul className="p-0">
@@ -232,7 +237,7 @@ const Footer = () => {
                     </ul>
                   </div>
                 </div>
-                <div className="col-md-4 col-sm-8 mb-md-0 mb-4">
+                <div className="col-md-4 col-sm-8 mb-md-0  ">
                   <div className="f_menu">
                     <h2>We Are Also Available On:</h2>
                     <div className="row">

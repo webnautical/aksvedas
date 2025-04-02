@@ -209,6 +209,15 @@
 
 @media (max-width: 767.98px) {
 
+  .points_product p{ padding: 0px!important;}
+
+  .section-inner-des h2 {
+    font-size: 20px!important;}
+    .section-inner-des h3 {
+      font-size: 20px!important;}
+    
+
+
 
   .thumb-slider-pro .product-images-slider-thumbs-wrapper img{ object-fit: contain!important; height: 60px!important;}
 

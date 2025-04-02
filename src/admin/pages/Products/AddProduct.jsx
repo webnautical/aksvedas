@@ -80,6 +80,7 @@ const AddProduct = () => {
     description: "",
     cover: "",
     hover_img: "",
+    video_thumbnail: "",
     video: "",
     product_img: [],
     price: "",
@@ -99,6 +100,7 @@ const AddProduct = () => {
     cover: null,
     video: null,
     hover_img: null,
+    video_thumbnail: null,
     images: [],
   });
   const [productIMGIDs, setProductIMGIDs] = useState([]);
@@ -125,6 +127,7 @@ const AddProduct = () => {
         description: productDetails?.description,
         cover: productDetails?.cover,
         hover_img: productDetails?.hover_img,
+        video_thumbnail: productDetails?.video_thumbnail,
         video: productDetails?.video,
         product_img: productDetails?.product_images,
         price: productDetails?.price,
@@ -147,6 +150,7 @@ const AddProduct = () => {
         ...imgPreview,
         cover: productDetails?.cover ? imgBaseURL() + productDetails.cover : null,
         hover_img: productDetails.hover_img ? imgBaseURL() + productDetails.hover_img : null,
+        video_thumbnail: productDetails.video_thumbnail ? imgBaseURL() + productDetails.video_thumbnail : null,
         video: productDetails.video ? imgBaseURL() + productDetails.video : null,
         images: img,
       });
@@ -167,6 +171,7 @@ const AddProduct = () => {
         description: "",
         cover: "",
         hover_img: "",
+        video_thumbnail: "",
         video: "",
         product_img: [],
         price: "",
@@ -188,7 +193,11 @@ const AddProduct = () => {
       setValue({ ...value, hover_img: e.target.files[0] });
       const imageUrl = URL.createObjectURL(e.target.files[0]);
       setImgPreview({ ...imgPreview, hover_img: imageUrl });
-    } else if (e.target.name === "video") {
+    } else if (e.target.name === "video_thumbnail") {
+      setValue({ ...value, video_thumbnail: e.target.files[0] });
+      const imageUrl = URL.createObjectURL(e.target.files[0]);
+      setImgPreview({ ...imgPreview, video_thumbnail: imageUrl });
+    }else if (e.target.name === "video") {
       const file = e.target.files[0];
 
       if (file) {
@@ -217,8 +226,6 @@ const AddProduct = () => {
     }
   };
 
-  console.log("imgPreview", imgPreview?.video)
-
   const handleEditorChange = (value) => {
     setValue((prevValues) => {
       return { ...prevValues, ["description"]: value };
@@ -244,7 +251,10 @@ const AddProduct = () => {
     } else if (type === "hover_img") {
       setValue({ ...value, hover_img: "" });
       setImgPreview({ ...imgPreview, hover_img: null });
-    } else if (type === "video") {
+    }  else if (type === "video_thumbnail") {
+      setValue({ ...value, video_thumbnail: "" });
+      setImgPreview({ ...imgPreview, video_thumbnail: null });
+    }else if (type === "video") {
       setValue({ ...value, video: "" });
       setImgPreview({ ...imgPreview, video: null });
     } else if (type === "images") {
@@ -323,6 +333,7 @@ const AddProduct = () => {
       formData.append("subscriptionVal", JSON.stringify(subscriptionVal));
       formData.append("cover", value.cover);
       formData.append("hover_img", value.hover_img);
+      formData.append("video_thumbnail", value.video_thumbnail);
       formData.append("video", value.video);
       value?.product_img?.forEach((file, index) => {
         formData.append(`product_img[${index}]`, file);
@@ -400,6 +411,7 @@ const AddProduct = () => {
       formData.append("subscriptionVal", JSON.stringify(subscriptionVal));
       formData.append("cover", value.cover);
       formData.append("hover_img", value.hover_img);
+      formData.append("video_thumbnail", value.video_thumbnail);
       formData.append("video", value.video);
       value?.product_img?.forEach((file, index) => {
         formData.append(`product_img[${index}]`, file);
@@ -552,10 +564,6 @@ const AddProduct = () => {
 
     setSubscriptionVal(newSubscriptions);
   };
-
-
-  console.log("productDetails", productDetails)
-
 
   return (
     <>
@@ -954,56 +962,120 @@ const AddProduct = () => {
                       </div>
                     </div>
 
+                    {/* Video */}
+                    <div className="row mt-4">
+                      <div className="col-6">
+                        <div className="img-box">
+                          <div className="file-uploader">
+                            <label
+                              className="global_file_upload_deisgn"
+                              for="media4"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                version="1.1"
+                                xmlnsXlink="http://www.w3.org/1999/xlink"
+                                width="32"
+                                height="32"
+                                viewBox="0 0 32 32"
+                                style={{ enableBackground: "new 0 0 512 512" }}
+                                xmlSpace="preserve"
+                              >
+                                <g>
+                                  <path
+                                    d="M30 22h-4v4H6v-4H2v8h28zM18 22V8.302l4.867 3.346 2.266-3.296L16 2.072l-9.133 6.28 2.266 3.296L14 8.302V22z"
+                                    fill="#a5a3ae"
+                                  ></path>
+                                </g>
+                              </svg>
 
-                    <div className="img-box mt-4">
-                      <div class="file-uploader">
-                        <label
-                          className="global_file_upload_deisgn"
-                          for="video1"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            version="1.1"
-                            xmlnsXlink="http://www.w3.org/1999/xlink"
-                            width="32"
-                            height="32"
-                            viewBox="0 0 32 32"
-                            style={{ enableBackground: "new 0 0 512 512" }}
-                            xmlSpace="preserve"
-                          >
-                            <g>
-                              <path
-                                d="M30 22h-4v4H6v-4H2v8h28zM18 22V8.302l4.867 3.346 2.266-3.296L16 2.072l-9.133 6.28 2.266 3.296L14 8.302V22z"
-                                fill="#a5a3ae"
-                              ></path>
-                            </g>
-                          </svg>
-
-                          <p className="m-0">Upload Video Here</p>
-                          <span>(Video  -  Size: 10MB)</span>
-                          <span className="image_class" style={{ fontWeight: '400!important', fontSize: '14px!important' }}>1:1 Aspect ratio</span>
-                          <input type="file" id="video1" name="video" accept="video/*" onChange={handleChange} />
-                        </label>
-                        <div class="preview_upload">
-                          <h4>Video Preview</h4>
-                          <div className="d-flex align-items-center" style={{ gap: "10px" }} >
-                            {imgPreview?.video && imgPreview.video.startsWith("https") ? (
-                              <video style={{ height: "140px", width: "240px" }} controls>
-                                <source src={imgPreview.video} type="video/mp4" />
-                                Your browser does not support the video tag.
-                              </video>
-                            ) : (
-                              <p>{imgPreview?.video}</p> 
-                            )}
-                            {imgPreview?.video && (
-                              <button className="icon_btn __danger" onClick={() => handleRemoveImage("video")}>
-                                <i className="fa fa-trash" />
-                              </button>
-                            )}
+                              <p className="m-0">Upload Video Thumbnail Here</p>
+                              <span>(Image (JPG, JPEG, PNG) and only 2mb)</span>
+                              <span className="image_class" style={{ fontWeight: '400!important', fontSize: '14px!important' }}>Image Resolution: 1024 ×  1024 </span>
+                              <input
+                                type="file"
+                                name="video_thumbnail"
+                                id="media4"
+                                onChange={handleChange}
+                              />
+                            </label>
+                            <div class="preview_upload">
+                              <h4>Video Thumbnail Preview</h4>
+                              <div
+                                className="d-flex align-items-center"
+                                style={{ gap: "10px" }}
+                              >
+                                {imgPreview.video_thumbnail && (
+                                  <img
+                                    src={imgPreview.video_thumbnail}
+                                    alt="Cover Preview"
+                                  />
+                                )}
+                                {imgPreview.video_thumbnail && (
+                                  <button
+                                    className="icon_btn __danger"
+                                    onClick={() => handleRemoveImage("video_thumbnail")}
+                                  >
+                                    <i className="fa fa-trash" />
+                                  </button>
+                                )}
+                              </div>
+                            </div>
                           </div>
                         </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="img-box ">
+                          <div class="file-uploader">
+                            <label
+                              className="global_file_upload_deisgn"
+                              for="video1"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                version="1.1"
+                                xmlnsXlink="http://www.w3.org/1999/xlink"
+                                width="32"
+                                height="32"
+                                viewBox="0 0 32 32"
+                                style={{ enableBackground: "new 0 0 512 512" }}
+                                xmlSpace="preserve"
+                              >
+                                <g>
+                                  <path
+                                    d="M30 22h-4v4H6v-4H2v8h28zM18 22V8.302l4.867 3.346 2.266-3.296L16 2.072l-9.133 6.28 2.266 3.296L14 8.302V22z"
+                                    fill="#a5a3ae"
+                                  ></path>
+                                </g>
+                              </svg>
+
+                              <p className="m-0">Upload Video Here</p>
+                              <span>(Video  -  Size: 10MB)</span>
+                              <span className="image_class" style={{ fontWeight: '400!important', fontSize: '14px!important' }}>1:1 Aspect ratio</span>
+                              <input type="file" id="video1" name="video" accept="video/*" onChange={handleChange} />
+                            </label>
+                            <div class="preview_upload">
+                              <h4>Video Preview</h4>
+                              <div className="d-flex align-items-center" style={{ gap: "10px" }} >
+                                {imgPreview?.video && imgPreview.video.startsWith("https") ? (
+                                  <video style={{ height: "140px", width: "240px" }} controls>
+                                    <source src={imgPreview.video} type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                  </video>
+                                ) : (
+                                  <p>{imgPreview?.video}</p>
+                                )}
+                                {imgPreview?.video && (
+                                  <button className="icon_btn __danger" onClick={() => handleRemoveImage("video")}>
+                                    <i className="fa fa-trash" />
+                                  </button>
+                                )}
+                              </div>
+                            </div>
 
 
+                          </div>
+                        </div>
                       </div>
                     </div>
 

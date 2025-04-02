@@ -1476,3 +1476,146 @@ footer .footer_support_btn  .btn-primary:hover{
     .auth-cover-bg-color {
         background-color: #f8f7fa;
     }
+
+
+
+
+    .men_health_content h2{ font-size: 22px; margin: 0px; margin-bottom: 5px;}
+
+    .men_health_content h3{ font-size: 22px; margin: 0px; margin-bottom: 5px;}
+
+    .points_product p{ 
+
+        padding-left: 65px;
+    }
+
+    .product_page_faq .accordion-button h3 {
+
+        font-size: 18px;
+        margin: 0px;
+
+    }
+
+    .product_page_faq .accordion-header+.accordion-collapse .accordion-body {
+        padding-top: 15px!important;
+    }
+
+    .faq-section h2{ font-size: 24px;}
+
+    .section-inner-des h3{ font-size: 24px; margin:0px; margin-top: 15px;}
+    .section-inner-des ul { margin-top: 10px;}
+
+    
+    .section-inner-des h2{ font-size: 24px; margin:0px; margin-top: 15px;}
+
+    html {
+        touch-action: auto;
+        }
+
+.whatsapp-footer{ 
+
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    bottom: 80px;
+    display: flex
+;
+    right: 15px;
+    background-color: #25d366;
+    color: #fff;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 23px;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 100;
+    align-items: center;
+    justify-content: center;}
+
+    .whatsapp-footer:hover{ color: white; }
+
+
+
+    
+@media (max-width: 575.98px) {
+
+    .faq_slider_product_bottm {
+        padding-bottom: 15px!important;
+    }
+
+    .f_menu ul li a {
+        font-size: 14px;}
+
+    .f_menu h2 {
+        font-size: 14px;}
+
+    .revie-feddback p{ margin-bottom: 0px;}
+
+    .bestseller {
+        padding: 40px 0px 20px !important;
+    }
+
+    .faq-section h2 {
+        font-size: 20px;
+    }
+
+    .how-use {
+        margin-bottom: 30px;
+        margin-top: 30px;
+    }
+
+    .stock_class{ margin-top: 11px;}
+
+    .sku_class{ margin-top: 6px;}
+
+    .product-button {
+        margin-top: 5px;
+    }
+
+    .fs-24{ margin-bottom: 0px;}
+
+    .skuno{ margin-bottom: 0px;}
+
+    .fs-14 {
+        font-size: 12px;
+        padding: 0px 10px;
+    }
+
+    .mobile_flex{ display: flex;}
+
+    .mobile_flex .fs-24{ text-align: end;}
+
+    .thumb-slider-pro {
+        margin-bottom: 25px !important;
+    }
+    .iconpro-box h5 {
+        font-weight: 500 !important;
+        font-size: 11px !important;
+        line-height: 15px;
+    margin-bottom: 0px;}
+  
+  
+    .iconpro-box img {
+        height: 40px !important;
+        width: 40px !important;
+    }}
+
+
+    .revie-feddback{ align-items: start!important; }
+    .userrevie-info img{ display: none;}
+
+    .faq_slider_product_bottm{ padding-bottom: 40px;} 
+
+    .video_thumbnail i{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 40px;
+        height: 40px;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100%;
+        color: #ddad67;
+    }

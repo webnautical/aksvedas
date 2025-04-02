@@ -70,7 +70,7 @@ const ImagesVideo = () => {
         if (e.target.name === 'file') {
             setValue({ ...value, 'img': e.target.files[0] })
             setImgPreview(URL.createObjectURL(e.target.files[0]));
-        } else if(e.target.name === 'm_img'){
+        } else if (e.target.name === 'm_img') {
             setValue({ ...value, 'm_img': e.target.files[0] })
             setMImgPreview(URL.createObjectURL(e.target.files[0]));
         } else {
@@ -82,7 +82,7 @@ const ImagesVideo = () => {
     }
     const handleCancel = () => {
         setErrors({})
-        setValue({ ...value, 'img': '',m_img: "", 'title': '', 'desc': '', 'status': 0, 'url': '' })
+        setValue({ ...value, 'img': '', m_img: "", 'title': '', 'desc': '', 'status': 0, 'url': '' })
         setUpdData(null)
     }
 
@@ -209,25 +209,25 @@ const ImagesVideo = () => {
                                         shopBanner.length > 0 ?
                                             shopBanner?.map((item, i) => (
                                                 <>
-                                                <div className="col-sm-12 col-lg-6 p_btn" key={i}>
-                                                    <div className="d-flex justify-content-between align-items-start card-widget-1 border-end pb-3 pb-sm-0">
-                                                        <img src={imgBaseURL() + item.img} alt="" style={{ width: '100%', height: '160px', objectFit: 'top' }} />
-                                                    </div>
-                                                    <span>Web</span>
+                                                    <div className="col-sm-12 col-lg-6 p_btn" key={i}>
+                                                        <div className="d-flex justify-content-between align-items-start card-widget-1 border-end pb-3 pb-sm-0">
+                                                            <img src={imgBaseURL() + item.img} alt="" style={{ width: '100%', height: '160px', objectFit: 'top' }} />
+                                                        </div>
+                                                        <span>Web</span>
 
-                                                    <div>
-                                                        <img src={imgBaseURL() + item.m_img} alt="" style={{ width: '100%', height: '160px', objectFit: 'top' }} />
-                                                    </div>
-                                                    <span>Mobile</span>
+                                                        <div>
+                                                            <img src={imgBaseURL() + item.m_img} alt="" style={{ width: '100%', height: '160px', objectFit: 'top' }} />
+                                                        </div>
+                                                        <span>Mobile</span>
 
-                                                    <div className="content mt-2">
-                                                        <h4 className='m-0 p-0'>{item.title != 'null' && item.title}</h4>
+                                                        <div className="content mt-2">
+                                                            <h4 className='m-0 p-0'>{item.title != 'null' && item.title}</h4>
+                                                        </div>
+                                                        <div className="c_btn d-flex">
+                                                            <button className='icon_btn __warning mx-2' data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" onClick={() => setUpdData(item)}><i className='fa fa-edit'></i></button>
+                                                        </div>
+                                                        <hr className="d-none d-sm-block d-lg-none me-4" />
                                                     </div>
-                                                    <div className="c_btn d-flex">
-                                                        <button className='icon_btn __warning mx-2' data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" onClick={() => setUpdData(item)}><i className='fa fa-edit'></i></button>
-                                                    </div>
-                                                    <hr className="d-none d-sm-block d-lg-none me-4" />
-                                                </div>
                                                 </>
                                             ))
                                             :
@@ -248,6 +248,8 @@ const ImagesVideo = () => {
                                     <div className="box d-flex justify-content-between">
                                         <h5><i class="fa-solid fa-desktop"></i> Website Slider Banner </h5>
                                     </div>
+
+
 
                                     {
                                         webBanner.length > 0 ?
@@ -381,7 +383,14 @@ const ImagesVideo = () => {
                     <h5 className="offcanvas-title" id="offcanvasExampleLabel">{updData ? 'Update' : 'Add'} Banner</h5>
                     <button type="button" onClick={handleCancel} className="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" />
                 </div>
-                <div className="offcanvas-body">
+                <div className="offcanvas-body pt-0">
+                    {
+                        value?.type == "web" &&
+                        <div className='mt-0 pt-0'>
+                            <p className='pt-0 mt-0' style={{fontSize: '13px'}}><strong>Note :-</strong> If both a title and a banner are provided, the frontend will display a partial section featuring the title and image.</p>
+                            <p style={{fontSize: '13px'}}><strong>Note :-</strong> If only a banner is uploaded, the frontend will display a fullscreen banner without a title.</p>
+                        </div>
+                    }
                     <form className="pt-0" id="eCommerceCategoryListForm" onSubmit={updData ? handleUpdate : handleSubmit}>
 
                         {value?.type != "shop" &&
@@ -440,7 +449,8 @@ const ImagesVideo = () => {
                                 </div>
                             }
                         </div>
-
+                        
+                        {value?.type == "shop" &&
                         <div className="mb-3">
                             {
                                 value?.type == "spotlight" ? <label>
@@ -450,6 +460,7 @@ const ImagesVideo = () => {
                                     <label className="form-label">Attachment (Recommended Banner Size - {value.type == 'web' ? "1920 * 678" : "800 * 500"}px)</label>
                             }
                             <input className="form-control" type="file" onChange={handleChange} name='m_img' />
+
                             <span className='errMsg'>{errors.img}</span>
                             {
                                 mImgPreview &&
@@ -463,6 +474,8 @@ const ImagesVideo = () => {
                                 </div>
                             }
                         </div>
+                        }
+
 
                         {value?.type != "shop" &&
                             <div className="mb-3">

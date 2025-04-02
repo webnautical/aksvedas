@@ -58,6 +58,7 @@ import ReasonList from './admin/pages/Query/ReasonList';
 import SubscribersList from './admin/pages/Query/SubscribersList';
 import MetaList from './admin/pages/Meta/MetaList';
 import PageNotFound from './ErrorPage/PageNotFound';
+
 function App() {
   // const path = useLocation().pathname
   // useEffect(() => {

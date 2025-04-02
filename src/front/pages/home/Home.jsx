@@ -228,7 +228,7 @@ const Home = () => {
           {allData ? (
             allData?.banner?.map((item, i) => (
               <>
-                {item?.title == "null" ? (
+                {item?.title === null || item?.title === "null" ? (
               <Link
               to={!item?.url || item?.url !== "null" ? item?.url : "/shop/all"}
               title={item?.name || "Shop Now"} // Adding a discernible name
@@ -333,12 +333,12 @@ const Home = () => {
             allData?.mobileBanner?.map((item, i) => (
               <div className="item" key={i}>
                 <div className="slider p-0">
-                  <Link to={item?.url !== "null" ? item?.url : "/shop/all"}>
+                  <Link to={( item?.url != null || item?.url != "null") ? item?.url : "/shop/all"}>
                     <img
                       src={imgBaseURL() + item?.img}
                       alt="slider product"
                       className="img-fluid"
-                      loading="lazy"  // Add lazy loading here
+                      loading="lazy"
                     />
                   </Link>
                 </div>
@@ -447,11 +447,11 @@ const Home = () => {
                           )}
                         </div>
                       </div>
-                      <div className="product_name">
+                      <h2 className="product_name">
                         <Link to={`/product-detail/${item?.slug}`}>
                           {item.name}
                         </Link>
-                      </div>
+                      </h2>
                       <div className="price_product">
                         ₹{item.sale_price}{" "}
                         <span className="high_price">₹{item.price}</span>
@@ -555,11 +555,11 @@ const Home = () => {
                           )}
                         </div>
                       </div>
-                      <div className="product_name">
+                      <h2 className="product_name">
                         <Link to={`/product-detail/${item?.slug}`}>
                           {item.name}
                         </Link>
-                      </div>
+                      </h2>
                       <div className="price_product">
                         ₹{item.sale_price}{" "}
                         <span className="high_price">₹{item.price}</span>

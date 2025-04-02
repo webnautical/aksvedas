@@ -46,9 +46,9 @@ const ProductItemButton = ({ row }) => {
         row?.quantity > 0 ?
           <>
             <div className="doble_btn global_btn d-flex mt-3">
-              <button className="btn-2 w-100" onClick={() => addToCartFun("buy", row)}>
+              {/* <button className="btn-2 w-100" onClick={() => addToCartFun("buy", row)}>
                 Buy Now <i className="fa-solid fa-arrow-right"></i>
-              </button>
+              </button> */}
               {
                 cartLoading ?
                   <button class="btn-2 w-100" type="button">
@@ -65,9 +65,9 @@ const ProductItemButton = ({ row }) => {
           </>
           :
           <div className="doble_btn global_btn d-flex mt-3">
-            <button className="btn-2 w-100" onClick={() => addToCartFun("buy", row)}>
+            {/* <button className="btn-2 w-100" onClick={() => addToCartFun("buy", row)}>
               Buy Now <i className="fa-solid fa-arrow-right"></i>
-            </button>
+            </button> */}
 
             <button className="btn-2 w-100" onClick={() => addToCartFun("cart", row)} >
               <i className="me-1 fa-solid fa-cart-plus"></i>Add To cart

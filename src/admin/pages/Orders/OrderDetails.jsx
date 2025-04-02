@@ -163,10 +163,10 @@ const OrderDetails = () => {
                                                                         }
                                                                         <ol className="bundle-orders">
                                                                             {
-                                                                                commoProducts(item.product.product_bundle?.product_items_id)?.length > 0 &&
+                                                                                commoProducts(item.product?.product_bundle?.product_items_id)?.length > 0 &&
                                                                                 <>
                                                                                     {
-                                                                                        commoProducts(item.product.product_bundle?.product_items_id)?.map((bundle_pro, i) => (
+                                                                                        commoProducts(item?.product?.product_bundle?.product_items_id)?.map((bundle_pro, i) => (
                                                                                             <>
                                                                                                 <li className='d-flex mt-2'>
                                                                                                     <span className='fw-bold'>{i + 1}</span>

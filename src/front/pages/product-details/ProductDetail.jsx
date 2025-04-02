@@ -145,6 +145,8 @@ const ProductDetail = () => {
     responsiveClass: true,
     infinite: true,
     speed: 100,
+    touchDrag: false,  // Disable touch dragging
+    mouseDrag: false,  // Disable mouse dragging
     navText: [
       '<i class="fa fa-chevron-left"></i>',
       '<i class="fa fa-chevron-right"></i>',
@@ -606,7 +608,7 @@ const ProductDetail = () => {
               <div className="thumb-slider-pro mt-md-0 mt-3">
                 <div className="row">
                   <div className="col-lg-5 mb-lg-5 mb-4">
-                    <Thumslider images={productImages} />
+                    <Thumslider images={productImages} productDT={productDetails} />
 
                     {/* <video width="100%" height="auto" controls>
                       <source src={imgBaseURL() + productDetails?.video} type="video/mp4" />
@@ -631,13 +633,14 @@ const ProductDetail = () => {
                           </div>
                           {/* <span className="fw-medium"> (4)</span> */}
                         </div>
-                        <div className="skuno">
+                     <div className="mobile_flex">
+                     <div className="skuno">
                           <ul>
-                            <li>
+                            <li className="sku_class">
                               {" "}
                               Sku: <strong>{productDetails?.sku}</strong>
                             </li>
-                            <li>
+                            <li className="stock_class">
                               Availability:{" "}
                               {productDetails?.quantity > 0 ? (
                                 <span className="instock">In Stock</span>
@@ -653,6 +656,24 @@ const ProductDetail = () => {
                               </li> */}
                           </ul>
                         </div>
+
+                        <h5 className="fs-24">
+                          ₹{productPrice?.sale_price}{" "}
+                          <span className="text-muted">
+                            <del>₹{productPrice?.price} </del>
+                          </span>{" "}
+                          <span className="fs-14 ms-2">
+                            {" "}
+                            (
+                            {getPercentageOff(
+                              productPrice?.price,
+                              productPrice?.sale_price
+                            )}{" "}
+                            % OFF)
+                          </span>
+                        </h5>
+                     </div>
+
 
                         {productDetails?.product_subscription?.length > 0 && (
                           <div className="row">
@@ -686,22 +707,7 @@ const ProductDetail = () => {
                           </div>
                         )}
 
-                        <h5 className="fs-24">
-                          ₹{productPrice?.sale_price}{" "}
-                          <span className="text-muted">
-                            <del>₹{productPrice?.price} </del>
-                          </span>{" "}
-                          <span className="fs-14 ms-2">
-                            {" "}
-                            (
-                            {getPercentageOff(
-                              productPrice?.price,
-                              productPrice?.sale_price
-                            )}{" "}
-                            % OFF)
-                          </span>
-                        </h5>
-
+                   
                         {bundleProducts?.length > 0 && (
                           <div className="budle-produts">
                             <h5>Bundle Products - {bundleProducts?.length}</h5>
@@ -984,26 +990,26 @@ const ProductDetail = () => {
                         </label>
                       </div>
                     </div> */}
-                    <div className="row row-cols-2 row-cols-sm-2 row-cols-xl-4 row-cols-lg-4 row-cols-md-2 g-3 mt-md-4 mt-4 mb-2">
-                      <div className="col">
+                    <div className="row g-3 mt-md-2 mb-md-2">
+                      <div className="col-3">
                         <div className="iconpro-box">
                           <img src={icon1} alt="footer_logo" />
                           <h5>Rooted in science</h5>
                         </div>
                       </div>
-                      <div className="col">
+                      <div className="col-3">
                         <div className="iconpro-box">
                           <img src={icon2} alt="footer_logo" />
                           <h5>Quality sourced</h5>
                         </div>
                       </div>
-                      <div className="col">
+                      <div className="col-3">
                         <div className="iconpro-box">
                           <img src={icon3} alt="footer_logo" />
                           <h5>Comprehensivly Tested</h5>
                         </div>
                       </div>
-                      <div className="col">
+                      <div className="col-3">
                         <div className="iconpro-box">
                           <img src={icon4} alt="footer_logo" />
                           <h5>No artificial preservatives</h5>
@@ -1197,44 +1203,7 @@ const ProductDetail = () => {
     )}
   </div>
 
-  {productContents?.faq?.length > 0 && (
-    <div className="how-use">
-      <div className="faq-section">
-        <h3>FAQ</h3>
-        <div className="row">
-          <div className="col-lg-8 mx-auto">
-            <div className="accordion accordion-flush" id="accordionFlushExample">
-              {productContents?.faq?.map((item, i) => (
-                <div className="accordion-item" key={i}>
-                  <h2 className="accordion-header" id={`flush-heading-${i}`}>
-                    <Link
-                      className="product-info-accordion text-decoration-none"
-                      data-bs-toggle="collapse"
-                      data-bs-target={`#flush-collapse-${i}`}
-                      aria-expanded="false"
-                      aria-controls={`flush-collapse-${i}`}
-                    >
-                      <span className="fs-18px">{item.title}</span>
-                    </Link>
-                  </h2>
-                  <div
-                    id={`flush-collapse-${i}`}
-                    className="accordion-collapse collapse"
-                    aria-labelledby={`flush-heading-${i}`}
-                    data-bs-parent="#accordionFlushExample"
-                  >
-                    <div className="py-8">
-                      <HTMLContent data={item?.desc} />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )}
+
 </div>
 
 
@@ -1334,14 +1303,14 @@ const ProductDetail = () => {
                                 />
                               </div>
                             </div>
-                            <div className="product_name">
+                            <h2 className="product_name">
                               <Link
                                 to={`/product-detail/${item?.slug}`}
                                 className="text-dark text-capitalize"
                               >
                                 {item.name}
                               </Link>
-                            </div>
+                            </h2>
                             <div className="price_product">
                               ₹{item.sale_price}{" "}
                               <span className="high_price">₹{item.price}</span>
@@ -1369,8 +1338,58 @@ const ProductDetail = () => {
                   </div>
                 </>
               )}
+
+
+
             </div>
+
+
           </section>
+
+          <section className="faq_slider_product_bottm">
+<div className="container">
+{productContents?.faq?.length > 0 && (
+    <div className="how-use">
+      <div className="faq-section">
+        <h2 className="text-center">Frequently Asked Questions (FAQs) Related to {productDetails?.name}</h2>
+        <div className="row">
+          <div className="col-lg-8 mx-auto">
+            <div className="accordion accordion-flush" id="accordionFlushExample">
+              {productContents?.faq?.map((item, i) => (
+                <div className="accordion-item" key={i}>
+                  <h3 className="accordion-header m-0" id={`flush-heading-${i}`}>
+                    <Link
+                      className="product-info-accordion text-decoration-none"
+                      data-bs-toggle="collapse"
+                      data-bs-target={`#flush-collapse-${i}`}
+                      aria-expanded="false"
+                      aria-controls={`flush-collapse-${i}`}
+                    >
+                      <span className="fs-18px">{item.title}</span>
+                    </Link>
+                  </h3>
+                  <div
+                    id={`flush-collapse-${i}`}
+                    className="accordion-collapse collapse"
+                    aria-labelledby={`flush-heading-${i}`}
+                    data-bs-parent="#accordionFlushExample"
+                  >
+                    <div className="py-8">
+                      <HTMLContent data={item?.desc} />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+</div>
+          </section>
+
+
 
           <section className="review-section">
             <div className="container">
@@ -1717,10 +1736,11 @@ const ProductDetail = () => {
                                   className="mr-3 rounded-pill"
                                 />
                                 <div className="reviews-members-header">
+                                <h6>{item?.name}</h6>
                                   <span className="star-rating">
                                     {getReviewStar(item?.star)}
                                   </span>
-                                  <h6>{item?.name}</h6>
+                                 
                                   <p className="text-gray">
                                     {timeAgo(item?.created_at)}
                                   </p>
@@ -1728,9 +1748,9 @@ const ProductDetail = () => {
                               </div>
                               <div className="media-body">
                                 <div className="reviews-members-body">
-                                  <h6 className="text-uppercase">
+                                  {/* <h6 className="text-uppercase">
                                     {item?.name}
-                                  </h6>
+                                  </h6> */}
                                   <p> {item?.review} </p>
 
                                   <div className="upload-img-show">
@@ -1745,7 +1765,7 @@ const ProductDetail = () => {
                                         return (
                                           <div
                                             key={i}
-                                            className="media-container m-2"
+                                            className="media-container "
                                             style={{
                                               position: "relative",
                                               width: "150px",
