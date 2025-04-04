@@ -127,8 +127,22 @@ const Thumslider = (props) => {
                 item.endsWith(".ogg") ? (
                 <>
                  <div className="video_thumbnail">
-                    <img src={imgBaseURL() + productDetails?.video_thumbnail} alt="product images" />
-                    <i className="fa fa-play" onClick={()=>playNow()}></i>
+                  {
+                    productDetails?.video_thumbnail ? 
+                    <>
+                      <img src={imgBaseURL() + productDetails?.video_thumbnail} alt="product images" />
+                      <i className="fa fa-play" onClick={()=>playNow()}></i>
+                    </>
+                    :
+                    <>
+                     <video>
+                    <source src={item} type="video/mp4" height={62} />
+                    Your browser does not support the video tag.
+                  </video>
+                  <i className="fa fa-play" onClick={()=>playNow()}></i>
+
+                    </>
+                  }
                  </div>
                 </>
               ) : (

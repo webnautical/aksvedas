@@ -964,6 +964,59 @@ const AddProduct = () => {
 
                     {/* Video */}
                     <div className="row mt-4">
+                    <div className="col-md-6">
+                        <div className="img-box ">
+                          <div class="file-uploader">
+                            <label
+                              className="global_file_upload_deisgn"
+                              for="video1"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                version="1.1"
+                                xmlnsXlink="http://www.w3.org/1999/xlink"
+                                width="32"
+                                height="32"
+                                viewBox="0 0 32 32"
+                                style={{ enableBackground: "new 0 0 512 512" }}
+                                xmlSpace="preserve"
+                              >
+                                <g>
+                                  <path
+                                    d="M30 22h-4v4H6v-4H2v8h28zM18 22V8.302l4.867 3.346 2.266-3.296L16 2.072l-9.133 6.28 2.266 3.296L14 8.302V22z"
+                                    fill="#a5a3ae"
+                                  ></path>
+                                </g>
+                              </svg>
+
+                              <p className="m-0">Upload Video Here</p>
+                              <span>(Video  -  Size: 10MB)</span>
+                              <span className="image_class" style={{ fontWeight: '400!important', fontSize: '14px!important' }}>1:1 Aspect ratio</span>
+                              <input type="file" id="video1" name="video" accept="video/*" onChange={handleChange} />
+                            </label>
+                            <div class="preview_upload">
+                              <h4>Video Preview</h4>
+                              <div className="d-flex align-items-center" style={{ gap: "10px" }} >
+                                {imgPreview?.video && imgPreview.video.startsWith("https") ? (
+                                  <video style={{ height: "140px", width: "240px" }} controls>
+                                    <source src={imgPreview.video} type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                  </video>
+                                ) : (
+                                  <p>{imgPreview?.video}</p>
+                                )}
+                                {imgPreview?.video && (
+                                  <button className="icon_btn __danger" onClick={() => handleRemoveImage("video")}>
+                                    <i className="fa fa-trash" />
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+
+
+                          </div>
+                        </div>
+                      </div>
                       <div className="col-6">
                         <div className="img-box">
                           <div className="file-uploader">
@@ -1024,59 +1077,7 @@ const AddProduct = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="col-md-6">
-                        <div className="img-box ">
-                          <div class="file-uploader">
-                            <label
-                              className="global_file_upload_deisgn"
-                              for="video1"
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                version="1.1"
-                                xmlnsXlink="http://www.w3.org/1999/xlink"
-                                width="32"
-                                height="32"
-                                viewBox="0 0 32 32"
-                                style={{ enableBackground: "new 0 0 512 512" }}
-                                xmlSpace="preserve"
-                              >
-                                <g>
-                                  <path
-                                    d="M30 22h-4v4H6v-4H2v8h28zM18 22V8.302l4.867 3.346 2.266-3.296L16 2.072l-9.133 6.28 2.266 3.296L14 8.302V22z"
-                                    fill="#a5a3ae"
-                                  ></path>
-                                </g>
-                              </svg>
-
-                              <p className="m-0">Upload Video Here</p>
-                              <span>(Video  -  Size: 10MB)</span>
-                              <span className="image_class" style={{ fontWeight: '400!important', fontSize: '14px!important' }}>1:1 Aspect ratio</span>
-                              <input type="file" id="video1" name="video" accept="video/*" onChange={handleChange} />
-                            </label>
-                            <div class="preview_upload">
-                              <h4>Video Preview</h4>
-                              <div className="d-flex align-items-center" style={{ gap: "10px" }} >
-                                {imgPreview?.video && imgPreview.video.startsWith("https") ? (
-                                  <video style={{ height: "140px", width: "240px" }} controls>
-                                    <source src={imgPreview.video} type="video/mp4" />
-                                    Your browser does not support the video tag.
-                                  </video>
-                                ) : (
-                                  <p>{imgPreview?.video}</p>
-                                )}
-                                {imgPreview?.video && (
-                                  <button className="icon_btn __danger" onClick={() => handleRemoveImage("video")}>
-                                    <i className="fa fa-trash" />
-                                  </button>
-                                )}
-                              </div>
-                            </div>
-
-
-                          </div>
-                        </div>
-                      </div>
+       
                     </div>
 
                   </div>

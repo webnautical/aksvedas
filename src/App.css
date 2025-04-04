@@ -1533,10 +1533,19 @@ footer .footer_support_btn  .btn-primary:hover{
 
     .whatsapp-footer:hover{ color: white; }
 
-
+    .video_thumbnail .swiper-slide video {
+        height: 48px !important;
+        border-radius: 0px!important;
+        object-fit: cover !important;
+    }
 
     
 @media (max-width: 575.98px) {
+
+    .video_thumbnail i {
+        width: 30px !important;
+        height: 30px !important;
+    }
 
     .faq_slider_product_bottm {
         padding-bottom: 15px!important;
