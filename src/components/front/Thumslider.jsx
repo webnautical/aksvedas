@@ -1,18 +1,15 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
+import Glider from "react-glider";
+import "glider-js/glider.min.css";
 import PropTypes from "prop-types";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Thumbs } from "swiper";
-import { useState } from "react";
-import "swiper/css";
-import "swiper/css/navigation";
 import { imgBaseURL } from "../../utility/Utility";
 
-const Thumslider = (props) => {
-  const productDetails = props?.productDT
-  const [activeThumb, setActiveThumb] = useState();
-
+const Thumslider = ({ images, productDT }) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
   const videoRef = useRef(null);
+  const mainGliderRef = useRef(null);
+  const thumbGliderRef = useRef(null);
 
   const handlePlayPause = () => {
     if (isPlaying) {
@@ -23,141 +20,132 @@ const Thumslider = (props) => {
     setIsPlaying(!isPlaying);
   };
 
-  const playNow = () =>{
-    videoRef.current.play();
-    setIsPlaying(true)
-  }
+  const reorderMedia = (media) => {
+    const video = media.find((item) => item.endsWith(".mp4"));
+    const imgs = media.filter((item) => !item.endsWith(".mp4"));
+    return video ? [imgs[0] || video, video, ...imgs.slice(1)] : media;
+  };
+
+  const updatedImages = reorderMedia([...images]);
 
   const buttonStyle = {
-    marginTop: '10px',
-    padding: '10px 20px',
-    fontSize: '16px',
-    cursor: 'pointer',
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    padding: "10px 20px",
+    fontSize: "16px",
+    cursor: "pointer",
+    backgroundColor: "#007bff",
+    color: "white",
+    border: "none",
+    borderRadius: "5px",
+    zIndex: 10,
   };
 
-
-  const reorderMedia = (media) => {
-    const video = media.find(item => item.endsWith(".mp4"));
-    const images = media.filter(item => !item.endsWith(".mp4"));
-    if (video) {
-      return [images[0] || video, video, ...images.slice(1)];
+  const goToSlide = (index) => {
+    if (mainGliderRef.current) {
+      mainGliderRef.current.scrollItem(index, true);
     }
-    return media;
+    setIsPlaying(false);
+    if (videoRef.current) videoRef.current.pause();
+    setActiveIndex(index);
   };
 
-  const updatedImages = reorderMedia([...props.images]);
-
-  useEffect(() => {
-    document.addEventListener(
-      "wheel",
-      (e) => {
-        e.stopPropagation();
-      },
-      { passive: false }
-    );
-  }, []);
   return (
     <>
       <div className="product-slider-container">
-        <Swiper
-          allowTouchMove={true}  // Touch interaction allow karega
-          simulateTouch={true}
-          slidesPerView={1}    // Mouse se bhi swipe allow karega
-          loop={true}
-          spaceBetween={10}
-          navigation={{
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
+        <Glider
+          ref={mainGliderRef}
+          className="glider-container"
+          hasArrows
+          style={{ border: "none", boxShadow: "none" }}
+          draggable          
+          hasDots={false}
+          slidesToShow={1}
+          scrollLock
+          arrows={{
+            prev: ".glider-prev",
+            next: ".glider-next",
           }}
-          modules={[Navigation, Thumbs]}
-          grabCursor={false}
-          thumbs={{ swiper: activeThumb }}
-          className="product-images-slider"
         >
-          {updatedImages?.map((item, index) => (
-            <SwiperSlide key={index}>
-              {item.endsWith(".mp4") ||
-                item.endsWith(".webm") ||
-                item.endsWith(".ogg") ? (
-                <>
-                  <div className="video_main_box">
-                    <video ref={videoRef} width="100%" height="auto">
-                      <source src={item} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                    <button className="play_pause_btn" onClick={handlePlayPause} style={buttonStyle}>
-                      <i className={isPlaying ? "fas fa-pause" : "fas fa-play"}></i>
-                      {isPlaying ? '' : ''}
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <img src={item} alt="product images" />
-              )}
-            </SwiperSlide>
-          ))}
-        </Swiper>
-
-        {/* Navigation Buttons */}
-        <button className="swiper-button-prev"><i class="fa-solid fa-arrow-left"></i></button>
-        <button className="swiper-button-next"><i class="fa-solid fa-arrow-right"></i></button>
-      </div>
-
-      <Swiper
-        onSwiper={setActiveThumb}
-        loop={true}
-        spaceBetween={10}
-        slidesPerView={5}
-        modules={[Navigation, Thumbs]}
-        className="product-images-slider-thumbs"
-      >
-        {updatedImages?.map((item, index) => (
-          <SwiperSlide key={index}>
-            <div className="product-images-slider-thumbs-wrapper">
-              {item.endsWith(".mp4") ||
-                item.endsWith(".webm") ||
-                item.endsWith(".ogg") ? (
-                <>
-                 <div className="video_thumbnail">
-                  {
-                    productDetails?.video_thumbnail ? 
-                    <>
-                      <img src={imgBaseURL() + productDetails?.video_thumbnail} alt="product images" />
-                      <i className="fa fa-play" onClick={()=>playNow()}></i>
-                    </>
-                    :
-                    <>
-                     <video>
-                    <source src={item} type="video/mp4" height={62} />
+          {updatedImages.map((item, index) => (
+            <div className="item" key={index}>
+              {item.endsWith(".mp4") ? (
+                <div className="video_main_box" style={{ position: "relative" }}>
+                  <video ref={videoRef} width="100%" height="auto">
+                    <source src={item} type="video/mp4" />
                     Your browser does not support the video tag.
                   </video>
-                  <i className="fa fa-play" onClick={()=>playNow()}></i>
-
-                    </>
-                  }
-                 </div>
-                </>
+                  <button onClick={handlePlayPause} style={buttonStyle}>
+                    <i className={isPlaying ? "fas fa-pause" : "fas fa-play"}></i>
+                  </button>
+                </div>
               ) : (
-                <img src={item} alt="product images" />
+                <img src={item} alt="product" />
               )}
             </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+          ))}
+        </Glider>
+
+        {/* Custom Arrows */}
+        <div className="glider-prev swiper-button-prev">
+          <i className="fa-solid fa-arrow-left"></i> {/* Left arrow */}
+        </div>
+        <div className="glider-next swiper-button-next">
+          <i className="fa-solid fa-arrow-right"></i> {/* Right arrow */}
+        </div>
+      </div>
+
+      <div className="product-slider-thumbs" style={{ marginTop: "20px" }}>
+        <Glider
+          ref={thumbGliderRef}
+          className="glider-thumbs"
+          slidesToShow={6}
+          scrollLock
+          draggable
+          
+        >
+          {updatedImages.map((item, index) => (
+            <div
+              className={`thumb-item ${activeIndex === index ? "active-thumb" : ""}`}
+              key={index}
+              onClick={() => goToSlide(index)}
+              style={{ cursor: "pointer", padding: "5px" }}
+            >
+              {item.endsWith(".mp4") ? (
+                <div className="video_thumbnail" style={{ position: "relative" }}>
+                  {productDT?.video_thumbnail ? (
+                    <>
+                      <img
+                        src={imgBaseURL() + productDT.video_thumbnail}
+                        alt="video thumbnail"
+                      />
+                      <i className="fa fa-play"></i>
+                    </>
+                  ) : (
+                    <>
+                      <video height="62">
+                        <source src={item} type="video/mp4" />
+                      </video>
+                      <i className="fa fa-play"></i>
+                    </>
+                  )}
+                </div>
+              ) : (
+                <img src={item} alt="product thumbnail" />
+              )}
+            </div>
+          ))}
+        </Glider>
+      </div>
     </>
   );
 };
 
 Thumslider.propTypes = {
   images: PropTypes.array.isRequired,
+  productDT: PropTypes.object,
 };
 
 export default Thumslider;

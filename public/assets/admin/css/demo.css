@@ -4416,13 +4416,15 @@ span.mont-head {
   height: 100%;
 }
 
-.thumb-slider-pro .product-images-slider .swiper-wrapper .swiper-slide {
+.thumb-slider-pro .product-images-slider .swiper-wrapper .swiper-slide, .product-slider-container .glider-contain .glider-slide{
   padding: 0px !important;
   border: 1px solid #9C7056;
   border-radius: 10px;
   overflow: hidden;
 }
-
+.product-slider-container  .glider-next,  .product-slider-container  .glider-prev {
+top: 50%;
+}
 .thumb-slider-pro .product-images-slider .swiper-wrapper {
   padding: 0px !important;
 }
@@ -4846,7 +4848,26 @@ thead th, tbody td {
 }
 
 .thumb-slider-pro .product-images-slider-thumbs-wrapper img { height: 123px; object-fit: cover; width: 123px; }
-
+.product-slider-thumbs .glider-contain .glider-thumbs img{
+  object-fit: contain !important;
+  height: 60px !important;
+  width: 100%;
+}
+.product-slider-thumbs .glider-slide {
+  min-width: auto;
+  padding: 0px!important;
+}
+.product-slider-thumbs .glider,
+.product-slider-thumbs .glider-container,
+.product-slider-thumbs .glider-thumbs {
+  border: none !important;
+  box-shadow: none !important; /* agar shadow aa raha ho to */
+}
+.product-slider-thumbs {
+  margin-top: 15px!important;}
+.glider-container.glider.draggable {
+  padding-bottom: 0px !important;
+}
 .rating-list .rating-list-center {
   width: 100%;
 }

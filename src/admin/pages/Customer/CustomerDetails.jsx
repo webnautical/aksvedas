@@ -176,7 +176,7 @@ const CustomerDetails = () => {
                             <h4 className="mb-1"> Customer ID #{id}</h4>
                             <p className="mb-0">{timeAgo(customerDetails?.created_at)}</p>
                         </div>
-                        <button className='btn btn-primary' onClick={() => setIsEdit(!isEdit)}>Edit</button>
+                        {/* <button className='btn btn-primary' onClick={() => setIsEdit(!isEdit)}>Edit</button> */}
                     </div>
 
                     {

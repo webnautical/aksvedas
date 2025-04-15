@@ -334,12 +334,23 @@ const ProductDetail = () => {
     return re;
   };
 
-  const averageFun = () => {
-    if (reviewList.length === 0) return 0;
-    const sum = reviewList.reduce((acc, curr) => acc + curr.star, 0);
-    const average = sum / reviewList.length;
-    return average.toFixed(2);
+  const reviewStats = () => {
+    if (reviewList.length === 0) {
+      return {
+        average: 0,
+        bestRating: 0,
+        worstRating: 0,
+      };
+    }
+  
+    const stars = reviewList.map(r => r.star);
+    const sum = stars.reduce((acc, star) => acc + star, 0);
+    const average = (sum / stars.length).toFixed(2);
+    const bestRating = Math.max(...stars);
+    const worstRating = Math.min(...stars);
+    return { average, bestRating, worstRating };
   };
+
   const getRangeWidth = (type) => {
     const res =
       (parseInt(getReviewCount(type)?.length) / parseInt(reviewList?.length)) *
@@ -571,11 +582,31 @@ const ProductDetail = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const [value, setValue] = useState("Know More");
-
-  const handleChangeProduct = (event, newValue) => {
-    setValue(newValue);
-  };
+  useEffect(() => {
+    if(productDetails){
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.text = JSON.stringify({
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": productDetails?.name,
+        "image": imgBaseURL() + productDetails?.cover,
+        "description": productDetails?.description,
+        "brand": "Aksvedas",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": reviewStats()?.average,
+          "bestRating": reviewStats()?.bestRating,
+          "worstRating": reviewStats()?.worstRating,
+          "ratingCount": reviewList?.length
+        }
+      });
+      document.head.appendChild(script);
+      return () => {
+        document.head.removeChild(script);
+      };
+    }
+  }, [productDetails,reviewList]);
 
   return (
     <>
@@ -624,7 +655,7 @@ const ProductDetail = () => {
                           <div className="fs-15">
                             <Rating
                               name="read-only"
-                              value={averageFun()}
+                              value={reviewStats()?.average}
                               readOnly
                             />
                             {reviewList?.length > 0 && (
@@ -1401,13 +1432,13 @@ const ProductDetail = () => {
                       <div className="fs-15 rating_box">
                         <Rating
                           name="read-only"
-                          value={averageFun()}
+                          value={reviewStats()?.average}
                           readOnly
                         />
                       </div>
                       <span className="fw-medium">
                         {" "}
-                        {averageFun()} out of {reviewList?.length}{" "}
+                        {reviewStats()?.average} out of {reviewList?.length}{" "}
                       </span>
                     </div>
                     <p className="mb-3 mt-2">Based on 5 Reviews</p>
