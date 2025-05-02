@@ -31,6 +31,18 @@ export const ContextProvider = ({ children }) => {
         }
     }
 
+        const getProducts = async () => {
+            const params = {
+                'type': 'all'
+            }
+            const res = await postDataAPI('/v1/get-products', JSON.stringify(params))
+            if (res?.status) {
+                return res.data;
+            } else {
+                return [];
+            }
+        }
+
     const getCategory = async () => {
         const param = {
             type: 'sub-categories',
@@ -80,7 +92,7 @@ export const ContextProvider = ({ children }) => {
         }
     }
     return (
-        <ContextData.Provider value={{ categories, brand,attr,attrVal,countData,contextLoading, fetchData}}>
+        <ContextData.Provider value={{ categories, brand,attr,attrVal,countData,contextLoading,getProducts, fetchData}}>
             {children}
         </ContextData.Provider>
     );

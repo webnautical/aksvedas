@@ -128,72 +128,10 @@ const Customer = () => {
         <>
             <div className="content-wrapper">
                 <div className="flex-grow-1 container-p-y">
-                    {/* <PageHeaderCom pageTitle="Customers" /> */}
-                    {/* <div className="card mb-4">
-                        <div className="card-widget-separator-wrapper">
-                            <div className="card-body card-widget-separator">
-                                <div className="row gy-4 gy-sm-1">
-                                    <div className="col-sm-6 col-lg-3">
-                                        <div className="d-flex justify-content-between align-items-start card-widget-1 border-end pb-3 pb-sm-0">
-                                            <div>
-                                                <h6 className="mb-2">In-store Sales</h6>
-                                                <h4 className="mb-2">$5,345.43</h4>
-                                                <p className="mb-0"><span className=" me-2">5k orders</span><span className="badge bg-label-success">+5.7%</span></p>
-                                            </div>
-                                            <span className="avatar me-sm-4">
-                                                <span className="avatar-initial bg-label-secondary rounded"><i className="ti-md ti ti-smart-home text-body" /></span>
-                                            </span>
-                                        </div>
-                                        <hr className="d-none d-sm-block d-lg-none me-4" />
-                                    </div>
-                                    <div className="col-sm-6 col-lg-3">
-                                        <div className="d-flex justify-content-between align-items-start card-widget-2 border-end pb-3 pb-sm-0">
-                                            <div>
-                                                <h6 className="mb-2">Website Sales</h6>
-                                                <h4 className="mb-2">$674,347.12</h4>
-                                                <p className="mb-0"><span className=" me-2">21k orders</span><span className="badge bg-label-success">+12.4%</span></p>
-                                            </div>
-                                            <span className="avatar p-2 me-lg-4">
-                                                <span className="avatar-initial bg-label-secondary rounded"><i className="ti-md ti ti-device-laptop text-body" /></span>
-                                            </span>
-                                        </div>
-                                        <hr className="d-none d-sm-block d-lg-none" />
-                                    </div>
-                                    <div className="col-sm-6 col-lg-3">
-                                        <div className="d-flex justify-content-between align-items-start border-end pb-3 pb-sm-0 card-widget-3">
-                                            <div>
-                                                <h6 className="mb-2">Discount</h6>
-                                                <h4 className="mb-2">$14,235.12</h4>
-                                                <p className="mb-0 ">6k orders</p>
-                                            </div>
-                                            <span className="avatar p-2 me-sm-4">
-                                                <span className="avatar-initial bg-label-secondary rounded"><i className="ti-md ti ti-gift text-body" /></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-6 col-lg-3">
-                                        <div className="d-flex justify-content-between align-items-start">
-                                            <div>
-                                                <h6 className="mb-2">Affiliate</h6>
-                                                <h4 className="mb-2">$8,345.23</h4>
-                                                <p className="mb-0"><span className=" me-2">150 orders</span><span className="badge bg-label-danger">-3.5%</span></p>
-                                            </div>
-                                            <span className="avatar p-2">
-                                                <span className="avatar-initial bg-label-secondary rounded"><i className="ti-md ti ti-wallet text-body" /></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
-
-
                     <h4 class="py-3 mb-2">
                         <span class=" fw-light">Aksvedas /</span> All User
                     </h4>
                     <div className="card">
-
                         <div className="card-datatable table-responsive">
                             <DataTable className='cs_table_inerr'
                                 columns={columns}
@@ -202,12 +140,19 @@ const Customer = () => {
                                 pagination
                                 paginationDefaultPage={currentPage}
                                 onChangePage={handlePageChange}
+                                paginationPerPage={10}
+                                paginationRowsPerPageOptions={[5, 10, 15, 20, 25, 30]} // Add "All"
+                                paginationComponentOptions={{
+                                    rowsPerPageText: 'Rows per page:',
+                                    rangeSeparatorText: 'of',
+                                    selectAllRowsItem: true,
+                                    selectAllRowsItemText: 'All',
+                                }}
                             />
 
                         </div>
                     </div>
                 </div>
-                {/* / Content */}
                 <div className="content-backdrop fade" />
             </div>
             <Spinner sppiner={loading} />

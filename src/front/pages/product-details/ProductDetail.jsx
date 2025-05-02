@@ -342,7 +342,7 @@ const ProductDetail = () => {
         worstRating: 0,
       };
     }
-  
+
     const stars = reviewList.map(r => r.star);
     const sum = stars.reduce((acc, star) => acc + star, 0);
     const average = (sum / stars.length).toFixed(2);
@@ -583,7 +583,7 @@ const ProductDetail = () => {
   }, []);
 
   useEffect(() => {
-    if(productDetails){
+    if (productDetails) {
       const script = document.createElement('script');
       script.type = 'application/ld+json';
       script.text = JSON.stringify({
@@ -606,7 +606,7 @@ const ProductDetail = () => {
         document.head.removeChild(script);
       };
     }
-  }, [productDetails,reviewList]);
+  }, [productDetails, reviewList]);
 
   return (
     <>
@@ -664,46 +664,46 @@ const ProductDetail = () => {
                           </div>
                           {/* <span className="fw-medium"> (4)</span> */}
                         </div>
-                     <div className="mobile_flex">
-                     <div className="skuno">
-                          <ul>
-                            <li className="sku_class">
-                              {" "}
-                              Sku: <strong>{productDetails?.sku}</strong>
-                            </li>
-                            <li className="stock_class">
-                              Availability:{" "}
-                              {productDetails?.quantity > 0 ? (
-                                <span className="instock">In Stock</span>
-                              ) : (
-                                <span className="outoff-stock">
-                                  Out off Stock
-                                </span>
-                              )}
-                            </li>
-                            {/* <li className="text-capitalize">
+                        <div className="mobile_flex">
+                          <div className="skuno">
+                            <ul>
+                              <li className="sku_class">
+                                {" "}
+                                Sku: <strong>{productDetails?.sku}</strong>
+                              </li>
+                              <li className="stock_class">
+                                Availability:{" "}
+                                {productDetails?.quantity > 0 ? (
+                                  <span className="instock">In Stock</span>
+                                ) : (
+                                  <span className="outoff-stock">
+                                    Out off Stock
+                                  </span>
+                                )}
+                              </li>
+                              {/* <li className="text-capitalize">
                                 Category:{" "}
                                 <strong>{productDetails?.category?.name}</strong>
                               </li> */}
-                          </ul>
-                        </div>
+                            </ul>
+                          </div>
 
-                        <h5 className="fs-24">
-                          ₹{productPrice?.sale_price}{" "}
-                          <span className="text-muted">
-                            <del>₹{productPrice?.price} </del>
-                          </span>{" "}
-                          <span className="fs-14 ms-2">
-                            {" "}
-                            (
-                            {getPercentageOff(
-                              productPrice?.price,
-                              productPrice?.sale_price
-                            )}{" "}
-                            % OFF)
-                          </span>
-                        </h5>
-                     </div>
+                          <h5 className="fs-24">
+                            ₹{productPrice?.sale_price}{" "}
+                            <span className="text-muted">
+                              <del>₹{productPrice?.price} </del>
+                            </span>{" "}
+                            <span className="fs-14 ms-2">
+                              {" "}
+                              (
+                              {getPercentageOff(
+                                productPrice?.price,
+                                productPrice?.sale_price
+                              )}{" "}
+                              % OFF)
+                            </span>
+                          </h5>
+                        </div>
 
 
                         {productDetails?.product_subscription?.length > 0 && (
@@ -738,7 +738,7 @@ const ProductDetail = () => {
                           </div>
                         )}
 
-                   
+
                         {bundleProducts?.length > 0 && (
                           <div className="budle-produts">
                             <h5>Bundle Products - {bundleProducts?.length}</h5>
@@ -867,7 +867,7 @@ const ProductDetail = () => {
                               <button
                                 className="btn-2 buy-btn"
                                 onClick={() => addToCartFun("buy")}
-                                // disabled={disabledBtn}
+                              // disabled={disabledBtn}
                               >
                                 Buy Now
                               </button>
@@ -886,9 +886,8 @@ const ProductDetail = () => {
                         <>
                           {/* Sticky Bottom Bar with Transition */}
                           <div
-                            className={`sticky-bottom-bar ${
-                              showStickyBar ? "show" : ""
-                            }`}
+                            className={`sticky-bottom-bar ${showStickyBar ? "show" : ""
+                              }`}
                           >
                             <div className="container p-0">
                               <div class="my_sticky_bar">
@@ -1065,177 +1064,177 @@ const ProductDetail = () => {
               </div>
 
               <div className="all_product_additional_details">
-  <div className="accordion" id="accordionExample">
-    {productContents?.knowabout?.length > 0 && (
-      <div className="accordion-item">
-        <h2 className="accordion-header">
-          <button
-            className="accordion-button collapsed"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapseOne"
-          >
-            Know More
-          </button>
-        </h2>
-        <div id="collapseOne" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-          <div className="accordion-body">
-            <div className="how-use mb-0 pt-3">
-              <h3>Know About {productDetails?.name}</h3>
-              <div className="row">
-                <div className="col-xl-11 mx-auto">
-                  <div className="about-shilajit">
-                    <div className="row mx-0">
-                      <div className="col-sm-8 px-0">
-                        <div className="about-shilajit-inner">
-                          <h4>{productContents?.knowabout[0]?.title}</h4>
-                          <HTMLContent data={productContents?.knowabout[0]?.desc} />
-                        </div>
-                      </div>
-                      <div className="col-sm-4 px-0">
-                        <div className="about-shilaimg">
-                          <img src={imgBaseURL() + productContents?.knowabout[0]?.img} alt="" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {productContents?.attachment[0] && (
-              <div className="row justify-content-center mt-4">
-                <div className="col-lg-3 col-md-4">
-                  <div className="product-button">
-                    <div className="doble_btn-pro">
-                      <Link
-                        className="btn-2"
-                        target="_blank"
-                        to={imgBaseURL() + productContents?.attachment[0]?.img}
-                      >
-                        Download Attachment
-                        <i className="ms-2 fa-solid fa-download"></i>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    )}
-
-    {productContents?.keyingredients?.length > 0 && (
-      <div className="accordion-item">
-        <h2 className="accordion-header">
-          <button
-            className="accordion-button collapsed"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapseTwo"
-          >
-            Key Ingredients
-          </button>
-        </h2>
-        <div id="collapseTwo" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-          <div className="accordion-body">
-            <div className="how-use pt-3">
-              <h3>Key Ingredients</h3>
-              <div className="row justify-content-center">
-                {productContents?.keyingredients?.map((item, i) => (
-                  <div className="col-md-4 col-sm-6 mb-md-5 mb-4" key={i}>
-                    <div className="keyingrents">
-                      <img src={imgBaseURL() + item?.img} alt="" />
-                      <h4>{item?.title}</h4>
-                      <HTMLContent data={item?.desc} />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )}
-
-    {productContents?.useoff?.length > 0 && (
-      <div className="accordion-item">
-        <h2 className="accordion-header">
-          <button
-            className="accordion-button collapsed"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapseThree"
-          >
-            How to use
-          </button>
-        </h2>
-        <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-          <div className="accordion-body">
-            <div className="row pt-3">
-              <div className="col-lg-10 mx-auto">
-                <div className="how-use">
-                  <h3>How to use {productDetails?.name}</h3>
-                  <div className="row justify-content-center">
-                    {productContents?.useoff?.map((item, i) => (
-                      <div className="col-sm-6" key={i}>
-                        <div className="how-tobox">
-                          <div className="how-imgbox">
-                            <img src={imgBaseURL() + item?.img} alt="" />
+                <div className="accordion" id="accordionExample">
+                  {productContents?.knowabout?.length > 0 && (
+                    <div className="accordion-item">
+                      <h2 className="accordion-header">
+                        <button
+                          className="accordion-button collapsed"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapseOne"
+                        >
+                          Know More
+                        </button>
+                      </h2>
+                      <div id="collapseOne" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div className="accordion-body">
+                          <div className="how-use mb-0 pt-3">
+                            <h3>Know About {productDetails?.name}</h3>
+                            <div className="row">
+                              <div className="col-xl-11 mx-auto">
+                                <div className="about-shilajit">
+                                  <div className="row mx-0">
+                                    <div className="col-sm-8 px-0">
+                                      <div className="about-shilajit-inner">
+                                        <h4>{productContents?.knowabout[0]?.title}</h4>
+                                        <HTMLContent data={productContents?.knowabout[0]?.desc} />
+                                      </div>
+                                    </div>
+                                    <div className="col-sm-4 px-0">
+                                      <div className="about-shilaimg">
+                                        <img src={imgBaseURL() + productContents?.knowabout[0]?.img} alt="" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                          <h4>Step {i + 1}</h4>
-                          <HTMLContent data={item?.desc} />
+
+                          {productContents?.attachment[0] && (
+                            <div className="row justify-content-center mt-4">
+                              <div className="col-lg-3 col-md-4">
+                                <div className="product-button">
+                                  <div className="doble_btn-pro">
+                                    <Link
+                                      className="btn-2"
+                                      target="_blank"
+                                      to={imgBaseURL() + productContents?.attachment[0]?.img}
+                                    >
+                                      Download Attachment
+                                      <i className="ms-2 fa-solid fa-download"></i>
+                                    </Link>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )}
-
-    {productContents?.recommendedwith?.length > 0 && (
-      <div className="accordion-item">
-        <h2 className="accordion-header">
-          <button
-            className="accordion-button collapsed"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapseFour"
-          >
-            Recommended with
-          </button>
-        </h2>
-        <div id="collapseFour" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-          <div className="accordion-body">
-            <div className="how-use pt-3">
-              <h3>{productDetails?.name} is recommended with</h3>
-              <div className="row justify-content-center">
-                {productContents?.recommendedwith?.map((item, i) => (
-                  <div className="col-sm-6 mb-md-5 mb-4" key={i}>
-                    <div className="how-tobox">
-                      <div className="how-imgbox">
-                        <img src={imgBaseURL() + item?.img} alt="" />
-                      </div>
-                      <h4>{item.title}</h4>
-                      <HTMLContent data={item?.desc} />
                     </div>
-                  </div>
-                ))}
+                  )}
+
+                  {productContents?.keyingredients?.length > 0 && (
+                    <div className="accordion-item">
+                      <h2 className="accordion-header">
+                        <button
+                          className="accordion-button collapsed"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapseTwo"
+                        >
+                          Key Ingredients
+                        </button>
+                      </h2>
+                      <div id="collapseTwo" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div className="accordion-body">
+                          <div className="how-use pt-3">
+                            <h3>Key Ingredients</h3>
+                            <div className="row justify-content-center">
+                              {productContents?.keyingredients?.map((item, i) => (
+                                <div className="col-md-4 col-sm-6 mb-md-5 mb-4" key={i}>
+                                  <div className="keyingrents">
+                                    <img src={imgBaseURL() + item?.img} alt="" />
+                                    <h4>{item?.title}</h4>
+                                    <HTMLContent data={item?.desc} />
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {productContents?.useoff?.length > 0 && (
+                    <div className="accordion-item">
+                      <h2 className="accordion-header">
+                        <button
+                          className="accordion-button collapsed"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapseThree"
+                        >
+                          How to use
+                        </button>
+                      </h2>
+                      <div id="collapseThree" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div className="accordion-body">
+                          <div className="row pt-3">
+                            <div className="col-lg-10 mx-auto">
+                              <div className="how-use">
+                                <h3>How to use {productDetails?.name}</h3>
+                                <div className="row justify-content-center">
+                                  {productContents?.useoff?.map((item, i) => (
+                                    <div className="col-sm-6" key={i}>
+                                      <div className="how-tobox">
+                                        <div className="how-imgbox">
+                                          <img src={imgBaseURL() + item?.img} alt="" />
+                                        </div>
+                                        <h4>Step {i + 1}</h4>
+                                        <HTMLContent data={item?.desc} />
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {productContents?.recommendedwith?.length > 0 && (
+                    <div className="accordion-item">
+                      <h2 className="accordion-header">
+                        <button
+                          className="accordion-button collapsed"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#collapseFour"
+                        >
+                          Recommended with
+                        </button>
+                      </h2>
+                      <div id="collapseFour" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div className="accordion-body">
+                          <div className="how-use pt-3">
+                            <h3>{productDetails?.name} is recommended with</h3>
+                            <div className="row justify-content-center">
+                              {productContents?.recommendedwith?.map((item, i) => (
+                                <div className="col-sm-6 mb-md-5 mb-4" key={i}>
+                                  <div className="how-tobox">
+                                    <div className="how-imgbox">
+                                      <img src={imgBaseURL() + item?.img} alt="" />
+                                    </div>
+                                    <h4>{item.title}</h4>
+                                    <HTMLContent data={item?.desc} />
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )}
-  </div>
-
-
-</div>
 
 
               {/* Benefits */}
@@ -1313,7 +1312,7 @@ const ProductDetail = () => {
                                   alt="product_img"
                                   width='300'
                                   height="400"
-                                    loading="lazy"
+                                  loading="lazy"
                                 />
                                 <img
                                   className="withhover"
@@ -1321,7 +1320,7 @@ const ProductDetail = () => {
                                   alt="product_img"
                                   width='300'
                                   height="400"
-                                    loading="lazy"
+                                  loading="lazy"
                                 />
                               </Link>
                             </div>
@@ -1378,46 +1377,46 @@ const ProductDetail = () => {
           </section>
 
           <section className="faq_slider_product_bottm">
-<div className="container">
-{productContents?.faq?.length > 0 && (
-    <div className="how-use">
-      <div className="faq-section">
-        <h2 className="text-center">Frequently Asked Questions (FAQs) Related to {productDetails?.name}</h2>
-        <div className="row">
-          <div className="col-lg-8 mx-auto">
-            <div className="accordion accordion-flush" id="accordionFlushExample">
-              {productContents?.faq?.map((item, i) => (
-                <div className="accordion-item" key={i}>
-                  <h3 className="accordion-header m-0" id={`flush-heading-${i}`}>
-                    <Link
-                      className="product-info-accordion text-decoration-none"
-                      data-bs-toggle="collapse"
-                      data-bs-target={`#flush-collapse-${i}`}
-                      aria-expanded="false"
-                      aria-controls={`flush-collapse-${i}`}
-                    >
-                      <span className="fs-18px">{item.title}</span>
-                    </Link>
-                  </h3>
-                  <div
-                    id={`flush-collapse-${i}`}
-                    className="accordion-collapse collapse"
-                    aria-labelledby={`flush-heading-${i}`}
-                    data-bs-parent="#accordionFlushExample"
-                  >
-                    <div className="py-8">
-                      <HTMLContent data={item?.desc} />
+            <div className="container">
+              {productContents?.faq?.length > 0 && (
+                <div className="how-use">
+                  <div className="faq-section">
+                    <h2 className="text-center">Frequently Asked Questions (FAQs) Related to {productDetails?.name}</h2>
+                    <div className="row">
+                      <div className="col-lg-8 mx-auto">
+                        <div className="accordion accordion-flush" id="accordionFlushExample">
+                          {productContents?.faq?.map((item, i) => (
+                            <div className="accordion-item" key={i}>
+                              <h3 className="accordion-header m-0" id={`flush-heading-${i}`}>
+                                <Link
+                                  className="product-info-accordion text-decoration-none"
+                                  data-bs-toggle="collapse"
+                                  data-bs-target={`#flush-collapse-${i}`}
+                                  aria-expanded="false"
+                                  aria-controls={`flush-collapse-${i}`}
+                                >
+                                  <span className="fs-18px">{item.title}</span>
+                                </Link>
+                              </h3>
+                              <div
+                                id={`flush-collapse-${i}`}
+                                className="accordion-collapse collapse"
+                                aria-labelledby={`flush-heading-${i}`}
+                                data-bs-parent="#accordionFlushExample"
+                              >
+                                <div className="py-8">
+                                  <HTMLContent data={item?.desc} />
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              ))}
+              )}
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )}
-</div>
           </section>
 
 
@@ -1655,14 +1654,6 @@ const ProductDetail = () => {
                               />
                               <i className="fa fa-camera"></i>
                             </div>
-                            {/* {selectedImages.map((image, index) => (
-                              <div className="lis-timg-upload" key={index}>
-                                <img src={URL.createObjectURL(image)}
-                                  alt={`Uploaded image ${index}`}
-                                />
-                                <i className="fa fa-trash" onClick={() => handleDeleteImage(index)}></i>
-                              </div>
-                            ))} */}
 
                             {selectedImages.map((file, index) => (
                               <div className="lis-timg-upload" key={index}>
@@ -1767,13 +1758,18 @@ const ProductDetail = () => {
                                   className="mr-3 rounded-pill"
                                 />
                                 <div className="reviews-members-header">
-                                <h6>{item?.name}</h6>
+                                  <h6>{item?.name}</h6>
                                   <span className="star-rating">
                                     {getReviewStar(item?.star)}
                                   </span>
-                                 
+
                                   <p className="text-gray">
-                                    {timeAgo(item?.created_at)}
+                                    {/* {timeAgo(item?.created_at)} */}
+                                    {new Date(item?.created_at).toLocaleDateString('en-GB', {
+                                      day: '2-digit',
+                                      month: 'long',
+                                      year: 'numeric',
+                                    })}
                                   </p>
                                 </div>
                               </div>
