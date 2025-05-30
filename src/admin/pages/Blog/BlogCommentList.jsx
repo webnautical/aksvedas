@@ -11,7 +11,25 @@ import CKEditorCom from '../../../components/CKEditorCom';
 import { SERVER_ERR, SOMETHING_ERR } from '../../../utility/Constants';
 import { useFrontDataContext } from '../../../context/FrontContextProvider';
 import BlogDetails from './BlogDetails';
-
+import {
+    Checkbox,
+    FormControl,
+    InputLabel,
+    ListItemText,
+    MenuItem,
+    OutlinedInput,
+    Select,
+} from "@mui/material";
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+};
 const BlogCommentList = () => {
     const { page } = useParams()
     const pageTitle = page.replace(/-/g, ' ');
@@ -182,20 +200,17 @@ const BlogCommentList = () => {
         'images': ''
     })
 
-    console.log("editObj", editObj)
-
     useEffect(() => {
         if (editObj?.id) {
+            const categoryArray = editObj?.category_id?.split(",").map(id => parseInt(id.trim())).filter(id => !isNaN(id));
             setValue({
-                ...value, 'id': editObj?.id, 'title': editObj?.title, category_id: editObj?.category_id, slug: editObj?.slug, sort_desc: editObj?.sort_desc, desc: editObj?.desc
+                ...value, 'id': editObj?.id, 'title': editObj?.title, category_id: categoryArray, slug: editObj?.slug, sort_desc: editObj?.sort_desc, desc: editObj?.desc
             })
-
             const images = editObj?.images?.split(',');
             const img = [];
             images?.forEach((item) => {
                 img.push({ src: imgBaseURL() + item });
             });
-
             setImgPreview({
                 ...imgPreview,
                 cover: imgBaseURL() + editObj.cover,
@@ -205,10 +220,22 @@ const BlogCommentList = () => {
         }
     }, [editObj])
 
-    const getCategoryName = (id) => {
-        const res = categories.filter((item) => item.id == id)
-        return res[0]?.name
-    }
+    const getCategoryName = (ids) => {
+        try {
+            if (!ids) return "";
+            const idArray = ids
+                .split(",")
+                .map((id) => parseInt(id.trim()))
+                .filter((id) => !isNaN(id));
+            const names = categories
+                ?.filter((item) => idArray.includes(item.id))
+                .map((item) => item.name);
+            return names?.length ? names.join(", ") : "";
+        } catch (error) {
+            console.error("Error in getCategoryName:", error);
+            return "";
+        }
+    };
 
     const handleChange = (e) => {
         if (e.target.name === "title") {
@@ -234,6 +261,21 @@ const BlogCommentList = () => {
         });
     };
 
+    const handleCategoryChange = (event) => {
+        const {
+            target: { value },
+        } = event;
+        const existingCategoryIds = Array.isArray(value.category_id)
+            ? value.category_id
+            : [];
+        const newCategoryIds = typeof value === "string" ? value.split(",") : value;
+        const mergedCategoryIds = [...existingCategoryIds, ...newCategoryIds];
+        setValue((prevValue) => ({
+            ...prevValue,
+            category_id: mergedCategoryIds,
+        }));
+    };
+
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
         const files1 = Array.from(e.target.files);
@@ -245,6 +287,7 @@ const BlogCommentList = () => {
             images: [...imgPreview.images, ...newImages],
         });
     };
+
     const handleRemoveImage = (type, index) => {
         if (type === "cover") {
             setValue({ ...value, cover: "" });
@@ -265,25 +308,23 @@ const BlogCommentList = () => {
     };
 
     const handlePageForm = async () => {
-        console.log("form Call")
         setLoading(true)
         try {
             const formData = new FormData();
             formData.append("title", value.title);
-            console.log("value", value)
             if (value?.id) {
                 formData.append("id", value.id);
             }
             formData.append("slug", value.slug);
             formData.append("desc", value.desc);
-            formData.append("category_id", value.category_id);
+            formData.append("category_id", value?.category_id.join(","));
             formData.append("cover", value.cover);
             if (value?.images) {
                 value?.images?.forEach((file, index) => {
                     formData.append(`images[${index}]`, file);
                 });
             }
-            const res = await APICALL(`/create-blog`, 'post', value);
+            const res = await APICALL(`/create-blog`, 'post', formData);
             if (res?.status) {
                 setValue({
                     ...value, 'title': '',
@@ -301,6 +342,7 @@ const BlogCommentList = () => {
                     images: [],
                 })
                 toastifySuccess('Blog Created Successfully')
+                handleReset()
                 navigate('/admin/blog/all')
                 setLoading(false)
             } else {
@@ -312,6 +354,18 @@ const BlogCommentList = () => {
             setLoading(false)
             toastifyError(SERVER_ERR)
         }
+    }
+
+    const handleReset = () => {
+        setValue({
+            ...value, 'id': "", 'title': "", category_id: "", slug: "", sort_desc: "", desc: ""
+        })
+        setImgPreview({
+            ...imgPreview,
+            cover: null,
+            hover_img: null,
+            images: [],
+        });
     }
 
     return (
@@ -342,16 +396,63 @@ const BlogCommentList = () => {
                                             <label htmlFor="">Title</label>
                                             <input type="text" name='title' value={value.title} onChange={handleChange} className='form-control' placeholder='Title' />
                                         </div>
-                                        <div className="col-sm-4">
+
+                                        {/* <div className="col-sm-4">
                                             <label htmlFor="">Category</label>
-                                            <select name="category_id" value={value.category_id} onChange={handleChange} className='form-control'>
+                                            <select name="category_id"
+                                                value={value.category_id || []}
+                                                onChange={handleChange}
+                                                className="form-control"
+                                                multiple
+                                            >
                                                 <option value="">Select Category</option>
-                                                {
-                                                    categories?.map((item, i) => (
-                                                        <option value={item.id} key={i}>{item?.name}</option>
-                                                    ))
-                                                }
+                                                {categories?.map((item, i) => (
+                                                    <option value={item.id} key={i}>{item?.name}</option>
+                                                ))}
                                             </select>
+                                        </div> */}
+
+                                        <div className="col-md-4" style={{ marginTop: "40px" }}>
+                                            {/* <label htmlFor="">Category</label> */}
+                                            <FormControl
+                                                sx={{ width: "100%" }}
+                                                className="main_multi"
+                                            >
+                                                <InputLabel id="multiple-checkbox-label bg-white mt-4">
+                                                    Select Categories
+                                                </InputLabel>
+                                                <Select
+                                                    labelId="multiple-checkbox-label"
+                                                    id="multiple-checkbox"
+                                                    multiple
+                                                    value={value.category_id || []}
+                                                    onChange={handleCategoryChange}
+                                                    input={<OutlinedInput label="Tag" />}
+                                                    renderValue={(selected) =>
+                                                        selected
+                                                            .map(
+                                                                (id) =>
+                                                                    categories.find((cat) => cat.id === id)?.name
+                                                            )
+                                                            .join(", ")
+                                                    }
+                                                    MenuProps={MenuProps}
+                                                    className="check_select"
+                                                    inputProps={{ "aria-label": "Select categories" }}
+                                                    placeholder="Select categories"
+                                                >
+                                                    {categories?.map((name) => (
+                                                        <MenuItem key={name.id} value={name.id}>
+                                                            <Checkbox
+                                                                checked={
+                                                                    value.category_id?.indexOf(name.id) > -1
+                                                                }
+                                                            />
+                                                            <ListItemText primary={name?.name} />
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
                                         </div>
                                         <div className="col-sm-4">
                                             <label htmlFor="">Slug</label>

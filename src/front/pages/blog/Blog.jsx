@@ -34,11 +34,22 @@ const Blog = () => {
       setLoading(false)
     }
   }
-  const getCategoryName = (id) => {
-    const res = categories.filter((item) => item.id == id)
-    return res[0]?.name
+const getCategoryName = (ids) => {
+  try {
+    if (!ids) return "";
+    const idArray = ids
+      .split(",")
+      .map((id) => parseInt(id.trim()))
+      .filter((id) => !isNaN(id));
+    const names = categories
+      ?.filter((item) => idArray.includes(item.id))
+      .map((item) => item.name);
+    return names?.length ? names.join(" & ") : "";
+  } catch (error) {
+    console.error("Error in getCategoryName:", error);
+    return "";
   }
-  console.log("listData", listData)
+};
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate();

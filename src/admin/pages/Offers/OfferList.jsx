@@ -1,14 +1,36 @@
 import React, { useEffect, useState } from 'react'
 import { APICALL, getDataAPI, postDataAPI } from '../../../utility/api/api'
 import Spinner from '../../../components/admin/Spinner'
-import { toastifyError, toastifySuccess } from '../../../utility/Utility'
+import { indianStates, toastifyError, toastifySuccess } from '../../../utility/Utility'
 import { timeAgo } from '../../../utility/Date'
 import { Link } from 'react-router-dom'
 import DataTable from 'react-data-table-component';
 import { useFrontDataContext } from '../../../context/FrontContextProvider'
-
+import SpinnerBTN from './../../../components/SpinnerBTN';
+import {
+    Checkbox,
+    FormControl,
+    InputLabel,
+    ListItemText,
+    MenuItem,
+    OutlinedInput,
+    Select,
+} from "@mui/material";
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+};
 export const OfferList = () => {
     const [loading, setLoading] = useState()
+    const [submitLoading, setSubmitLoading] = useState({
+        'statesSave': false
+    })
     const { categories } = useFrontDataContext()
     const [dashboardOffer, setDashboardOffer] = useState(null)
     const [page, setPage] = useState('')
@@ -17,6 +39,7 @@ export const OfferList = () => {
     useEffect(() => {
         getOffersList()
         getCouponsFun()
+        getShippingCompnayStatesFun()
     }, [])
 
     const [value, setValue] = useState({
@@ -35,7 +58,6 @@ export const OfferList = () => {
         try {
             setLoading(true)
             const res = await getDataAPI('get-offers')
-            console.log("res", res)
             if (res?.status) {
                 const dashboardOffer = res?.data.find(item => item.type === "dashboard_offer");
                 const checkoutOffer = res?.data.find(item => item.type === "checkout_offer");
@@ -219,8 +241,6 @@ export const OfferList = () => {
         }
     }, [updData]);
 
-
-
     const createCoupon = async () => {
 
         const isUpdating = value.id !== undefined;
@@ -253,7 +273,7 @@ export const OfferList = () => {
         setLoading(true)
         if (type == 'delete') {
             var param = { id: data?.id, type: 'delete' };
-        } else if(type == "is_visible"){
+        } else if (type == "is_visible") {
             var param = { id: data?.id, is_visible: data.is_visible === 1 ? 0 : 1 };
         } else {
             var param = { id: data?.id, status: data.status === 1 ? 0 : 1 };
@@ -323,11 +343,70 @@ export const OfferList = () => {
         }
     }
 
-
     const setCheckoutCouponFun = (e) => {
         const coupon = e.target.value
         setValue({ ...value, checkout_offer_coupon: coupon })
         updateDashboardOffer("checkout_offer", coupon)
+    }
+
+    const [shippingCompanyVal, setShippingCompanyVal] = useState({
+        Shiprocket: [],
+        Delhivery: [],
+    });
+
+    const getShippingCompnayStatesFun = async () => {
+        try {
+            const res = await APICALL('/shipping-company-states')
+            console.log(res)
+            if (res?.status) {
+                setShippingCompanyVal({
+                    Shiprocket: Array.isArray(res.data.shiprocket_states)
+                        ? res.data.shiprocket_states
+                        : res.data.shiprocket_states?.split(",") || [],
+                    Delhivery: Array.isArray(res.data.delhivery_states)
+                        ? res.data.delhivery_states
+                        : res.data.delhivery_states?.split(",") || [],
+                });
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleStateChange = (company) => (event) => {
+        const { value } = event.target;
+        const selectedValues = typeof value === "string" ? value.split(",") : value;
+        const otherCompany = company === "Shiprocket" ? "Delhivery" : "Shiprocket";
+        setShippingCompanyVal((prev) => ({
+            ...prev,
+            [company]: selectedValues,
+            [otherCompany]: prev[otherCompany].filter(state => !selectedValues.includes(state))
+        }));
+    };
+
+    const handleShippingCompanyStates = async () => {
+        try {
+            setSubmitLoading((prev) => ({
+                ...prev,
+                statesSave: true,
+            }));
+            const params = {
+                shiprocket_states: shippingCompanyVal?.Shiprocket.join(","),
+                delhivery_states: shippingCompanyVal?.Delhivery.join(","),
+            }
+            const res = await APICALL('/shipping-company-states', "POST", params)
+            if (res?.status) {
+                getShippingCompnayStatesFun()
+                toastifySuccess("States Updated Successfully !!")
+            }
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setSubmitLoading((prev) => ({
+                ...prev,
+                statesSave: false,
+            }));
+        }
     }
 
     return (
@@ -336,6 +415,130 @@ export const OfferList = () => {
                 <h4 class="py-3 mb-2">
                     <span class="fw-light">Aksvedas /</span>Set Offer
                 </h4>
+
+                {/* Shipping Company */}
+
+                {/* <div className="card mb-4">
+                    <div className="card-widget-separator-wrapper">
+                        <div className="card-body card-widget-separator">
+                            <div className="row gy-4 gy-sm-1 p-2">
+                                <div className="col-12">
+                                    <h5><i class="fa-solid fa-truck"></i> Shiping Company</h5>
+                                </div>
+                                <div className="col-sm-6 col-lg-6">
+                                    <h5>1. Shiprocket</h5>
+
+                                    <div className="justify-content-between align-items-start pe-3 pb-3 pb-sm-0 card-widget-3">
+                                        <div className="row g-2 align-items-bottom">
+                                            <div className="col-12">
+                                                <span className='text-danger'>
+                                                    <strong>Note:</strong> Orders placed from the selected states below will be assigned to <strong>Shiprocket</strong> for delivery. This shipping partner will not handle orders from unselected states.
+                                                </span>
+                                            </div>
+                                            <div className="col-12 mt-3">
+                                                <FormControl sx={{ width: "100%" }} className="main_multi">
+                                                    <InputLabel id="multiple-checkbox-label bg-white mt-4">
+                                                        Select States
+                                                    </InputLabel>
+                                                    <Select
+                                                        labelId="multiple-checkbox-label"
+                                                        id="multiple-checkbox"
+                                                        multiple
+                                                        value={shippingCompanyVal.Shiprocket}
+                                                        onChange={handleStateChange("Shiprocket")}
+                                                        input={<OutlinedInput label="Tag" />}
+                                                        renderValue={(selected) =>
+                                                            selected
+                                                                .map((name) => indianStates.find((state) => state.name === name)?.name)
+                                                                .join(", ")
+                                                        }
+                                                        MenuProps={MenuProps}
+                                                        className="check_select"
+                                                        inputProps={{ "aria-label": "Select states" }}
+                                                        placeholder="Select states"
+                                                    >
+                                                        {indianStates
+                                                            .filter((state) => !shippingCompanyVal.Delhivery.includes(state.name))
+                                                            .map((state) => (
+                                                                <MenuItem key={state.name} value={state.name}>
+                                                                    <Checkbox checked={shippingCompanyVal.Shiprocket.includes(state.name)} />
+                                                                    <ListItemText primary={state.name} />
+                                                                </MenuItem>
+                                                            ))}
+                                                    </Select>
+                                                </FormControl>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div className="col-sm-6 col-lg-6">
+                                    <h5>2. Delhivery </h5>
+                                    <div className="justify-content-between align-items-start pe-3 pb-3 pb-sm-0 card-widget-3">
+                                        <div className="row g-2 align-items-bottom">
+                                            <div className="col-12">
+                                                <span className='text-danger'>
+                                                    <strong>Note:</strong> Only orders coming from the selected states will be shipped via <strong>Delhivery</strong>. Make sure to assign appropriate states to avoid delivery mismatch.
+                                                </span>
+                                            </div>
+                                            <div className="col-12 mt-3">
+                                                <FormControl sx={{ width: "100%" }} className="main_multi">
+                                                    <InputLabel id="multiple-checkbox-label bg-white mt-4">
+                                                        Select States
+                                                    </InputLabel>
+                                                    <Select
+                                                        labelId="multiple-checkbox-label"
+                                                        id="multiple-checkbox"
+                                                        multiple
+                                                        value={shippingCompanyVal.Delhivery}
+                                                        onChange={handleStateChange("Delhivery")}
+                                                        input={<OutlinedInput label="Tag" />}
+                                                        renderValue={(selected) =>
+                                                            selected
+                                                                .map((name) => indianStates.find((state) => state.name === name)?.name)
+                                                                .join(", ")
+                                                        }
+                                                        MenuProps={MenuProps}
+                                                        className="check_select"
+                                                        inputProps={{ "aria-label": "Select states" }}
+                                                        placeholder="Select states"
+                                                    >
+                                                        {indianStates
+                                                            .filter((state) => !shippingCompanyVal.Shiprocket.includes(state.name))
+                                                            .map((state) => (
+                                                                <MenuItem key={state.name} value={state.name}>
+                                                                    <Checkbox checked={shippingCompanyVal.Delhivery.includes(state.name)} />
+                                                                    <ListItemText primary={state.name} />
+                                                                </MenuItem>
+                                                            ))}
+
+                                                    </Select>
+                                                </FormControl>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="col-md-12 px-4 mt-3 text-end">
+                                    <div className="btn-box">
+                                        {
+                                            submitLoading?.statesSave ?
+                                                <button type="button" className="btn btn-primary" >
+                                                    <SpinnerBTN />
+                                                </button>
+
+                                                :
+                                                <>
+                                                    <button type="button" className="btn btn-primary" onClick={() => handleShippingCompanyStates()}>Save Change</button>
+                                                </>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> */}
 
                 {/* Offer title for dashboard */}
                 <div className="card mb-4">

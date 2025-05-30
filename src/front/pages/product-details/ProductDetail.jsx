@@ -469,7 +469,7 @@ const ProductDetail = () => {
             serviceabilityRes?.data?.data?.available_courier_companies[0].etd
           );
         } else {
-          setEstimatedInfo("Invalid Postel Code");
+          setEstimatedInfo("Invalid Postal Code");
         }
       } catch (error) {
         console.log(error);
@@ -960,7 +960,7 @@ const ProductDetail = () => {
                                 setDeliveryPostelCode(newValue);
                               }}
                               value={deliveryPostelCode}
-                              placeholder="Enter Your Postel Code"
+                              placeholder="Enter Your Postal Code"
                             />
                             <div className="submit">
                               <button
@@ -1036,7 +1036,7 @@ const ProductDetail = () => {
                       <div className="col-3">
                         <div className="iconpro-box">
                           <img src={icon3} alt="footer_logo" />
-                          <h5>Comprehensivly Tested</h5>
+                          <h5>Comprehensively Tested</h5>
                         </div>
                       </div>
                       <div className="col-3">
