@@ -16,6 +16,7 @@ import {
     OutlinedInput,
     Select,
 } from "@mui/material";
+import SpinWheelSegment from './SpinWheelSegment'
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -357,7 +358,6 @@ export const OfferList = () => {
     const getShippingCompnayStatesFun = async () => {
         try {
             const res = await APICALL('/shipping-company-states')
-            console.log(res)
             if (res?.status) {
                 setShippingCompanyVal({
                     Shiprocket: Array.isArray(res.data.shiprocket_states)
@@ -416,9 +416,11 @@ export const OfferList = () => {
                     <span class="fw-light">Aksvedas /</span>Set Offer
                 </h4>
 
-                {/* Shipping Company */}
+                {/* Spin Wheel Segment */}
+                <SpinWheelSegment couponList={couponList}/>
 
-                {/* <div className="card mb-4">
+                {/* Shipping Company */}
+                <div className="card mb-4">
                     <div className="card-widget-separator-wrapper">
                         <div className="card-body card-widget-separator">
                             <div className="row gy-4 gy-sm-1 p-2">
@@ -538,7 +540,7 @@ export const OfferList = () => {
                             </div>
                         </div>
                     </div>
-                </div> */}
+                </div>
 
                 {/* Offer title for dashboard */}
                 <div className="card mb-4">

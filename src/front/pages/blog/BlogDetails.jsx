@@ -57,6 +57,7 @@ const BlogDetails = () => {
     email: "",
     message: '',
   });
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValue((prevState) => ({

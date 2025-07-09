@@ -6,6 +6,7 @@ import Spinner from '../../../components/admin/Spinner'
 import { timeAgo } from '../../../utility/Date'
 import { Link } from 'react-router-dom'
 import { SERVER_ERR } from '../../../utility/Constants'
+import ItemImg from '../../../components/admin/ItemImg'
 
 const CustomerDetails = () => {
     const { id } = useParams()
@@ -166,6 +167,8 @@ const CustomerDetails = () => {
         }
     };
 
+    console.log("customerDetails", customerDetails)
+
 
     return (
         <>
@@ -218,6 +221,7 @@ const CustomerDetails = () => {
                                         </div>
                                     </div>
                                 </div>
+
                                 <div className="col-xl-8 col-lg-7 col-md-7 order-0 order-md-1">
                                     <ul className="nav nav-pills flex-column flex-md-row mb-3">
                                         <li className="nav-item"><button onClick={() => { setTabsPage(null); setAddressModal(false) }} className={`nav-link ${subPage == null ? 'active' : ''}`}><i className="ti ti-user me-1" />Overview</button></li>
@@ -249,26 +253,7 @@ const CustomerDetails = () => {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="col-md-6 mb-4">
-                                                        <div className="card">
-                                                            <div className="card-body">
-                                                                <div className="card-icon mb-3">
-                                                                    <div className="avatar">
-                                                                        <div className="avatar-initial rounded bg-label-info">
-                                                                            <i class="fa-solid fa-cart-shopping"></i>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="card-info">
-                                                                    <h4 className="card-title mb-3">Cart</h4>
-                                                                    <div className="d-flex align-items-baseline mb-1 gap-1">
-                                                                        <h4 className="text-info mb-0">{customerDetails?.cart?.length}</h4>
-                                                                        <p className="mb-0">Item in cart</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+
 
                                                     <div className="col-md-6 mb-4">
                                                         <div className="card h-100">
@@ -297,13 +282,84 @@ const CustomerDetails = () => {
                                                                                 </div>
                                                                             </>
                                                                             :
-
-                                                                            <h1 className="loyalty_text">₹{customerDetails?.loyalty}</h1>
+                                                                            <div className="d-flex align-items-baseline mb-1 gap-1">
+                                                                                <p className="loyalty_text mb-0">₹{customerDetails?.loyalty}</p>
+                                                                            </div>
                                                                     }
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
+
+
+                                                    <div className="col-md-12 mb-4">
+                                                        <div className="card">
+                                                            <div className="card-body">
+                                                                <div className="card-icon mb-3 gap-1 d-flex align-items-center">
+                                                                    <div className="avatar">
+                                                                        <div className="avatar-initial rounded bg-label-info">
+                                                                            <i class="fa-solid fa-cart-shopping"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                    <h6 className='m-0'>{customerDetails?.cart?.length} items in Cart</h6>
+                                                                </div>
+                                                                <div className="card-info">
+                                                                    {customerDetails?.cart?.length > 0 &&
+                                                                        <div className="row">
+                                                                            <div className="col-12">
+                                                                                <table className='table'>
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th></th>
+                                                                                            <th>Product</th>
+                                                                                            <th>Qnt.</th>
+                                                                                            <th>Price</th>
+                                                                                            <th>Action</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        {
+                                                                                            customerDetails?.cart?.map((item, i) => {
+                                                                                                const message = `Hi ${customerDetails?.name || ''}, 
+
+                                                                                                You have ${item?.qnt} x ${item?.product?.name} in your cart.
+
+                                                                                                Current offer price: ₹${item?.product?.sale_price} (Original ₹${item?.product?.price}).
+
+                                                                                                Hurry! Order now before the deal ends.`;
+                                                                                                return (
+                                                                                                    <tr key={i}>
+                                                                                                        <td><ItemImg img={item?.product?.cover} /></td>
+                                                                                                        <td>{item?.product?.name}</td>
+                                                                                                        <td>{item?.qnt}</td>
+                                                                                                        <td>
+                                                                                                            <strong style={{ fontSize: "16px" }}> ₹{item?.product?.sale_price}</strong>
+                                                                                                        </td>
+                                                                                                        <td>
+                                                                                                            <div className="avatar">
+                                                                                                                <a href={`https://wa.me/${customerDetails?.phone}?text=${encodeURIComponent(message)}`}
+                                                                                                                    target="_blank" rel="noopener noreferrer" className='text-success'  >
+                                                                                                                    <div className="avatar-initial rounded bg-label-success">
+                                                                                                                        <i className="fa-brands fa-whatsapp"></i>
+                                                                                                                    </div>
+                                                                                                                </a>
+                                                                                                            </div>
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                );
+                                                                                            })
+                                                                                        }
+
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
                                                 </div>
                                             </>
                                             :

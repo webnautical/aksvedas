@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import HTMLContent from "../../../components/HTMLContent";
 import { APICALL } from "../../../utility/api/api";
 import { useFrontDataContext } from "../../../context/FrontContextProvider";
+import SpinWheel from "../account/SpinWheel";
 
 function ContactUs({ pageData }) {
   const { webAttr } = useFrontDataContext();
@@ -47,6 +48,7 @@ function ContactUs({ pageData }) {
 
   return (
     <>
+      <SpinWheel />
       <div className="contact-us">
         <div className="container">
           <div className="row">
